@@ -1,0 +1,54 @@
+/* Page 1 - Customer Home Page */
+.top-nav{
+    background-color: #f2f2f2;
+    display:flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+    font-size: 40px;
+}
+.header-right{
+    display:flex;
+    align-items: center;
+    gap: 40px;
+}
+.shelf1{
+    justify-content: space-between;
+    padding-right: 15px;
+    margin-bottom: 12px;
+}
+.orange-section{
+    background-color: #ffbd59;
+    padding: 2px 0px 10px 10px;
+    margin-top: 10px;
+}
+.cuisines{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+.food{
+    min-width: 120px;
+    position: relative;
+    height: 120px;
+}
+.food img{
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    object-fit: cover;
+    display: block;
+}
+.label{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-size: 10px;
+    text-align: center;
+    padding: 4px 0;
+    margin: 0;
+    border-radius: 12px;
+    width: 120px;
+}
