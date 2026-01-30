@@ -15,6 +15,13 @@
     justify-content: space-between;
     padding-right: 15px;
     margin-bottom: 12px;
+    display: flex;
+    align-items:center;
+}
+.see-all{
+    color: black;
+    text-decoration: none;
+    font-size: 15px;
 }
 .orange-section{
     background-color: #ffbd59;
@@ -145,3 +152,36 @@
         font-size: 10px;
     }
 }
+/* Page 2 - Page that shows different stalls */
+.stall-list{
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.back-button{
+    /*Positioning*/
+    position: fixed;
+    bottom: 20px;
+    left:0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    /*Colors and Shapes*/
+    background-color: lightblue;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    /*Sizing and shape*/
+    width: 120px;
+    padding: 5px 0;
+    border-radius: 20px;
+    height: 40px;
+    /*Alignment*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Page 3 - Page that shows the menu of all three stalls */
