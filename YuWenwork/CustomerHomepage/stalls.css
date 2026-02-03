@@ -1,0 +1,54 @@
+.stall-list{
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.back-button{
+    /*Positioning*/
+    position: fixed;
+    bottom: 20px;
+    left:0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    /*Colors and Shapes*/
+    background-color: lightblue;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    /*Sizing and shape*/
+    width: 120px;
+    padding: 5px 0;
+    border-radius: 20px;
+    height: 40px;
+    /*Alignment*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#stall-list-page{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+.store-card{
+    display: flex;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 15px;
+}
+.image-box{
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    flex-shrink: 0;
+}
+.store-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
