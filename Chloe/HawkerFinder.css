@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #e5e7eb; /* grey */
+}
+
+.page {
+  background: white;
+  padding-bottom: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.header-text h1 {
+  margin: 0;
+}
+
+.header-text p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Back button */
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Location button */
+.location-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #5eead4;
+  background: white;
+  cursor: pointer;
+}
+
+/* Search bar and filters layout*/
+.controls {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 16px;
+}
+
+.controls input {
+  flex: 1;
+}
+
+.controls input,
+.controls select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Results bar spacing*/
+.results-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px 12px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.sorted {
+  color: #0d9488;
+}
+
+/* Map container*/
+.map-section {
+  position: relative;
+  height: 65vh;
+}
+
+#map {
+  height: 100%;
+}
+
+/* Legend styling */
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  font-size: 12px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.a { background: #059669; }
+.b { background: #2563eb; }
+.c { background: #d97706; }
+.d { background: #dc2626; }
+
