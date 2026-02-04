@@ -1,0 +1,229 @@
+/* Navigation */
+.top-nav{
+    background-color: #f2f2f2;
+    display:flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+    font-size: 24px;
+}
+.header-right{
+    display:flex;
+    align-items: center;
+    gap: 40px;
+}
+
+/* Entire Page */
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+#review-summary-section{
+    position: relative;
+    background-image: url("https://stresidences.com/wp-content/uploads/a-foodies-tour-of-singapore-best-hawker-centres-to-visit.jpg");
+    background-size: cover;
+    background-position: center;
+    padding-top: 0px;
+    padding-bottom: 25px;
+}
+#review-summary-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 200, 110, 0.4);
+    z-index: 0;
+}
+#review-summary-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hawker Centre */
+#review-header{
+    font-size: 50px;
+    text-align: center;
+    -webkit-text-stroke: 1.2px white;
+    margin: 0px 0px;
+    padding: 25px 0px;
+}
+
+/* Review container */
+#review-summary-container{
+    display: flex;
+    background-color: rgba(211,211,211,0.925);
+    border: 3px solid black;
+    border-radius: 25px;
+    width: 75%;
+    height: 500px;
+    padding: 40px 20px;
+    padding-bottom: 60px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Left Section - Stall Information */
+#left-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 50px;
+}
+.review-title{
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 40px;
+}
+#review-location{
+    color: gray;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    padding-top: 0px;
+}
+#review-stall-image{
+    height: 400px;
+    width: 400px;
+    object-fit: cover;
+    border-radius: 33px;
+}
+
+/* Right Section - Rating Information */
+#right-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    height: 100%;
+    justify-content: space-around;
+    margin: 0px 50px;
+}
+#rating-top{
+    text-align: center;
+}
+#rating-summary-number{
+    font-size: 75px;
+    font-weight: bold;
+}
+#rating-summary-total{
+    font-size: 13px;
+    color: gray;
+    margin-top: 5px;
+}
+
+/* Rating Information - Star Display */
+.star-wrapper{
+    display: inline-block;
+    position: relative;
+    width: 25px;
+    height: 22px;
+    overflow: hidden; 
+    margin: 0 2px;
+    vertical-align: middle;
+}
+.star-empty{
+    color: #eeeeee; 
+    font-size: 22px;
+}
+.star-fill{
+    color: orange;
+    font-size: 22px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%; 
+    overflow: hidden;
+}
+
+/* Rating Information - Bars Section */
+.rating-row{
+    font-size: 20px;
+    display: flex; 
+    align-items: center;
+    gap: 15px;
+    margin: 25px 0;
+} 
+.rating-row:last-child{
+    margin-bottom: 60px; 
+}
+#rating-bars{
+    width: 95%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.star{
+    font-weight: bold;
+    width: 5px;
+}
+.bar{
+    flex: 1;
+    height: 12px;
+    background-color: #eeeeee;
+    border-radius: 7.5px;
+    overflow: hidden;
+}
+.bar-fill{
+    height: 100%;
+    background-color: orange;
+    border-radius: 7.5px;
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+/* Review Button */
+#review-button{
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    color: #135e88;
+    background-color: #4285f4;
+    border-radius: 10px;
+    border: none;
+    width: 225px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+#review-button > *{
+    padding: 0 5px;
+}
+#review-button:hover{
+    background-color: #2f6ed6;
+    cursor: pointer;
+}
+
+/* Screen Adjustment */
+@media screen and (max-width: 1080px) {
+    #review-summary-container{
+        width: 75%;
+        height: 1000px;
+        flex-direction: column;
+        gap: 75px
+    }
+    #left-container{
+        display: flex;
+        flex-direction: column;
+        height: 60%;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    #review-stall-image{
+        height: 36vw;
+        width: 36vw;
+        min-width: 200px;
+        min-height: 200px;
+        border-radius: 15px;
+    }
+    #rating-summary-stars{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    #rating-bars{
+        width: 200%;
+    }
+    #review-button{
+        height: 50px
+    }
+}
