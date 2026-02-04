@@ -1,111 +1,51 @@
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #e5e7eb; /* grey */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+
+.app-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Takes full phone screen height */
 }
 
-.page {
-  background: white;
-  padding-bottom: 16px;
+/* Header */
+.top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-}
+.top-nav h1 { font-size: 1.2rem; color: #333; }
+.back-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+.spacer { width: 30px; }
 
-.header-text h1 {
-  margin: 0;
-}
+/* Filters */
+.controls { padding: 15px; background: #fff; }
+.search-container { display: flex; margin-bottom: 10px; }
+.search-container input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
+.search-container button { padding: 10px; background: #007AFF; color: white; border: none; border-radius: 0 5px 5px 0; }
 
-.header-text p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 14px;
-}
+.filter-row { display: flex; gap: 10px; }
+.filter-row select { flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
 
-/* Back button */
-.back-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
+/* Map */
+#map-container { position: relative; flex: 1; }
+#map { height: 100%; width: 100%; z-index: 1; }
 
-/* Location button */
-.location-btn {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid #5eead4;
-  background: white;
-  cursor: pointer;
-}
-
-/* Search bar and filters layout*/
-.controls {
-  display: flex;
-  gap: 12px;
-  padding: 0 20px 16px;
-}
-
-.controls input {
-  flex: 1;
-}
-
-.controls input,
-.controls select {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-}
-
-/* Results bar spacing*/
-.results-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px 12px;
-  font-size: 14px;
-  color: #475569;
-}
-
-.sorted {
-  color: #0d9488;
-}
-
-/* Map container*/
-.map-section {
-  position: relative;
-  height: 65vh;
-}
-
-#map {
-  height: 100%;
-}
-
-/* Legend styling */
+/* Legend & Button Overlay */
 .legend {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: white;
-  padding: 12px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  font-size: 12px;
+    position: absolute; top: 10px; right: 10px;
+    background: white; padding: 10px; border-radius: 8px;
+    z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 0.8rem;
 }
+.dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+.a { background: #2ecc71; } .b { background: #3498db; } .c { background: #f1c40f; }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 6px;
+.view-toggle {
+    position: absolute; bottom: 20px; left: 50%;
+    transform: translateX(-50%); z-index: 1000;
+    padding: 12px 25px; background: #333; color: #fff;
+    border: none; border-radius: 25px; cursor: pointer;
 }
-
-.a { background: #059669; }
-.b { background: #2563eb; }
-.c { background: #d97706; }
-.d { background: #dc2626; }
-

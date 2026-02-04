@@ -1,65 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>HawkerFinder</title>
-  <link rel="stylesheet" href="HawkerFinder.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HawkerFinder - Map View</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="HawkerFinder.css">
 </head>
 <body>
 
-<header>
-  <div>
-    <button class="back-btn">←</button>
-    <h1>HawkerFinder</h1>
-    <p>Discover clean hawker centres near you</p>
-  </div>
-  <button>My Location</button>
-</header>
+    <div class="app-screen">
+        <nav class="top-nav">
+            <button class="back-btn" onclick="history.back()">←</button>
+            <h1>HawkerFinder</h1>
+            <div class="spacer"></div> </nav>
 
-<!-- Search and filter control rows -->
-<section>
-  <input type="text" placeholder="Search hawker centres...">
+        <section class="controls">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search stalls...">
+                <button id="searchBtn">Search</button>
+            </div>
+            
+            <div class="filter-row">
+                <select id="gradeFilter">
+                    <option value="all">By Grade</option>
+                    <option value="A">Grade A</option>
+                    <option value="B">Grade B</option>
+                    <option value="C">Grade C</option>
+                </select>
+                <select id="regionFilter">
+                    <option value="all">By Region</option>
+                    <option value="North">North</option>
+                    <option value="South">South</option>
+                    <option value="East">East</option>
+                    <option value="West">West</option>
+                    <option value="Central">Central</option>
+                </select>
+            </div>
+        </section>
 
-  <select>
-    <option>Grade</option>
-    <option>A</option>
-    <option>B</option>
-    <option>C</option>
-    <option>D</option>
-  </select>
+        <div id="map-container">
+            <div id="map"></div>
+            
+            <div class="legend">
+                <p><strong>Legend</strong></p>
+                <div><span class="dot a"></span> Grade A</div>
+                <div><span class="dot b"></span> Grade B</div>
+                <div><span class="dot c"></span> Grade C</div>
+            </div>
 
-  <select>
-    <option>Region</option>
-    <option>Central</option>
-    <option>North</option>
-    <option>East</option>
-    <option>West</option>
-  </select>
+            <button class="view-toggle" onclick="location.href='list.html'">Switch to List View</button>
+        </div>
+    </div>
 
-  <div>
-    <button>Map</button>
-    <button>List</button>
-  </div>
-</section>
-
-<!-- Results and info row -->
-<section>
-  <p>10 hawker centres found</p>
-</section>
-
-<!-- Map Container along with the map legend overlay -->
-<section>
-  <div id="map"></div>
-
-  <div>
-    <strong>Hygiene Grades</strong>
-    <div><span></span> A - Excellent</div>
-    <div><span></span> B - Good</div>
-    <div><span></span> C - Average</div>
-    <div><span></span> D - Poor</div>
-  </div>
-
-</section>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="HawkerFinder.js"></script>
 </body>
 </html>
