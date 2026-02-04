@@ -3,53 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HawkerFinder - Map View</title>
+    <title>HawkerFinder - Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="HawkerFinder.css">
 </head>
 <body>
-
-    <div class="app-screen">
-        <nav class="top-nav">
-            <button class="back-btn" onclick="history.back()">←</button>
-            <h1>HawkerFinder</h1>
-            <div class="spacer"></div> </nav>
-
-        <section class="controls">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search stalls...">
-                <button id="searchBtn">Search</button>
+    <div class="app-container">
+        <header>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <div class="brand">
+                    <h1>Hawker<span>Finder</span></h1>
+                    <p>Discover hawker centers near you</p>
+                </div>
+                <button class="loc-btn">⊕ My Location</button>
             </div>
-            
-            <div class="filter-row">
-                <select id="gradeFilter">
-                    <option value="all">By Grade</option>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search Hawker Centres...">
+            </div>
+            <div class="filter-bar">
+                <select id="gradeFilter" class="filter-dropdown">
+                    <option value="all">Grade</option>
                     <option value="A">Grade A</option>
                     <option value="B">Grade B</option>
                     <option value="C">Grade C</option>
                 </select>
-                <select id="regionFilter">
-                    <option value="all">By Region</option>
+                <select id="regionFilter" class="filter-dropdown">
+                    <option value="all">Region</option>
                     <option value="North">North</option>
                     <option value="South">South</option>
                     <option value="East">East</option>
                     <option value="West">West</option>
                     <option value="Central">Central</option>
                 </select>
+                <div class="toggle-group">
+                    <button class="toggle-item active">🗺️</button>
+                    <button class="toggle-item" onclick="location.href='HawkerList.html'">⊞</button>
+                </div>
             </div>
-        </section>
+        </header>
 
-        <div id="map-container">
-            <div id="map"></div>
-            
+        <div id="map">
             <div class="legend">
-                <p><strong>Legend</strong></p>
-                <div><span class="dot a"></span> Grade A</div>
-                <div><span class="dot b"></span> Grade B</div>
-                <div><span class="dot c"></span> Grade C</div>
+                <strong>Hygiene Grades</strong>
+                <div class="legend-item"><span class="dot a"></span> A - Excellent</div>
+                <div class="legend-item"><span class="dot b"></span> B - Good</div>
+                <div class="legend-item"><span class="dot c"></span> C - Average</div>
+                <div class="legend-item"><span class="dot d"></span> D - Poor</div>
             </div>
-
-            <button class="view-toggle" onclick="location.href='list.html'">Switch to List View</button>
         </div>
     </div>
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HawkerFinder - List</title>
+    <link rel="stylesheet" href="HawkerFinder.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="top-bar">
+                <button class="back-btn" onclick="location.href='index.html'">←</button>
+                <div class="brand">
+                    <h1>Hawker<span>Finder</span></h1>
+                    <p>Discover hawker centers near you</p>
+                </div>
+                <button class="loc-btn">⊕ My Location</button>
+            </div>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="listSearch" placeholder="Search Hawker Centres...">
+            </div>
+            <div class="filter-bar">
+                <select id="gradeFilterList" class="filter-dropdown">
+                    <option value="all">Grade</option>
+                    <option value="A">Grade A</option>
+                    <option value="B">Grade B</option>
+                </select>
+                <div class="toggle-group">
+                    <button class="toggle-item" onclick="location.href='HawkerFinder.html'">🗺️</button>
+                    <button class="toggle-item active">⊞</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="scroll-area">
+            <p id="countText" style="font-size: 12px; margin-bottom: 10px; color: #666;"></p>
+            <div id="cardContainer"></div>
+        </div>
+    </div>
+
+    <script src="HawkerFinder.js"></script>
+</body>
+</html>
