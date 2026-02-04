@@ -1,0 +1,140 @@
+body{
+    font-family:monospace;
+    margin: 0;
+    background-color: #f9f9f9;
+}
+.menu-container{
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+    padding-bottom: 80px; /*Space for checkout button*/
+}
+.menu-header{
+    display:flex;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+}
+.menu-header h1{
+    font-size: 24px;
+    margin: 0;
+}
+.back-nav{
+    font-size: 20px;
+    cursor: pointer;
+}
+/*Search bar styling*/
+.search-button{
+    display: flex;
+    align-items: center;
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding-left: 15px;
+    margin-bottom: 25px;
+}
+.search-icon{
+   color: #999;
+   font-size: 0.9rem;
+}
+.search-bar{
+    border: none; /* Remove border here since parent(container) already has it*/
+    flex: 1;      /* Take up remaning space*/
+    outline: none; /* Prevents the ugly blue box when u click to type*/
+    padding: 12px;
+    font-size: 15px;
+}
+
+/* Grid layout for items*/
+.items-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two Columns*/
+    gap: 15px;
+    padding-bottom: 100px; /* space so footer does not cover items*/
+}
+
+ /* Item  Card Styling*/
+.item-card{
+    border: 1px solid #ddd; /*Gives the shape an outline*/
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    background-color: #FFF9E7;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.item-card h3, .item-card .item-name{
+    font-size: 1.5rem;
+    margin: 15px 0;
+    font-weight: 800;
+}
+.menu-img{
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.item-card .price{
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: block; /* Ensures it takes up its own line*/
+}
+
+/* Quantity Controls */
+.controls{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+    width: 100%;
+}
+.qty-circle, .minus-symbol, .qty-number{
+    background-color: black;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /*can make a perfect circle*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none; /* Prevents selecting text on fast clicks*/
+    font-family: monospace;
+}
+/* Ensure the number circle does not have a pointer cursor since its not a button*/
+.qty-number{
+    cursor: default;
+    background-color: black;
+}
+
+.checkout-button{
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%); /* This perfectly centers it o the page*/
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+}
+.checkout-btn{
+    background-color: #31b384;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    width: 90%; /*makes it span across the screen*/
+    padding: 18px; /* High padding makes it big*/
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between; /*Puts "checkout" on left and "$total" on right*/
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
