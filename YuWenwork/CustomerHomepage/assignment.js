@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
    const Restaurant = {
     "Chinese": [
-        {unit: "#1-07", name: "Spicy & Numb (Mala HotPot)", link:"Spicy&Numm.html",image: "https://tse3.mm.bing.net/th/id/OIP.zPLc-Bzj1cev4nPhrbYpMgHaGR?rs=1&pid=ImgDetMain&o=7&rm=3"},  
+        {unit: "#1-07", name: "Spicy & Numb (Mala HotPot)", link:"Spicy&Numb.html",image: "https://tse3.mm.bing.net/th/id/OIP.zPLc-Bzj1cev4nPhrbYpMgHaGR?rs=1&pid=ImgDetMain&o=7&rm=3"},  
         {unit: "#2-03", name: "Fried Rice King", link: "#", image:"https://sethlui.com/wp-content/uploads/2023/10/Storefront2-800x531.jpg"}, 
         {unit: "#3-03", name: "King of Noodle (Noodle)", link:"KingOfNoodle.html", image: "https://www.stall.sg/upload/202310061225195160.jpg"}, 
     ],
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function(){
         {unit: "#3-03", name: "King of Noodle (Noodle)", link:"KingOfNoodle.html", image: "https://www.stall.sg/upload/202310061225195160.jpg"}, 
     ],
     "Mala HotPot": [
-        {unit: "#1-07", name: "Spicy & Numb (Mala HotPot)", link:"Spicy&Numm.html", image: "https://tse3.mm.bing.net/th/id/OIP.zPLc-Bzj1cev4nPhrbYpMgHaGR?rs=1&pid=ImgDetMain&o=7&rm=3"} 
+        {unit: "#1-07", name: "Spicy & Numb (Mala HotPot)", link:"Spicy&Numb.html", image: "https://tse3.mm.bing.net/th/id/OIP.zPLc-Bzj1cev4nPhrbYpMgHaGR?rs=1&pid=ImgDetMain&o=7&rm=3"} 
     ],
     "Korean": [
         {unit: "#1-09", name: "Tteoboki Heaven", link: "tteobokiHeaven.html", image: "https://s3-ap-southeast-1.amazonaws.com/motoristprod/editors/images/1669346859389-jeongsjjajang13.jpg"}, 
