@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HawkerFinder</title>
+  <link rel="stylesheet" href="HawkerFinder.css">
+</head>
+<body>
+
+<header>
+  <div>
+    <button class="back-btn">←</button>
+    <h1>HawkerFinder</h1>
+    <p>Discover clean hawker centres near you</p>
+  </div>
+  <button>My Location</button>
+</header>
+
+<!-- Search and filter control rows -->
+<section>
+  <input type="text" placeholder="Search hawker centres...">
+
+  <select>
+    <option>Grade</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+    <option>D</option>
+  </select>
+
+  <select>
+    <option>Region</option>
+    <option>Central</option>
+    <option>North</option>
+    <option>East</option>
+    <option>West</option>
+  </select>
+
+  <div>
+    <button>Map</button>
+    <button>List</button>
+  </div>
+</section>
+
+<!-- Results and info row -->
+<section>
+  <p>10 hawker centres found</p>
+</section>
+
+<!-- Map Container along with the map legend overlay -->
+<section>
+  <div id="map"></div>
+
+  <div>
+    <strong>Hygiene Grades</strong>
+    <div><span></span> A - Excellent</div>
+    <div><span></span> B - Good</div>
+    <div><span></span> C - Average</div>
+    <div><span></span> D - Poor</div>
+  </div>
+
+</section>
+
+</body>
+</html>
