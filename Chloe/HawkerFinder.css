@@ -42,3 +42,32 @@ header { padding: 15px; background: white; border-bottom: 1px solid #eee; }
 .card-btns { display: flex; gap: 10px; margin-top: 15px; }
 .btn-dir { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: white; }
 .btn-view { flex: 1; padding: 10px; background: #5dbb91; color: white; border: none; border-radius: 8px; }
+
+/* HawkerDetails page */
+/* Hero Image Styling */
+.hero {
+    height: 250px; background: #333; position: relative;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 20px; color: white; background-size: cover; background-position: center;
+}
+.hero::after { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); }
+.hero-text { position: relative; z-index: 2; }
+.back-circle { position: absolute; top: 20px; left: 20px; z-index: 5; padding: 8px 15px; border-radius: 20px; border: none; background: white; cursor: pointer; }
+.grade-pill { position: absolute; bottom: 20px; right: 20px; z-index: 2; background: #c1f2dc; color: #2d5a27; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+
+/* Detail Specifics */
+.detail-padding { padding: 20px; background: #f8f9fa; }
+.info-grid { display: grid; gap: 10px; margin-bottom: 20px; }
+.info-card { background: white; padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.section-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+/* Timeline UI */
+.timeline-item { border-left: 2px solid #5dbb91; padding-left: 20px; position: relative; margin-bottom: 20px; }
+.timeline-item::before { content: "A"; position: absolute; left: -11px; top: 0; background: #c1f2dc; width: 20px; height: 20px; border-radius: 50%; text-align: center; font-size: 12px; font-weight: bold; color: #2d5a27; }
+
+/* Grade Info Boxes */
+.grade-info { padding: 10px; border-radius: 8px; margin-top: 5px; font-size: 12px; }
+.grade-info.a { background: #e8f5e9; border-left: 5px solid #2ecc71; }
+.grade-info.b { background: #e3f2fd; border-left: 5px solid #3498db; }
+.grade-info.c { background: #fffde7; border-left: 5px solid #f1c40f; }
+.grade-info.d { background: #ffebee; border-left: 5px solid #e74c3c; }

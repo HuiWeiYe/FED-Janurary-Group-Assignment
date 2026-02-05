@@ -12,10 +12,10 @@ window.onload = () => {
         map = L.map('map').setView([1.3521, 103.8198], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         markerLayer = L.layerGroup().addTo(map);
-        updateUI(stalls);
+        updateUI(stalls); 
     }
 
-    // 2. Setup List if on List Page
+    // 2. Setup List if on HawkerList Page
     if (document.getElementById('cardContainer')) {
         updateUI(stalls);
     }
@@ -74,4 +74,43 @@ function applyFilters() {
     });
 
     updateUI(filteredData);
+}
+
+// HawkerDetails Page
+// Function to handle "View Details" click on HawkerList.html
+function viewDetails(stallName) {
+    window.location.href = `details.html?name=${encodeURIComponent(stallName)}`;
+}
+
+// Logic for HawkerDetails.html
+if (document.getElementById('detTitle')) {
+    const params = new URLSearchParams(window.location.search);
+    const stallName = params.get('name');
+    
+    // Find the stall in our data array
+    const stall = stalls.find(s => s.name === stallName);
+
+    if (stall) {
+        document.getElementById('detTitle').innerText = stall.name;
+        document.getElementById('detAddr').innerText = stall.address;
+        document.getElementById('heroImage').style.backgroundImage = `url(${stall.img})`;
+        
+        // Setup Mini Map
+        const miniMap = L.map('miniMap', {zoomControl: false, attributionControl: false}).setView([stall.lat, stall.lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMap);
+        L.marker([stall.lat, stall.lng]).addTo(miniMap);
+
+        // Inject Fake History (This would come from my future Inspector database)
+        const timeline = document.getElementById('historyTimeline');
+        timeline.innerHTML = `
+            <div class="timeline-item">
+                <strong>Nov 20, 2024</strong> <span class="grade-badge">Grade A</span>
+                <p style="font-size:12px; color:green;">✓ No violations found.</p>
+            </div>
+            <div class="timeline-item">
+                <strong>Aug 15, 2024</strong> <span class="grade-badge">Grade A</span>
+                <p style="font-size:12px; color:gray;">Consistent high standards.</p>
+            </div>
+        `;
+    }
 }

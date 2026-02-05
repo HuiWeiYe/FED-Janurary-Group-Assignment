@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stall Details</title>
+    <link rel="stylesheet" href="HawkerFinder.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="app-container">
+        <div class="hero" id="heroImage">
+            <button class="back-circle" onclick="history.back()">← Back</button>
+            <div class="hero-text">
+                <h1 id="detTitle">Old Airport Road Western Food</h1>
+                <p id="detAddr">51 Old Airport Road, Singapore 390051</p>
+            </div>
+            <div class="grade-pill">🛡️ Grade A - Maintained</div>
+        </div>
+
+        <div class="scroll-area detail-padding">
+            <div class="info-grid">
+                <div class="info-card">
+                    <span class="icon">🏠</span>
+                    <div><strong>Total Stalls</strong><p id="detStalls">2</p></div>
+                </div>
+                <div class="info-card">
+                    <span class="icon">🕒</span>
+                    <div><strong>Operating Hours</strong><p id="detHours">6AM - 11PM</p></div>
+                </div>
+                <div class="info-card">
+                    <span class="icon">📅</span>
+                    <div><strong>Last Inspection</strong><p id="detLastInsp">Nov 20, 2024</p></div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>📍 Location</h3>
+                <div id="miniMap" style="height: 150px; border-radius: 10px; margin: 10px 0;"></div>
+                <p id="detAddrBottom" style="font-size: 12px; color: #666;">51 Old Airport Road, S390051</p>
+                <button class="btn-fill" onclick="location.href='HawkerList.html'">Get Directions</button>
+            </div>
+
+            <div class="section-card">
+                <h3>🕒 Inspection History</h3>
+                <div id="historyTimeline">
+                    </div>
+            </div>
+
+            <div class="section-card">
+                <h3>About NEA Hygiene Grades</h3>
+                <div class="grade-info a"><strong>Grade A</strong><br>Excellent hygiene standards.</div>
+                <div class="grade-info b"><strong>Grade B</strong><br>Good hygiene standards.</div>
+                <div class="grade-info c"><strong>Grade C</strong><br>Average standards.</div>
+                <div class="grade-info d"><strong>Grade D</strong><br>Poor standards.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="HawkerFinder.js"></script>
+</body>
+</html>
