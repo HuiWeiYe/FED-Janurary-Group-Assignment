@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Hawker Centre System</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>My Profile</h1>
+        <button onclick="logout()" class="btn-logout">Logout</button>
+    </nav>
+    
+    <div class="profile-container">
+        <div class="profile-header">
+            <!-- will be filled by JavaScript -->
+            <div class="profile-avatar" id="profile-avatar">
+                <span id="avatar-initial">?</span>
+            </div>
+            <h2 id="profile-name">Loading...</h2>
+            <p id="profile-role"></p>
+        </div>
+        
+        <form id="profileForm" class="profile-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" disabled>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="+65 1234 5678">
+            </div>
+            
+            <div id="vendor-fields" style="display: none;">
+                <h3>Stall Information</h3>
+                
+                <div class="form-group">
+                    <label for="stallName">Stall Name</label>
+                    <input type="text" id="stallName" placeholder="e.g., Ah Seng Chicken Rice">
+                </div>
+                
+                <div class="form-group">
+                    <label for="stallId">Stall ID</label>
+                    <select id="stallId">
+                        <option value="">Select your stall</option>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-primary">Update Profile</button>
+            <div id="success-message" class="success-message"></div>
+            <div id="error-message" class="error-message"></div>
+        </form>
+    </div>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/avatar-helper.js"></script> <!-- NEW: Add this line -->
+    <script src="../js/auth.js"></script>
+    <script src="../js/role-manager.js"></script>
+    <script src="../js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawker Centre System - Welcome</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .role-selection-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #5dbb91 0%, #4a9d7d 100%);
+            text-align: center;
+        }
+
+        .brand-header {
+            margin-bottom: 50px;
+        }
+
+        .brand-header h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .brand-header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+        }
+
+        .role-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .role-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .role-card-icon {
+            font-size: 2.5rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .role-card-text {
+            text-align: left;
+            flex: 1;
+        }
+
+        .role-card h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .role-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Staff Login Button - Bottom Right Corner */
+        .staff-login-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #5dbb91;
+            color: #5dbb91;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .staff-login-btn:hover {
+            background: #5dbb91;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .staff-login-btn::before {
+            content: "🔒";
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                max-width: 100%;
+            }
+
+            .brand-header h1 {
+                font-size: 24px;
+            }
+
+            .role-cards {
+                padding: 0;
+            }
+
+            .role-card {
+                padding: 20px 15px;
+            }
+
+            .staff-login-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .staff-login-btn {
+                right: calc(50% - 220px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="role-selection-container">
+            <div class="brand-header">
+                <h1>🍜 Hawker Centre System</h1>
+                <p>Select your role to continue</p>
+            </div>
+            
+            <div class="role-cards">
+                <div class="role-card" onclick="selectRole('customer')">
+                    <div class="role-card-icon">👤</div>
+                    <div class="role-card-text">
+                        <h2>Customer</h2>
+                        <p>Browse stalls, place orders, and leave reviews</p>
+                    </div>
+                </div>
+                
+                <div class="role-card" onclick="selectRole('vendor')">
+                    <div class="role-card-icon">👨‍🍳</div>
+                    <div class="role-card-text">
+                        <h2>Vendor</h2>
+                        <p>Manage your stall and view analytics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Login Button (Bottom Right) -->
+        <button class="staff-login-btn" onclick="selectRole('admin')">
+            Staff Login
+        </button>
+    </div>
+    
+    <script>
+        function selectRole(role) {
+            // Store selected role in session storage
+            sessionStorage.setItem('selectedRole', role);
+            // Redirect to login page
+            window.location.href = 'pages/login.html';
+        }
+    </script>
+</body>
+</html>
