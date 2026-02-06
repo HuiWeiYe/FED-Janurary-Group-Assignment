@@ -1,0 +1,65 @@
+/* Container & Layout */
+.inspection-container {
+    margin: 0 auto; background: #f8f9fa;
+    padding: 20px; font-family: 'Inter', sans-serif;
+}
+
+.form-header h1 { font-size: 24px; margin-top: 10px; }
+.stall-summary-card {
+    background: #eee; padding: 15px; border-radius: 12px;
+    margin: 20px 0; border: 1px solid #ddd;
+}
+
+/* Form Sections */
+.form-section {
+    background: white; padding: 20px; border-radius: 15px;
+    margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.form-section h3 { font-size: 16px; margin-bottom: 15px; }
+
+/* Grade Grid - The 2x2 Layout */
+.grade-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+
+.grade-option input { display: none; } /* Hide actual radio */
+
+.grade-content {
+    padding: 15px; border: 2px solid #eee; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s ease; position: relative;
+}
+
+/* Radio Dot styling */
+.radio-dot {
+    height: 16px; width: 16px; border: 2px solid #ccc;
+    border-radius: 50%; display: inline-block; margin-right: 8px;
+}
+
+/* Active State Colors */
+.grade-option input:checked + .grade-content { border-width: 2px; background: #f0f7ff; }
+.grade-option input:checked + .grade-content .radio-dot {
+    background: #2d5a27; border-color: #2d5a27;
+}
+
+/* Specific Grade Colors */
+.color-a { color: #2e7d32; } .border-a { border-left: 5px solid #2e7d32; }
+.color-b { color: #1976d2; } .border-b { border-left: 5px solid #1976d2; }
+.color-c { color: #f9a825; } .border-c { border-left: 5px solid #f9a825; }
+.color-d { color: #c62828; } .border-d { border-left: 5px solid #c62828; }
+
+/* Checklist Grid */
+.checklist-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.check-item {
+    padding: 10px; border: 1px solid #ddd; border-radius: 8px;
+    font-size: 13px; display: flex; align-items: center; gap: 8px;
+}
+
+/* Buttons */
+.form-actions { display: flex; gap: 10px; margin-top: 30px; }
+.btn-cancel { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background: white; }
+.btn-submit { 
+    flex: 2; padding: 15px; background: #5dbb91; color: white; 
+    border: none; border-radius: 10px; font-weight: bold;
+}

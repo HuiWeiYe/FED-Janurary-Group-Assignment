@@ -90,3 +90,21 @@ body { background-color: #f0f2f5; display: flex; justify-content: center; }
 }
 .status-tag.red { background: #ffebee; color: #d32f2f; }
 .status-tag.green { background: #e8f5e9; color: #2d5a27; }
+
+/* Rewind button */
+.btn-reset {
+    background: #f8f9fa;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.btn-reset:hover {
+    background: #fee2e2; /* Light red */
+    color: #dc2626;      /* Dark red text */
+    border-color: #fecaca;
+}
