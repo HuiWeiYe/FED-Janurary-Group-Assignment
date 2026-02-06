@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer Feedback</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+
+<body>
+
+  <!-- TOP BAR (same as other pages) -->
+  <header class="top-bar">
+    <div class="menu">☰</div>
+    <div class="icons">
+      ✉️ 🔔 👤
+    </div>
+  </header>
+
+  <h2>Customer Feedback</h2>
+
+  <!-- AVERAGE RATING -->
+  <section class="card feedback-summary">
+    <h3>Average Rating</h3>
+    <div class="rating-circle" id="avgRating">0.0</div>
+    <div id="stars"></div>
+  </section>
+
+  <!-- USER REVIEWS -->
+  <section class="card">
+    <h3>User Reviews</h3>
+    <ul id="reviewList"></ul>
+  </section>
+
+  <script src="customer_feedback.js"></script>
+</body>
+</html>
