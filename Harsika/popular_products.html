@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Popular Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <link rel="stylesheet" href="dashboard.css">
+
+  <style>
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .in-stock {
+      color: green;
+      font-weight: bold;
+    }
+
+    .low-stock {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .rating-box {
+      margin-top: 30px;
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .rating-score {
+      font-size: 36px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Popular Products</h2>
+
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Sales</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody id="productTable">
+        <!-- Filled by Firebase -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rating-box">
+    <div class="rating-score" id="avgRating">0.0</div>
+    <div>⭐ ⭐ ⭐ ⭐ ⭐</div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6epn2gBInFvjFX1ViEp_e5MDD1Su3cmM",
+      authDomain: "fed-hawker-app-bf2ca.firebaseapp.com",
+      projectId: "fed-hawker-app-bf2ca"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    db.collection("analytics")
+      .doc("popularProducts")
+      .onSnapshot(doc => {
+        if (!doc.exists) return;
+        const data = doc.data();
+
+        const table = document.getElementById("productTable");
+        table.innerHTML = "";
+
+        data.products.forEach(p => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${p.name}</td>
+            <td>${p.sales}</td>
+            <td class="${p.stock < 50 ? "low-stock" : "in-stock"}">
+              ${p.stock < 50 ? "Low stock" : "In stock"}
+            </td>
+          `;
+
+          table.appendChild(row);
+        });
+
+        document.getElementById("avgRating").textContent =
+          data.avgRating.toFixed(1);
+      });
+  </script>
+
+</body>
+</html>
