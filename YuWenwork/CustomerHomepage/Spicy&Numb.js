@@ -133,5 +133,16 @@ window.changeQty = (index, amount) => {
 
     renderMenu(); // redraw everything
 };
+
+// Add this at the very bottom of your JS file
+const checkoutBar = document.getElementById("checkoutBar");
+
+if (checkoutBar) {
+    checkoutBar.addEventListener("click", () => {
+        // This takes the user to your second image page
+        // Adjust the path if your checkout file is in a different folder
+        window.location.href = "checkout.html"; 
+    });
+}
 // initial draw
 renderMenu();

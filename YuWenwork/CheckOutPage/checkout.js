@@ -1,3 +1,5 @@
+// Add this at the bottom to make sure the cart loads when the page opens
+window.onload = loadCheckout;
 function loadCheckout(){
     const data = JSON.parse(localStorage.getItem("canteenCart"));
     const itemList = document.getElementById("item-list");
@@ -28,6 +30,14 @@ function loadCheckout(){
     document.getElementById("order-total-price").innerText = `Order Total: $${totalPrice.toFixed(2)}`;
 }
 
-function goToCOllection(){
-    window.location.href = ""
+function goToCollection(){
+    window.location.href = "../Delivery/DeliveryPage.html"
+}
+
+// Function to handle payment button clicks
+function processPayment(method) {
+    if (method === 'Apple Pay') {
+        // Navigates out of CheckOutPage folder and into PaymentPage folder
+        window.location.href = "../PaymentPage/ApplePay.html";
+    }
 }
