@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desktop Delivery Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="confirmdelivery.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+    <main class="sidebar">
+        <div class="sidebar-header">
+            <button class="back-btn">
+                <span class="fa-solid fa-chevron-left"></span>
+            </button>
+            <h1>Collection</h1>
+        </div>
+
+        <div class="button-group"> <!--toggle group-->
+            <button id="pickUpBtn" class="btn-group">Pick Up</button>
+            <button id="deliveryBtn" class="btn-group active">Delivery</button>
+        </div>
+
+        <div class="order-details">
+            <div class="info-block">
+                <label>Delivery Address:</label>
+                <p>123 west Lane, Blk 446</p>
+            </div>
+            
+            <div class="delivery-time-box"> <!--time-box-->
+                <span class="timing">Delivery Time:</span>
+                <span class="timing">ASAP (Est. 20 - 30 min)</span>
+            </div>
+
+            <div class="pickUp-time-box">
+                <span class="timing">Ready for Pick Up:</span>
+                <span class="timing">15 - 20 mins</span>
+            </div>
+
+        </div>
+        
+        <div id="map"></div>
+        <button class="confirm-btn">Confirm Delivery</button>
+    </main>
+</div>
+
+<script src="deliverypage.js"></script>
+</body>
+</html>

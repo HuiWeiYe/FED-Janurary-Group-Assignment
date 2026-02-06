@@ -1,0 +1,56 @@
+body{
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+.checkout-container{
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    min-height: 100vh;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.back-nav{
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+#order-summary{
+    margin-bottom: 40px;
+}
+/* Row styling for items injected by JS */
+.item-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee
+}
+.payment-methods h3{
+    margin-bottom: 15px;
+}
+.btn-apple{
+    width: 100%;
+    padding: 15px;
+    background: #31b284;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.card-selector{
+    position: relative;
+    margin-top: 15px;
+}

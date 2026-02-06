@@ -1,3 +1,9 @@
+const stallNames = {
+    "Spicy&Numb.html": "Spicy & Numb",
+    "KingOfNoodle.html": "King Of Noodle",
+    "WesternDelights.html": "Western Delights",
+    "TteobokiHeaven.html": "Tteoboki Heaven" // Ensure this matches the filename!
+}
 const allStallMenu = {
     "Spicy&Numb.html":[
     {name: "Sausage", price:1.20, qty: 0,img: "https://static.vecteezy.com/system/resources/thumbnails/038/144/798/small_2x/ai-generated-tasty-goodness-sausages-isolated-on-white-background-photo.jpg"},
@@ -22,8 +28,8 @@ const allStallMenu = {
 
     "WesternDelights.html":[
         {name: "Black Pepper Chicken Chop", price: 7.00, qty: 0, img:"https://chiefeater.com/wp-content/uploads/2024/10/lau_yew_sp_hawker_centre_oct2024_davidleesp_01.jpg"},
-        {name: "Carbonara Pasta", price: 5.90, qty: 0, img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7EhzGin5hXLm-1VWPj8ccNltsTPca5m7MNQAfLURWTV4NC_eaLn9J-DshUFippBO3nPDqqxD5vEcX6uzg7jGpkSjzUbiRGxc_gBeWD65ddXnDiASBzY1_Y0Mx0ISDsqhQOrCrPqC-AKg/w640-h640/Meet+4+Meat+Carbonara+1.jpg"},
-        {name: "Aglio Olio", price: 6.00, qty: 0, img:"https://therecipecritic.com/wp-content/uploads/2024/11/spaghetti-aglio-e-olio-2.jpg"},
+        {name: "Creamy Carbonara Pasta", price: 5.90, qty: 0, img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7EhzGin5hXLm-1VWPj8ccNltsTPca5m7MNQAfLURWTV4NC_eaLn9J-DshUFippBO3nPDqqxD5vEcX6uzg7jGpkSjzUbiRGxc_gBeWD65ddXnDiASBzY1_Y0Mx0ISDsqhQOrCrPqC-AKg/w640-h640/Meet+4+Meat+Carbonara+1.jpg"},
+        {name: "Aglio Olio Pasta", price: 6.00, qty: 0, img:"https://therecipecritic.com/wp-content/uploads/2024/11/spaghetti-aglio-e-olio-2.jpg"},
         {name: "Fried Chicken Wing", price: 6.00, qty: 0, img:"https://tse3.mm.bing.net/th/id/OIP.ypIDRyYFbMxvGzyKujNbsAHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3"},
         {name: "Fish & Chips", price: 7.00, qty: 0, img:"https://media.timeout.com/images/103696698/image.jpg"},
         {name: "Mushroom Soup", price: 3.00, qty: 0, img:"https://bigoven-res.cloudinary.com/image/upload/t_recipe-1280/mushroom-soup-f2e36e.jpg"}
@@ -38,12 +44,23 @@ const allStallMenu = {
         {name: "Beef Hotplate", price: 5.90, qty: 0, img:"https://eatbook.sg/wp-content/uploads/2018/01/Daebak-Korean-Restaurant-Beef-Hot-Plate.jpg"}
     ]
 };
-const filename = window.location.pathname.split("/").pop(); // This line finds out the name of the HTML file currently being viewed.
+const filename = decodeURIComponent(window.location.pathname.split("/").pop().trim()); 
 //window.location.pathname: Gets the full path (e.g., /folder/subfolder/WesternDelights.html).
 //.split("/"): Breaks that path into a list whenever there is a slash: ["", "folder", "subfolder", "WesternDelights.html"].
 const currentPage = filename ==="" ? "Spicy&Numb.html":filename
-const menuItems = allStallMenu[currentPage] || allStallMenu["Spicy&Numb.html"] //This line picks the data that matches the filename.
-// allStallMenu[currentPage]: It looks into your big "dictionary" of food. If currentPage is "WesternDelights.html", it grabs the Western food list.
+
+// 2. PERSISTENCE LOGIC: Load from LocalStorage or use the default allStallMenu
+// We store the WHOLE object so items in "KingOfNoodle" stay saved even while you are on "WesternDelights"
+const storedData = localStorage.getItem("canteenCart");
+const masterMenu = storedData ? JSON.parse(storedData) : allStallMenu;
+
+// 3. Link this page's items to our master list
+const menuItems = masterMenu[currentPage];
+
+const headerTitle = document.querySelector(".menu-header h1")
+if (headerTitle && stallNames[currentPage]){
+    headerTitle.innerText = stallNames[currentPage];
+}
 
 const itemsGrid = document.getElementById("itemsGrid");
 const totalDisplay = document.getElementById("totalDisplay");
@@ -73,14 +90,14 @@ function renderMenu(){
         let controllayout = "";
         if (item.qty === 0){
             controllayout = `
-            <div class="control">
+            <div class="controls">
                  <span class="qty-circle" onclick="changeQty(${index}, 1)">+</span>
             </div>
             `
         } 
         else {
             controllayout = `
-            <div class="control">
+            <div class="controls">
             <span class="minus-symbol" onclick="changeQty(${index}, -1)">-</span>
             <span class="qty-number">${item.qty}</span> 
             <span class="qty-circle" onclick="changeQty(${index}, 1)">+</span>
@@ -92,8 +109,10 @@ function renderMenu(){
         card.innerHTML = `
             <img src="${item.img}" alt="${item.name}" class="menu-img">
             <h3>${item.name}</h3>
-            <p class="price">$${item.price.toFixed(2)}</p>
-            ${controllayout}
+            <div class="price-row">
+               <p class="price">$${item.price.toFixed(2)}</p>
+               ${controllayout}
+            </div>
         `;
         itemsGrid.appendChild(card);
         // actually inserts that <div> into the <div id="itemsGrid"></div> in html so that it becomes visible
@@ -108,6 +127,10 @@ window.changeQty = (index, amount) => {
 
     // ensure qty never goes below 0
     if (menuItems[index].qty < 0) menuItems[index].qty = 0
+
+    // SAVE: Put the updated masterMenu into localStorage
+    localStorage.setItem("canteenCart", JSON.stringify(masterMenu));
+
     renderMenu(); // redraw everything
 };
 // initial draw
