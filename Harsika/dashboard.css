@@ -61,3 +61,81 @@ body {
 canvas {
   height: 300px !important;
 }
+
+/* ===== PAGE BASE ===== */
+body {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f5f6fa;
+  margin: 0;
+  padding: 40px;
+  color: #1f2937;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* ===== CONTAINER CARD ===== */
+.container {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  padding-bottom: 12px;
+}
+
+tbody td {
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== STOCK STATUS ===== */
+.in-stock {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.low-stock {
+  color: #f97316;
+  font-weight: 600;
+}
+
+/* ===== RATING CARD ===== */
+.rating-box {
+  margin-top: 32px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.rating-score {
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.rating-stars {
+  font-size: 20px;
+  color: #fbb
+}
