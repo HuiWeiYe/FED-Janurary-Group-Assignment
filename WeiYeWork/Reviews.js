@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const starContainer = document.getElementById("rating-summary-stars");
     starContainer.innerHTML = "";
     const totalStars = 5;
-    fetch("Test.json")
+    fetch("CustomerSample.json")
         .then(response => response.json())
         .then(data => {
             console.log(data);
