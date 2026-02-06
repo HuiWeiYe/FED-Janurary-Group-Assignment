@@ -1,59 +1,73 @@
+// Loading rating bars
 document.addEventListener("DOMContentLoaded", () => {
+    
     const bars = document.querySelectorAll(".bar-fill");
-
-    // Get all counts
-    const counts = Array.from(bars).map(bar =>
-        Number(bar.dataset.count)
-    );
-
-    // Find highest count (for percentage scaling)
-    const maxCount = Math.max(...counts);
-
-    bars.forEach(bar => {
-        const count = Number(bar.dataset.count);
-        const percentage = (count / maxCount) * 100;
-        bar.style.width = percentage + "%";
-    });
-
-    // Optional: total reviews
-    const totalReviews = counts.reduce((a, b) => a + b, 0);
-    document.getElementById("rating-summary-total").innerText =
-        `${totalReviews} Total reviews`;
-});
-
-function renderStars(rating) {
     const starContainer = document.getElementById("rating-summary-stars");
-    starContainer.innerHTML = ""; // clear previous
-
+    starContainer.innerHTML = "";
     const totalStars = 5;
+    fetch("Test.json")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            console.log(data.customers[0].customerName);
 
-    for (let i = 1; i <= totalStars; i++) {
-        const wrapper = document.createElement("span");
-        wrapper.classList.add("star-wrapper");
+            const counts = data.customers.flatMap(customer => 
+                customer.reviews
+                    .filter(review => review.stall === "Wok Noodles") // Change stall here
+                    .map(review => review.rating));
+            const maxCount = counts.reduce((total, current) => total + current, 0);
+            const averageRating = (maxCount / counts.length).toFixed(2);
+            console.log(`Overall total stars: ${maxCount}`);
+            console.log(`Overall average stars: ${averageRating}`);
 
-        const emptyStar = document.createElement("i");
-        emptyStar.classList.add("fa", "fa-star", "star-empty");
+            const countByStars = [5,4,3,2,1].map(star => {
+                return counts.filter(count => count === star).length;
+            })
 
-        const fillStar = document.createElement("i");
-        fillStar.classList.add("fa", "fa-star", "star-fill");
+            const highestCount = Math.max(...countByStars);
+            console.log(`All Stars: ${counts}`)
+            console.log(`All Stars Total: ${countByStars}`)
+            console.log(`Highest Star: ${highestCount}`)
 
-        let fillPercent = 0;
-        if (rating >= i) {
-            fillPercent = 100;          // full star
-        } else if (rating + 1 > i) {
-            fillPercent = (rating - (i - 1)) * 100; // partial star
-        }
+            bars.forEach((bar, index) => {
+                count = countByStars[index]
+                const percentage = (count / highestCount) * 100;
+                bar.style.width = percentage + "%";
+                bar.dataset.tooltip = `${count} Ratings`;
+            });
 
-        fillStar.style.width = `${fillPercent}%`;
+            
+            const totalReviews = counts.reduce((a, b) => a + b, 0);
+            document.getElementById("rating-summary-number").textContent = `${averageRating}`
+            document.getElementById("rating-summary-total").innerText = `${totalReviews} Total reviews`;
 
-        wrapper.appendChild(emptyStar);
-        wrapper.appendChild(fillStar);
-        starContainer.appendChild(wrapper);
-    }
-}
+            for (let i = 1; i <= totalStars; i++) {
+                const wrapper = document.createElement("span");
+                wrapper.classList.add("star-wrapper");
 
-// Example usage:
-const rating = 3.6;
-document.getElementById("rating-summary-number").textContent = rating.toFixed(1);
-renderStars(rating);
+                const emptyStar = document.createElement("i");
+                emptyStar.classList.add("fa", "fa-star", "star-empty");
 
+                const fillStar = document.createElement("i");
+                fillStar.classList.add("fa", "fa-star", "star-fill");
+
+                let numberAVG = Number(averageRating)
+                let fillPercent = 0;
+                if (numberAVG >= i) {
+                    fillPercent = 100;         
+                } else if (numberAVG + 1 > i) {
+                    fillPercent = (numberAVG - (i - 1)) * 100; 
+                }
+
+                fillStar.style.width = `${fillPercent}%`;
+                
+
+                wrapper.appendChild(emptyStar);
+                wrapper.appendChild(fillStar);
+                starContainer.appendChild(wrapper);
+            }
+
+
+        })
+        .catch(error => console.error(error));
+});
