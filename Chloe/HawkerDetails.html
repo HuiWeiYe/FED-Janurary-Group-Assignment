@@ -11,6 +11,7 @@
     <div class="app-container">
         <div class="hero" id="heroImage">
             <button class="back-circle" onclick="history.back()">← Back</button>
+            <button class="back-circle" onclick="location.href='HawkerList.html'">← Back</button>
             <div class="hero-text">
                 <h1 id="detTitle">Old Airport Road Western Food</h1>
                 <p id="detAddr">51 Old Airport Road, Singapore 390051</p>
@@ -38,7 +39,7 @@
                 <h3>📍 Location</h3>
                 <div id="miniMap" style="height: 150px; border-radius: 10px; margin: 10px 0;"></div>
                 <p id="detAddrBottom" style="font-size: 12px; color: #666;">51 Old Airport Road, S390051</p>
-                <button class="btn-fill" onclick="location.href='HawkerList.html'">Get Directions</button>
+                <button class="btn-fill" onclick="location.href='HawkerFinder.html'">Get Directions</button>
             </div>
 
             <div class="section-card">
@@ -58,6 +59,7 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="data.js"></script>
     <script src="HawkerFinder.js"></script>
 </body>
 </html>
