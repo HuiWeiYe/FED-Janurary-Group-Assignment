@@ -85,16 +85,14 @@ The application is deployed using **GitHub Pages**.
 
 ```plaintext
 /
-├── index.html
-├── css/
-│   └── styles.css
-├── js/
-│   └── main.js
-├── assets/
-│   ├── images/
-│   └── icons/
-├── pages/
-│   ├── vendor.html
-│   ├── patron.html
-│   └── inspection.html
+├── Chloe
+│  
+├── Harsika
+│  
+├── Lai Yan
+│   
+├── Wei Ye
+│   
+├── Yu Wen
+│
 └── README.md
