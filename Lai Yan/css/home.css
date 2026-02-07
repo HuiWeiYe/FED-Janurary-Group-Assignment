@@ -1,0 +1,127 @@
+/**
+ * Home Pages Styles (Customer, Vendor, Admin)
+ * Author: Lai Yan (S10274594G)
+ * Pages: customer-home.html, vendor-home.html, admin-home.html
+ */
+
+/* ========== USER INFO CARD ========== */
+.user-info {
+  background: var(--bg-gray);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.user-info h2 {
+  font-size: var(--font-size-lg);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+}
+
+.user-info p {
+  font-size: var(--font-size-base);
+  color: var(--text-medium);
+  margin: 0;
+}
+
+/* ========== PROFILE LINK ========== */
+.profile-link {
+  display: inline-block;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-normal);
+}
+
+.profile-link:hover {
+  background: var(--primary-light);
+  text-decoration: underline;
+}
+
+/* ========== WELCOME SECTION ========== */
+.welcome-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.welcome-message {
+  font-size: var(--font-size-base);
+  color: var(--text-medium);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ========== QUICK ACTIONS ========== */
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.action-card {
+  background: var(--bg-white);
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  text-align: center;
+  transition: var(--transition-normal);
+  cursor: pointer;
+}
+
+.action-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.action-card-icon {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.action-card h3 {
+  font-size: var(--font-size-md);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+}
+
+.action-card p {
+  font-size: var(--font-size-sm);
+  color: var(--text-medium);
+  margin: 0;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet: 2 columns */
+@media (min-width: 480px) {
+  .quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop adjustments */
+@media (min-width: 768px) {
+  .user-info {
+    padding: var(--spacing-xl);
+  }
+  
+  .user-info h2 {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ========== ACCESSIBILITY ========== */
+
+/* Ensure interactive elements have minimum touch target */
+@media (max-width: 768px) {
+  .action-card {
+    min-height: 120px;
+  }
+}
