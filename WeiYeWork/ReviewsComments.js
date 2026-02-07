@@ -89,8 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const end = start + REVIEWS_PER_PAGE;
         const filteredReviews = getFilteredReviews(); //TEST
         const pageReviews = filteredReviews.slice(start, end);
-        const totalPages = Math.ceil(filteredReviews.length / REVIEWS_PER_PAGE);
-        if (currentPage > totalPages) currentPage = 1; //TEST
+        const totalPagesFiltered = Math.ceil(filteredReviews.length / REVIEWS_PER_PAGE);
+        if (currentPage > totalPagesFiltered) currentPage = totalPagesFiltered || 1;
 
 
         pageReviews.forEach(review => {
@@ -222,17 +222,19 @@ document.addEventListener("DOMContentLoaded", () => {
         // PAGINATION CONTROLS
         // =========================
         leftArrow.addEventListener("click", () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderReviews();
-        }
+            if (currentPage > 1) {
+                currentPage--;
+                renderReviews();
+            }
         });
 
         rightArrow.addEventListener("click", () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderReviews();
-        }
+            const filteredReviews = getFilteredReviews(); // recalc filtered reviews
+            const totalPagesFiltered = Math.ceil(filteredReviews.length / REVIEWS_PER_PAGE);
+            if (currentPage < totalPagesFiltered) {
+                currentPage++;
+                renderReviews();
+            }
         });
 
 
