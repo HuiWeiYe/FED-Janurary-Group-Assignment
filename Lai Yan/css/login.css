@@ -1,0 +1,57 @@
+/**
+ * Login Page Specific Styles
+ * Author: Lai Yan (S10274594G)
+ * Note: Extends global.css - only page-specific styles here
+ */
+
+/* ========== LOGIN CONTAINER ========== */
+.login-container {
+  flex: 1;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  overflow-y: auto;
+}
+
+/* ========== REGISTER LINK ========== */
+.register-link {
+  text-align: center;
+  margin-top: 25px;
+  font-size: var(--font-size-base);
+  color: var(--text-medium);
+}
+
+.register-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+  color: var(--primary-dark);
+}
+
+/* ========== PASSWORD HINT ========== */
+.password-hint {
+  font-size: var(--font-size-xs);
+  color: var(--text-light);
+  margin-top: var(--spacing-xs);
+}
+
+/* ========== RESPONSIVE ADJUSTMENTS ========== */
+@media (max-width: 768px) {
+  .login-container {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}
+
+/* ========== MOBILE OPTIMIZATION ========== */
+@media (max-width: 480px) {
+  .login-container {
+    padding: var(--spacing-md);
+  }
+  
+  .form-group input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
