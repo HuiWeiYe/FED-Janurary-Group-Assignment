@@ -1,90 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Hawker Centre System</title>
-  <link rel="stylesheet" href="../global.css">
-  <link rel="stylesheet" href="../css/login.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to Singapore Hawker Centre Management System">
+    <title>Login - Hawker Centre System</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-  <div class="app-container">
-    <div class="header">
-      <button class="back-btn" onclick="window.location.href='../index.html'">←</button>
-      <div class="header-text">
-        <h1>Login</h1>
-        <p>Welcome back to Hawker Centre System</p>
-      </div>
-    </div>
-
-    <div class="login-container">
-      <div class="role-display" id="role-display">Loading...</div>
-
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            required
-            placeholder="Enter your email"
-            autocomplete="email"
-          />
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='../index.html'" aria-label="Go back to role selection">←</button>
+            <div class="header-text">
+                <h1>Login</h1>
+                <p>Welcome back to Hawker Centre System</p>
+            </div>
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            required
-            placeholder="Enter your password"
-            autocomplete="current-password"
-          />
+        <!-- Login Container -->
+        <div class="login-container">
+            <!-- Role Display -->
+            <div class="role-display" id="role-display">Loading...</div>
+
+            <!-- Login Form -->
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        aria-required="true"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        aria-required="true"
+                    />
+                </div>
+
+                <button type="submit" class="btn-primary">Login</button>
+                <div id="error-message" class="error-message" role="alert" aria-live="polite"></div>
+            </form>
+
+            <!-- Register Link (Hidden for vendor/admin) -->
+            <p class="register-link" id="registerRow">
+                Don't have an account?
+                <a href="register.html">Register here</a>
+            </p>
+
+            <!-- Back Link -->
+            <a href="../index.html" class="back-link">← Change Role</a>
         </div>
-
-        <button type="submit" class="btn-primary">Login</button>
-        <div id="error-message" class="error-message"></div>
-      </form>
-
-      <!-- Added id="registerRow" so we can hide this for vendor/admin -->
-      <p class="register-link" id="registerRow">
-        Don't have an account?
-        <a href="register.html">Register here</a>
-      </p>
-
-      <a href="../index.html" class="back-link">← Change Role</a>
     </div>
-  </div>
 
-  <!-- Admin and Vendor can't register -->
-  <script>
-    (function () {
-      const selectedRole = (sessionStorage.getItem('selectedRole') || 'customer').toLowerCase();
+    <!-- Display selected role and hide register link for staff -->
+    <script>
+        /**
+         * Initialize login page based on selected role
+         * Displays role and hides registration for vendor/admin
+         */
+        (function initializeLoginPage() {
+            const selectedRole = (sessionStorage.getItem('selectedRole') || 'customer').toLowerCase();
+            const roleDisplay = document.getElementById('role-display');
+            const registerRow = document.getElementById('registerRow');
 
-      const roleDisplay = document.getElementById('role-display');
-      const registerRow = document.getElementById('registerRow');
+            // Display selected role
+            if (roleDisplay) {
+                const roleText = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
+                roleDisplay.textContent = `Logging in as: ${roleText}`;
+            }
 
-      if (roleDisplay) {
-        const roleText = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
-        roleDisplay.textContent = `Logging in as: ${roleText}`;
-      }
+            // Hide register link for vendor and admin (pre-approved accounts only)
+            if (registerRow && (selectedRole === 'vendor' || selectedRole === 'admin')) {
+                registerRow.style.display = 'none';
+            }
+        })();
+    </script>
 
-      // Hide register link for vendor/admin
-      if (registerRow && (selectedRole === 'vendor' || selectedRole === 'admin')) {
-        registerRow.style.display = 'none';
-      }
-    })();
-  </script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-  <!-- JavaScript -->
-  <script src="../js/firebase-config.js"></script>
-  <script src="../js/auth.js"></script>
+    <!-- JavaScript -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
 </body>
 </html>
