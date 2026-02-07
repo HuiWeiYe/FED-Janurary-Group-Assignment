@@ -89,13 +89,12 @@ body {
 /* ========== CONTAINER ========== */
 .app-container {
   width: 100%;
-  max-width: var(--container-max-width);
   background: var(--bg-white);
   min-height: 100vh;
-  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
 }
+
 
 /* ========== HEADER ========== */
 .header {
