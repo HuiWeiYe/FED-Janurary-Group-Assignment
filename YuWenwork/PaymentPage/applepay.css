@@ -1,6 +1,6 @@
 body{
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
     background: #1c1c1e;
 }
 .overlay{
@@ -84,7 +84,7 @@ body{
 .confirm-icon{
     width: 70px;
     height: 70px;
-    background: #007aff;
+    background:  #5dbb91;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -104,7 +104,7 @@ body{
     font-weight: bold;
 }
 .success-state{
-    background: #34c759;
+    background:  #5dbb91;
 }
 .inner-details-card{
     background: white;
