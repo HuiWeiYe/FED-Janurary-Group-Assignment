@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer Feedback</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <i class="fa-solid fa-bars menu-icon"></i>
+    <div class="top-icons">
+      <i class="fa-regular fa-envelope"></i>
+      <i class="fa-regular fa-bell"></i>
+      <i class="fa-regular fa-user"></i>
+    </div>
+  </header>
+
+  <main class="page-container">
+
+    <h2>Customer Feedback</h2>
+
+    <!-- AVERAGE RATING -->
+    <section class="card">
+      <h3>Average Rating</h3>
+
+      <div class="rating-row">
+        <div class="rating-circle" id="avgRating">0.0</div>
+        <div class="rating-stars" id="stars"></div>
+      </div>
+    </section>
+
+    <!-- USER REVIEWS -->
+    <section class="card">
+      <h3>User Reviews</h3>
+      <ul class="review-list" id="reviewList"></ul>
+    </section>
+
+  </main>
+
+  <script src="customer_feedback.js"></script>
+</body>
+</html>
