@@ -6,7 +6,7 @@
 
 body{
     height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow: hidden; /* Stops the whole page from scrolling*/
 }
 .app-container{
@@ -60,7 +60,7 @@ body{
     border-radius: 10px;
 }
 .btn-group.active{
-    background: #31b384;
+    background: #5dbb91;
     color: white;
 }
 .info-block.label{
