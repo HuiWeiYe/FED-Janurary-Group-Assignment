@@ -39,7 +39,6 @@ The application focuses on **responsive design**, **usability**, and **front-end
 
 ### 🧑‍🍳 Vendor Management
 - Menu management with support for multiple cuisines per item
-- Rental agreement tracking (renewals and changes)
 - Stall performance dashboard
 
 ### 🧾 Regulatory & Compliance
