@@ -125,11 +125,6 @@
   transform: translateY(-1px);
 }
 
-.staff-login-btn::before {
-  content: "ðŸ”’";
-  font-size: 1rem;
-}
-
 /* ========== RESPONSIVE DESIGN ========== */
 
 /* Mobile: Default styles above */

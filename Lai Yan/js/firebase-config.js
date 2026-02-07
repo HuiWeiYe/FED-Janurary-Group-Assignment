@@ -17,14 +17,4 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Enable offline persistence (optional but recommended)
-db.enablePersistence()
-  .catch((err) => {
-    if (err.code == 'failed-precondition') {
-      console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
-    } else if (err.code == 'unimplemented') {
-      console.log('Browser does not support persistence');
-    }
-  });
-
 console.log('Firebase initialized successfully');
