@@ -1,116 +1,115 @@
-const stalls = [
-    { name: "Old Airport Road Western Food", address: "51 Old Airport Road, S390051", time: "6 AM - 11 PM", stalls: 2, grade: "A", region: "East", lat: 1.3084, lng: 103.8858 },
-    { name: "Bedok South Market", address: "16 Bedok South Road, S460016", time: "6 AM - 9 PM", stalls: 55, grade: "A", region: "East", lat: 1.3200, lng: 103.9300 },
-    { name: "Newton Food Centre", address: "500 Clemenceau Ave N, S229495", time: "12 PM - 2 AM", stalls: 80, grade: "B", region: "Central", lat: 1.3123, lng: 103.8392 }
-];
+// const stalls = [...]; 
 
 let map, markerLayer;
 
 window.onload = () => {
-    // 1. Setup Map if on Map Page
-    if (document.getElementById('map')) {
+    // --- 1. MAP PAGE SETUP ---
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
         map = L.map('map').setView([1.3521, 103.8198], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         markerLayer = L.layerGroup().addTo(map);
         updateUI(stalls); 
     }
 
-    // 2. Setup List if on HawkerList Page
-    if (document.getElementById('cardContainer')) {
+    // --- 2. LIST PAGE SETUP ---
+    const listElement = document.getElementById('cardContainer');
+    if (listElement) {
         updateUI(stalls);
     }
 
-    // 3. Search & Filter Listeners
+    // --- 3. DETAILS PAGE SETUP ---
+    const detailsElement = document.getElementById('detTitle');
+    if (detailsElement) {
+        const params = new URLSearchParams(window.location.search);
+        const stallName = params.get('name');
+        const stall = stalls.find(s => s.name === stallName);
+
+        if (stall) {
+            detailsElement.innerText = stall.name;
+            if (document.getElementById('detAddr')) document.getElementById('detAddr').innerText = stall.address;
+            if (document.getElementById('detStalls')) document.getElementById('detStalls').innerText = stall.stalls;
+            if (document.getElementById('detHours')) document.getElementById('detHours').innerText = stall.time;
+            if (document.getElementById('detLastInsp')) document.getElementById('detLastInsp').innerText = stall.lastInspection || "Nov 20, 2024";
+            
+            if (stall.img && document.getElementById('heroImage')) {
+                document.getElementById('heroImage').style.backgroundImage = `url(${stall.img})`;
+            }
+
+            // Mini Map Setup
+            if (document.getElementById('miniMap')) {
+                const miniMap = L.map('miniMap', {zoomControl: false, attributionControl: false}).setView([stall.lat, stall.lng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMap);
+                L.marker([stall.lat, stall.lng]).addTo(miniMap);
+            }
+        }
+    }
+
+    // --- 4. FILTER LISTENERS ---
     const search = document.getElementById('searchInput') || document.getElementById('listSearch');
     const grade = document.getElementById('gradeFilter') || document.getElementById('gradeFilterList');
+    const region = document.getElementById('regionFilter');
 
-    [search, grade].forEach(el => {
-        if (el) el.addEventListener('input', () => {
-            const term = search.value.toLowerCase();
-            const gradeVal = grade.value;
-            const filtered = stalls.filter(s => 
-                s.name.toLowerCase().includes(term) && 
-                (gradeVal === 'all' || s.grade === gradeVal)
-            );
-            updateUI(filtered);
-        });
+    [search, grade, region].forEach(el => {
+        if (el) el.addEventListener('input', applyFilters);
     });
 };
 
+// --- APPLY FILTERS ---
+function applyFilters() {
+    const searchEl = document.getElementById('searchInput') || document.getElementById('listSearch');
+    const gradeEl = document.getElementById('gradeFilter') || document.getElementById('gradeFilterList');
+    const regionEl = document.getElementById('regionFilter');
+
+    // Use value retrieval, not assignment
+    const term = searchEl ? searchEl.value.toLowerCase() : "";
+    const gradeVal = gradeEl ? gradeEl.value : "all";
+    const regionVal = regionEl ? regionEl.value : "all";
+
+    const filtered = stalls.filter(s => {
+        const matchesSearch = s.name.toLowerCase().includes(term);
+        // Use === for comparison, NEVER a single =
+        const matchesGrade = gradeVal === 'all' || s.grade === gradeVal;
+        const matchesRegion = regionVal === 'all' || s.region === regionVal;
+        
+        return matchesSearch && matchesGrade && matchesRegion;
+    });
+
+    updateUI(filtered);
+}
+
 function updateUI(data) {
-    if (markerLayer) { // Map Update
+    // Update Markers if Map exists
+    if (markerLayer) {
         markerLayer.clearLayers();
         data.forEach(s => L.marker([s.lat, s.lng]).addTo(markerLayer).bindPopup(s.name));
     }
     
+    // Update Cards if Container exists
     const container = document.getElementById('cardContainer');
-    if (container) { // List Update
-        document.getElementById('countText').innerText = `${data.length} Hawker centres found`;
+    if (container) {
+        const countText = document.getElementById('countText');
+        if (countText) countText.innerText = `${data.length} Hawker centres found`;
+        
         container.innerHTML = data.map(s => `
             <div class="card">
-                <div style="height:160px; background:#ccc; display:flex; align-items:center; justify-content:center;">Image of ${s.name}</div>
+                <div class="card-img-container">
+                    <img src="${s.img || 'https://via.placeholder.com/400x160'}" class="card-img">
+                    <span class="grade-badge">🛡️ Grade ${s.grade}</span>
+                </div>
                 <div class="card-content">
                     <div class="card-title">${s.name}</div>
                     <div class="card-info">📍 ${s.address}</div>
-                    <div class="card-info">🕒 ${s.time}</div>
-                    <div class="card-btns"><button class="btn-dir">Directions</button><button class="btn-view">View Details</button></div>
+                    <div class="card-btns">
+                        <button class="btn-dir" onclick="location.href='HawkerFinder.html'">📍 Directions</button>
+                        <button class="btn-view" onclick="goToDetails('${s.name}')">View Details ></button>
+                    </div>
                 </div>
             </div>
         `).join('');
     }
 }
 
-function applyFilters() {
-    const searchTerm = (document.getElementById('searchInput') || document.getElementById('listSearch')).value.toLowerCase();
-    const gradeVal = (document.getElementById('gradeFilter') || document.getElementById('gradeFilterList')).value;
-    const regionVal = document.getElementById('regionFilter') ? document.getElementById('regionFilter').value : 'all';
-
-    const filteredData = stalls.filter(stall => {
-        const matchesSearch = stall.name.toLowerCase().includes(searchTerm);
-        const matchesGrade = gradeVal === 'all' || stall.grade === gradeVal;
-        const matchesRegion = regionVal === 'all' || stall.region === regionVal;
-        
-        return matchesSearch && matchesGrade && matchesRegion;
-    });
-
-    updateUI(filteredData);
-}
-
-// HawkerDetails Page
-// Function to handle "View Details" click on HawkerList.html
-function viewDetails(stallName) {
-    window.location.href = `details.html?name=${encodeURIComponent(stallName)}`;
-}
-
-// Logic for HawkerDetails.html
-if (document.getElementById('detTitle')) {
-    const params = new URLSearchParams(window.location.search);
-    const stallName = params.get('name');
-    
-    // Find the stall in our data array
-    const stall = stalls.find(s => s.name === stallName);
-
-    if (stall) {
-        document.getElementById('detTitle').innerText = stall.name;
-        document.getElementById('detAddr').innerText = stall.address;
-        document.getElementById('heroImage').style.backgroundImage = `url(${stall.img})`;
-        
-        // Setup Mini Map
-        const miniMap = L.map('miniMap', {zoomControl: false, attributionControl: false}).setView([stall.lat, stall.lng], 15);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMap);
-        L.marker([stall.lat, stall.lng]).addTo(miniMap);
-
-        // Inject Fake History (This would come from my future Inspector database)
-        const timeline = document.getElementById('historyTimeline');
-        timeline.innerHTML = `
-            <div class="timeline-item">
-                <strong>Nov 20, 2024</strong> <span class="grade-badge">Grade A</span>
-                <p style="font-size:12px; color:green;">✓ No violations found.</p>
-            </div>
-            <div class="timeline-item">
-                <strong>Aug 15, 2024</strong> <span class="grade-badge">Grade A</span>
-                <p style="font-size:12px; color:gray;">Consistent high standards.</p>
-            </div>
-        `;
-    }
+function goToDetails(stallName) {
+    window.location.href = `HawkerDetails.html?name=${encodeURIComponent(stallName)}`;
 }

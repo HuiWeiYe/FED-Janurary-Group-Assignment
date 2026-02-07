@@ -1,0 +1,38 @@
+window.onload = function(){
+    // 1. Trigger slide up animation
+    this.document.getElementById('applePaySheet').classList.add('show');
+
+    // 2. Load total from localStorange (from cart)
+    const data = JSON.parse(localStorage.getItem('canteenCart'))
+    let total = 0
+    for (const stall in data){
+        data[stall].forEach(item => {
+            if (item.qty > 0) total += item.price * item.qty;
+        });
+    }
+    this.document.getElementById('display-total').innerText = `$${total.toFixed(2)}`;
+};
+
+function simulatePayment(){
+    const statusText = document.getElementById('statusText');
+    const statusIcon = document.getElementById('statusIcon');
+    const payBtn = document.querySelector('.pay-button');
+
+    statusText.innerText = "Processing...";
+    payBtn.style.display = "none";
+
+    // Simulate a 2-second delay for faceId
+    setTimeout(() =>{
+        statusIcon.className = "fa-solid fa-circle-check";
+        statusIcon.parentElement.classList.add('success-state');
+        statusText.innerText = "Payment Complete";
+        setTimeout(() => {
+            // This moves from PaymentPage folder to CollectionPage folder
+            window.location.href = "../Delivery/DeliveryPage.html"; 
+        }, 1500);
+    },2000)
+}
+
+function goBackToCheckout() {
+    window.location.href = "../CheckOutPage/Checkout.html";
+}

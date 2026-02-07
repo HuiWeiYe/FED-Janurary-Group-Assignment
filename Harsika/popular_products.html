@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Popular Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+  <header class="top-bar">
+    <span class="material-icons menu-icon">menu</span>
+    <div class="top-icons">
+      <span class="material-icons">mail</span>
+      <span class="material-icons">notifications</span>
+      <span class="material-icons">account_circle</span>
+    </div>
+  </header>
+
+  <h2>Popular Products</h2>
+
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Sales</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody id="productTable"></tbody>
+    </table>
+  </div>
+
+  <div class="container rating-row">
+    <div class="rating-circle" id="avgRating">0.0</div>
+    <div class="rating-stars">★★★★★</div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6epn2gBInFvjFX1ViEp_e5MDD1Su3cmM",
+      authDomain: "fed-hawker-app-bf2ca.firebaseapp.com",
+      projectId: "fed-hawker-app-bf2ca"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    db.collection("analytics")
+      .doc("popularProducts")
+      .onSnapshot(doc => {
+        const data = doc.data();
+        const table = document.getElementById("productTable");
+        table.innerHTML = "";
+
+        data.products.forEach(p => {
+          table.innerHTML += `
+            <tr>
+              <td>${p.name}</td>
+              <td>${p.sales}</td>
+              <td class="${p.stock < 50 ? "low-stock" : "in-stock"}">
+                ${p.stock < 50 ? "Low stock" : "In stock"}
+              </td>
+            </tr>`;
+        });
+
+        document.getElementById("avgRating").textContent =
+          data.avgRating.toFixed(1);
+      });
+  </script>
+</body>
+</html>

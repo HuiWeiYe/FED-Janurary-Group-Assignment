@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="applepay.css">
+    <title>Apple Pay</title>
+</head>
+<body>
+    <main class="overlay">
+        <section class="apple-pay-card" id="applePaySheet">
+            <header class="card-header">
+                <span class="back-link" onclick="goBackToCheckout()">
+                    <i class="fa-solid fa-chevron-left"></i> Checkout
+                </span>
+            </header>
+
+            <div class="inner-details-card">
+                <div class="payment-details">
+                    <div class="detail-row">
+                        <span class="label">CARD</span>
+                        <span class="value">Visa *** 1234</span>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">CONTACT</span>
+                    <span class="value">Jane@gmail.com</span>
+                </div>
+                
+                <div class="detail-row total-row">
+                    <span class="label">TOTAL</span>
+                    <span class="total-price" id="display-total">$0.00</span>
+                </div>
+            </div>
+            
+            <footer class="authentication-section" id="authenticationsection">
+                <div class="confirm-icon">
+                    <span class="fa-solid fa-face-smile" id="statusIcon"></span>
+                </div>
+                    <p id="statusText">Confirm with FaceID</p>
+                    <button class="pay-button" onclick="simulatePayment()">Pay Now</button>
+            </footer>
+        </section>
+    </main>    
+<script src="applepay.js"></script>
+</body>
+</html>

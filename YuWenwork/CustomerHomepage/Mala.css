@@ -9,6 +9,13 @@ body{
     background: white;
     min-height: 100vh;
     padding-bottom: 80px; /*Space for checkout button*/
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+main {
+    flex: 1;
+    padding: 0 15px 100px 15px; /* bottom padding gives space for the button */
 }
 .menu-header{
     display:flex;
@@ -77,21 +84,17 @@ body{
 .item-card .price{
     font-size: 1.5rem;
     font-weight: 800;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    display: block; /* Ensures it takes up its own line*/
+    margin: 0;
 }
 
 /* Quantity Controls */
 .controls{
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    /*flex-direction: row;*/
+    /*flex-wrap: nowrap;*/
     align-items: center;
-    justify-content: center;
+    /*justify-content: center;*/
     gap: 12px;
-    margin-top: 10px;
-    width: 100%;
 }
 .qty-circle, .minus-symbol, .qty-number{
     background-color: black;
@@ -137,4 +140,11 @@ body{
     justify-content: space-between; /*Puts "checkout" on left and "$total" on right*/
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.price-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 10px;
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEA Inspector Dashboard</title>
+    <link rel="stylesheet" href="inspector.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="inspector-header">
+            <div class="user-profile">
+                <div class="avatar">JD</div>
+                <div>
+                    <h2>John Doe</h2>
+                    <p>Senior Inspector #402</p>
+                </div>
+            </div>
+            <button class="logout-btn">Logout</button>
+        </header>
+
+        <nav class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('today')">Today</button>
+            <button class="tab-btn" onclick="switchTab('upcoming')">Upcoming</button>
+            <button class="tab-btn" onclick="switchTab('overdue')">Overdue</button>
+            <button class="tab-btn" onclick="switchTab('completed')">Completed</button>
+        </nav>
+
+        <main class="dashboard-content">
+            <div id="today-view" class="tab-content active">
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <h3>No Inspections Today</h3>
+                    <p>You've completed all scheduled tasks for today.</p>
+                </div>
+            </div>
+
+            <div id="upcoming-view" class="tab-content">
+                <h3 class="section-title">Next 7 Days</h3>
+                <div id="upcoming-list"></div>
+            </div>
+
+            <div id="overdue-view" class="tab-content">
+                <h3 class="section-title" style="color: #d32f2f;">Pending Action</h3>
+                <div id="overdue-list"></div>
+            </div>
+
+            <div id="completed-view" class="tab-content">
+                <h3 class="section-title">Recent History</h3>
+                <div id="completed-list"></div>
+            </div>
+
+            <div>
+                <button onclick="resetInspections()" class="btn-reset">🔄 Reset All Data</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="inspector.js"></script>
+</body>
+</html>

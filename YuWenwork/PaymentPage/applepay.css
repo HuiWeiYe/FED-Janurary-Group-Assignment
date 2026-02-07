@@ -1,0 +1,119 @@
+body{
+    margin: 0;
+    font-family: sans-serif;
+    background: #1c1c1e;
+}
+.overlay{
+    height: 100vh;
+    display: flex;
+    align-items: flex-end; /* sheets usually slide from bottom*/
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    padding-top: 20px;
+}
+.apple-pay-card{
+    width: 100%;
+    max-width: 450px;
+    background: #f2f2f7;
+    border-radius: 40px;
+    padding: 20px;
+    transform: translateY(100%);
+     transition: transform 0.4s ease-out; /* Jumps smoothly*/
+}
+.apple-pay-card.show{
+    transform: translateY(0);
+    opacity: 1;
+}
+.card-header{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+}
+.back-link{
+    color: #007aff;
+    cursor: pointer;
+    font-size: 15px;
+}
+.apple-logo{
+    grid-column: 2;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.payment-details{
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.detail-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #efeff4;
+    align-items: baseline;
+}
+.detail-row:last-child {
+    border-bottom: none;
+}
+.label{
+    color: #8e8e93;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.value{
+    color: #8e8e93;
+    font-size: 16px;
+}
+.total-row{
+    border: none;
+    margin-top: 10px;
+}
+.total-price{
+    font-size: 24px;
+    font-weight: bold;
+}
+.authentication-section{
+    text-align: center;
+    padding: 40px;
+}
+.confirm-icon{
+    width: 70px;
+    height: 70px;
+    background: #007aff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    margin: 0 auto 15px;
+    color: white;
+}
+.pay-button{
+    width: 100%;
+    background: black;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.success-state{
+    background: #34c759;
+}
+.inner-details-card{
+    background: white;
+    border-radius: 15px;
+    padding: 0 15px;
+    margin-bottom: 30px;
+}
+#statusText{
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 20px;
+}

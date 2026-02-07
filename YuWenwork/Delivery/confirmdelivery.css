@@ -1,0 +1,114 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* Stops the whole page from scrolling*/
+}
+.app-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #e9ecef;
+}
+.sidebar{
+    max-width: 75vw;
+    width: 75vw;
+    height: auto;
+    max-height: 90vh;
+    background: white;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,1);
+    overflow-y: auto; /* Scroll inside the card if needed*/
+}
+.sidebar-header{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.back-btn{
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+.button-group{
+    display: flex;
+    background: #f4f4f4;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+.btn-group{
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold; 
+    border-radius: 10px;
+}
+.btn-group.active{
+    background: #31b384;
+    color: white;
+}
+.info-block.label{
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.delivery-time-box, .pickUp-time-box{
+    border: 1px solid black;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    margin-top: 10px;
+}
+.timing{
+    font-weight: bold;
+}
+#map{
+    height: 300px;
+    width: 100%;
+    flex-grow: 1; /*Makes the map expand to fill available space*/
+    min-height: 350px;
+    margin: 20px 0;
+    border-radius: 10px;
+    z-index: 1; /*Keeps it below the popup() - <b>Delivery Address</b><br>123 West Lane, Blk 446*/
+}
+.delivery-map{
+    width: 70%;
+    height: 70%;
+}
+.mapping{
+    width: 70%;
+    height: 70%;
+    object-fit: cover;
+    display: block;
+}
+.confirm-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #f3a83b; 
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.pickUp-time-box{
+   display: none;
+}

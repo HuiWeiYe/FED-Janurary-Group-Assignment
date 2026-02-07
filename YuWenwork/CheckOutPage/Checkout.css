@@ -1,0 +1,95 @@
+body{
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+.Checkout-container{
+    background: white;
+    width: 75%;
+    max-width: 800px;
+    min-height: 100vh;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto; /* Ensures it stays centered horizontally*/
+}
+.header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.back-nav{
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+#order-summary{
+    margin-bottom: 40px;
+}
+/* Row styling for items injected by JS */
+.item-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee
+}
+#order-total-price{
+    font-size: 1.8rem;
+    margin-top: 25px;
+    font-weight: bold;
+}
+.payment-section{
+    margin-top: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+.payment-section h3{
+    margin-bottom: 15px;
+}
+.btn-apple{
+    width: 100%;
+    padding: 15px;
+    background: #31b284;
+    border: none;
+    border-radius: 10px;
+    font-size: 26px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+.select-card{
+    position: relative;
+    margin-top: 15px;
+}
+#card-type{
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    appearance: none; /* Removes default browser arrow*/
+    background: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+.dropdown-icon{
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+.btn-collection{
+    width: 100%;
+    padding: 15px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+.btn-collection:hover{
+    background: #f0f0f0;
+}
