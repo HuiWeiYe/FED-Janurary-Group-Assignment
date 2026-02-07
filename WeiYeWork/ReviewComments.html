@@ -2,11 +2,98 @@
 <html>
 
     <head>
-        
+        <link rel="stylesheet" href="ReviewsComments.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
 
     <body>
-        Work in Progress
+        
+
+        <section id="review-comment-section">
+
+            <section id="filters-container">
+                <div id="return-arrow" onclick="location.href='Reviews.html'"></div>
+
+                <section id="filter-section">
+                    <label for="filters">Rating:</label>
+                    <select class="filters">
+                        <option value="">All</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+
+                    <label for="filters">Helpful:</label>
+                    <select class="filters">
+                        <option value="">Default</option>
+                        <option value="most-helpful">Most Helpful</option>
+                        <option value="least-helpful">Least Helpful</option>
+                    </select>
+
+                    <label for="filters">Sort By:</label>
+                    <select class="filters">
+                        <option value="">Default</option>
+                        <option value="sort-highest-rating">Highest Rating</option>
+                        <option value="sort-lowest-rating">Lowest Rating</option>
+                        <option value="sort-most-helpful">Most Helpful</option>
+                        <option value="sort-least-helpful">Least Helpful</option>
+                        <option value="sort-most-recent">Most Recent</option>
+                        <option value="sort-least-recent">Least Recent</option>
+                    </select>
+                </section>
+            </section>
+
+
+
+            <main id="user-review-container">
+                
+                <section class="user-review">
+                    <div class="profile">
+                        <img class="user-picture" src="" alt="User's Profile">
+                        <div class="user-name">PlaceholderName</div>
+                    </div>
+
+                    <div class="information">
+                        <div class="user-stars"></div>
+                        <div class="user-date">11/04/2023</div>
+                    </div>
+                    <div class="helpful-count">12 People found this review helpful</div>
+
+                    <div class="helpful-input">
+                        <div class="helpful-text">Was this review helpful?</div>
+                        <button class="helpful-button">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span class="thumb-count">0</span>
+                        </button>
+                        <button class="helpful-button">
+                            <i class="fa-solid fa-thumbs-down"></i>
+                            <span class="thumb-count">0</span>
+                        </button>
+                    </div>
+
+                    <div class="comments">
+                        <div class="user-comments">Technical Test Test Test Amogus Test explosion bomb TESTINGGGGGGGGG</div>
+                        <div class="user-attached"></div>
+                    </div>
+
+                </section>
+
+            </main>
+
+            <nav id="pages">
+                <div id="left-arrow">←</div>
+                <div id="page-number">1</div>
+                <div id="right-arrow">→</div>
+            </nav>
+
+
+        </section>
+
+
+        
+        <script src="ReviewsComments.js"></script>
     </body>
 
 

@@ -1,0 +1,308 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f5f6f8;
+    padding: 24px;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+#review-comment-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 24px;
+    background-color: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* =========================
+   TOP BAR (RETURN + FILTERS)
+========================= */
+#filters-container {
+    background-color: #ffffff;
+    background-color: #5dbb91;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+/* =========================
+   RETURN ARROW
+========================= */
+#return-arrow {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    background-color: #b7e2c4;
+    /* border: 1px solid #ddd; */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#return-arrow::before {
+    content: "←";
+    font-size: 1.4rem;
+    color: #555;
+}
+
+#return-arrow:hover {
+    background-color: #b7e2c4a9;
+}
+
+/* =========================
+   FILTER SECTION
+========================= */
+#filter-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#filter-section label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #555;
+    margin: 0px;
+}
+
+.filters{
+    min-width: 90px;
+    max-width: 150px;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+
+    border-radius: 6px;
+    border: 1px solid #b7e2c4;
+    /* border: none; */
+    background-color: #eafaf0;
+    color: #2f7d4f;
+}
+
+/* =========================
+   USER REVIEW CARD
+========================= */
+.user-review {
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 0px 18px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   PROFILE
+========================= */
+#user-review-container{
+    margin: 20px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.user-picture {
+    width: 48px;
+    height: 48px;
+    border-radius: 500px;
+    font-size: 12px;
+    text-align: center;
+    background-color: #ddd;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* =========================
+   INFO (STARS + DATE)
+========================= */
+.information {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.user-stars {
+    color: #f1c40f;
+}
+
+.user-date {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* =========================
+   HELPFUL COUNT
+========================= */
+.helpful-count {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   HELPFUL INPUT
+========================= */
+.helpful-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.helpful-text {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* Buttons */
+.helpful-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 4px;
+
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Icon default */
+.helpful-button i {
+    font-size: 1.2rem;
+    color: #aaa;
+    transition: color 0.2s ease;
+}
+
+.helpful-button .thumb-count {
+    font-size: 0.85rem; 
+    color: gray;
+    min-width: 16px;     
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+/* Hover */
+.helpful-button:hover .fa-thumbs-up {
+    color: #7fdc9f;
+}
+
+.helpful-button:hover .fa-thumbs-down {
+    color: #f29a9a;
+}
+
+/* Active */
+.helpful-button.active .fa-thumbs-up {
+    color: #2ecc71;
+}
+
+.helpful-button.active .fa-thumbs-down {
+    color: #e74c3c;
+}
+
+/* =========================
+   COMMENTS
+========================= */
+.comments {
+    margin-top: 8px;
+}
+
+.user-comments {
+    font-size: 1rem;
+    /* line-height: 1.4; */
+    color: #333;
+}
+
+.user-attached {
+    margin-top: 10px;
+}
+
+/* =========================
+   PAGES
+========================= */
+#pages{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 125px;
+    height: 40px;
+    padding: 5px 7.5px;
+    margin: 0 auto;
+    font-size: 15px;
+    text-align: center;
+    background-color: #5dbb91;
+    border-radius: 5px;
+}
+
+#left-arrow:hover{
+    cursor: pointer;
+}
+
+#right-arrow:hover{
+    cursor: pointer;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1080px) {
+    body {
+        padding: 16px;
+    }
+
+    #filters-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    #filter-section {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    #filter-section select {
+        width: 100%;
+        max-width: none;
+    }
+
+    .information {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}
