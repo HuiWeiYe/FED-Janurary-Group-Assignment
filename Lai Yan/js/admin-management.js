@@ -70,7 +70,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       updateStatistics();
-      renderUsers(allUsers);
+      const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
+      renderUsers(activeUsers);
+
       
     } catch (error) {
       console.error('Error loading users:', error);
@@ -83,17 +85,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   /**
    * Update statistics cards
    */
-  function updateStatistics() {
-    const total = allUsers.length;
-    const customers = allUsers.filter(u => u.role === 'customer').length;
-    const vendors = allUsers.filter(u => u.role === 'vendor').length;
-    const nea = allUsers.filter(u => u.role === 'nea').length;
+    function updateStatistics() {
+      const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
 
-    document.getElementById('totalUsers').textContent = total;
-    document.getElementById('totalCustomers').textContent = customers;
-    document.getElementById('totalVendors').textContent = vendors;
-    document.getElementById('totalNEA').textContent = nea;
-  }
+      const total = activeUsers.length;
+      const customers = activeUsers.filter(u => (u.role || 'customer') === 'customer').length;
+      const vendors = activeUsers.filter(u => u.role === 'vendor').length;
+      const nea = activeUsers.filter(u => u.role === 'nea').length;
+
+      document.getElementById('totalUsers').textContent = total;
+      document.getElementById('totalCustomers').textContent = customers;
+      document.getElementById('totalVendors').textContent = vendors;
+      document.getElementById('totalNEA').textContent = nea;
+    }
+
 
   /**
    * Render users to table
@@ -321,27 +326,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function createUser(userData) {
     const { name, email, role, phone, password } = userData;
 
-    // Create user in Firebase Authentication
     const userCredential = await secondaryAuth.createUserWithEmailAndPassword(email, password);
     const userId = userCredential.user.uid;
 
-    // Create user document in Firestore
     await db.collection('users').doc(userId).set({
-      name: name,
-      email: email,
-      role: role,
-      phone: phone,
+      name,
+      email,
+      role,
+      phone,
+      status: 'active',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    // If vendor, nea or admin, add to allowedAccounts
-    if (role === 'vendor' || role === 'admin' || role === 'nea') {
-      await db.collection('allowedAccounts').doc(email).set({
-        role: role,
-      });
-    }
+    await secondaryAuth.signOut();
   }
+
 
   /**
    * Update existing user
@@ -351,35 +351,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function updateUser(userId, userData) {
   const { name, role, phone } = userData;
 
-  const user = allUsers.find(u => u.id === userId);
-  const oldEmail = user.email;
-  const oldRole = user.role;
-
   await db.collection('users').doc(userId).update({
     name,
     role,
     phone,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   });
-
-  // Handle allowlist when role changes
-  if (oldRole !== role) {
-
-    // Remove old allowlist entry if needed
-    if (oldRole === 'vendor' || oldRole === 'admin' || oldRole === 'nea') {
-      await db.collection('allowedAccounts').doc(oldEmail).delete();
-    }
-
-    // Add new allowlist entry if needed
-    if (role === 'vendor' || role === 'admin' || role === 'nea') {
-      await db.collection('allowedAccounts').doc(oldEmail).set({
-        role: role,
-        approvedBy: auth.currentUser.email,
-        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        approved: true
-      });
-    }
-  }
 }
 
 
@@ -396,8 +373,12 @@ async function updateUser(userId, userData) {
     try {
       const user = allUsers.find(u => u.id === userId);
 
-      // Delete from Firestore
-      await db.collection('users').doc(userId).delete();
+      // "Delete" from Firestore, change to inactive
+      await db.collection('users').doc(userId).update({
+        status: 'inactive',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
 
       // Delete from allowedAccounts if vendor/admin
       if (user.role === 'vendor' || user.role === 'admin') {

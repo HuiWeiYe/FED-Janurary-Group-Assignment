@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function redirectByRole(role) {
     if (role === "admin") window.location.href = "admin-management.html";
-    else if (role === "nea") window.location.href = "nea-home.html";
+    else if (role === "nea") window.location.href = "../../Chloe/Inspector.html";
     else if (role === "vendor") window.location.href = "vendor-home.html";
     else window.location.href = "../../YuWenwork/CustomerHomepage/Assignment.html";
   }
