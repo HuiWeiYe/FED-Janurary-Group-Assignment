@@ -189,9 +189,12 @@ body {
     cursor: pointer;
     padding: 4px;
 
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* Icon default */
@@ -199,6 +202,15 @@ body {
     font-size: 1.2rem;
     color: #aaa;
     transition: color 0.2s ease;
+}
+
+.helpful-button .thumb-count {
+    font-size: 0.85rem; 
+    color: gray;
+    min-width: 16px;     
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }
 
 /* Hover */
@@ -211,11 +223,11 @@ body {
 }
 
 /* Active */
-.helpful-button:active .fa-thumbs-up {
+.helpful-button.active .fa-thumbs-up {
     color: #2ecc71;
 }
 
-.helpful-button:active .fa-thumbs-down {
+.helpful-button.active .fa-thumbs-down {
     color: #e74c3c;
 }
 
