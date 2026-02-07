@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conduct Inspection</title>
+    <link rel="stylesheet" href="Conduct-Inspection.css">
+</head>
+<body>
+<div class="inspection-container">
+    <header class="form-header">
+        <button onclick="window.history.back()" class="back-link">← Back to dashboard</button>
+        <h1>Conduct Inspection</h1>
+        <p>Complete the inspection form below</p>
+    </header>
+
+    <div class="stall-summary-card">
+        <h2 id="inspectName">Loading...</h2>
+        <p id="inspectAddr">505 Beach Road, Singapore 199583</p>
+        <p class="time-slot">Scheduled: <span id="inspectTime">11:00 AM</span></p>
+    </div>
+
+    <section class="form-section">
+    <h3>Hygiene Grade *</h3>
+    <div class="grade-grid">
+        <label class="grade-option">
+            <input type="radio" name="hygieneGrade" value="A">
+            <div class="grade-content border-a">
+                <span class="radio-dot"></span>
+                <span class="grade-letter color-a">🛡️ Grade A • Excellent</span>
+                <p>Outstanding hygiene standards with no violations</p>
+            </div>
+        </label>
+
+        <label class="grade-option">
+            <input type="radio" name="hygieneGrade" value="B">
+            <div class="grade-content border-b">
+                <span class="radio-dot"></span>
+                <span class="grade-letter color-b">🛡️ Grade B • Good</span>
+                <p>Good hygiene standards with minimal issues</p>
+            </div>
+        </label>
+
+        <label class="grade-option">
+            <input type="radio" name="hygieneGrade" value="C">
+            <div class="grade-content border-c">
+                <span class="radio-dot"></span>
+                <span class="grade-letter color-c">🛡️ Grade C • Average</span>
+                <p>Acceptable but requires improvements</p>
+            </div>
+        </label>
+
+        <label class="grade-option">
+            <input type="radio" name="hygieneGrade" value="D">
+            <div class="grade-content border-d">
+                <span class="radio-dot"></span>
+                <span class="grade-letter color-d">🛡️ Grade D • Poor</span>
+                <p>Significant violations requiring immediate action</p>
+            </div>
+        </label>
+    </div>
+    </section>
+
+    <section class="form-section">
+        <div class="section-title-box">
+            <span class="icon">⚠️</span>
+            <h3>Violations Found</h3>
+        </div>
+        <div class="violation-input-row">
+            <input type="number" id="violationCount" value="0" min="0">
+            <label class="checkbox-container">
+                <input type="checkbox" id="noViolations" checked>
+                <span class="checkmark"></span> No violations
+            </label>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h3>Areas Inspected *</h3>
+        <div class="checklist-grid" id="areasGrid">
+            <label class="check-item"><input type="checkbox" value="Kitchen"> Kitchen & Food Preparation</label>
+            <label class="check-item"><input type="checkbox" value="Storage"> Cold Storage & Refrigeration</label>
+            <label class="check-item"><input type="checkbox" value="Waste"> Waste Management</label>
+            <label class="check-item"><input type="checkbox" value="Hygiene"> Food Handler Hygiene</label>
+            </div>
+        <p class="count-footer"><span id="areaCount">0</span> Areas Selected</p>
+    </section>
+
+    <section class="form-section">
+        <h3>Inspector Notes & Remarks</h3>
+        <textarea id="inspectorNotes" placeholder="Enter detailed observations..."></textarea>
+    </section>
+
+    <div class="form-actions">
+        <button class="btn-cancel" onclick="window.history.back()">✕ Cancel</button>
+        <button type="button" class="btn-submit" onclick="submitInspection()">📤 Submit Inspection report</button>
+    </div>
+</div>
+<script>
+// 1. Define these at the top so the submit function can access them
+const currentInspectionStall = localStorage.getItem('currentInspectionStall');
+const currentCategory = localStorage.getItem('currentCategory');
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 2. Set the Stall Name
+    if (currentInspectionStall) {
+        document.getElementById('inspectName').innerText = currentInspectionStall;
+    } else {
+        document.getElementById('inspectName').innerText = "Stall Not Found";
+    }
+
+    // 3. Violation Toggle Logic
+    const noViolationsCheck = document.getElementById('noViolations');
+    const violationInput = document.getElementById('violationCount');
+
+    noViolationsCheck.addEventListener('change', () => {
+        if (noViolationsCheck.checked) {
+            violationInput.value = 0;
+            violationInput.disabled = true;
+        } else {
+            violationInput.disabled = false;
+        }
+    });
+
+    // 4. Areas Selected Counter Logic (Added this!)
+    const areasGrid = document.getElementById('areasGrid');
+    const areaCountDisplay = document.getElementById('areaCount');
+    
+    areasGrid.addEventListener('change', () => {
+        const checkedCount = areasGrid.querySelectorAll('input[type="checkbox"]:checked').length;
+        areaCountDisplay.innerText = checkedCount;
+    });
+});
+
+// 5. The Submit Function (Needs to be outside DOMContentLoaded to be seen by the button)
+function submitInspection() {
+    const gradeEl = document.querySelector('input[name="hygieneGrade"]:checked');
+    const notes = document.getElementById('inspectorNotes').value;
+    const violations = document.getElementById('violationCount').value;
+    
+    if (!gradeEl) {
+        alert("Please select a Hygiene Grade before submitting.");
+        return;
+    }
+
+    const selectedGrade = gradeEl.value;
+    const stallName = localStorage.getItem('currentInspectionStall');
+    const category = localStorage.getItem('currentCategory');
+
+    // FIX: Pull the data from LocalStorage instead of a global variable
+    let fullData = JSON.parse(localStorage.getItem('inspectionData'));
+
+    if (!fullData) {
+        alert("Error: Inspection records not found. Please go back to the dashboard.");
+        return;
+    }
+
+    // Use fullData instead of inspectionData here
+    const stallIndex = fullData[category].findIndex(s => s.name === stallName);
+    
+    if (stallIndex > -1) {
+        const stallObj = fullData[category].splice(stallIndex, 1)[0];
+        
+        stallObj.result = `Grade ${selectedGrade}`;
+        stallObj.date = new Date().toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' });
+        stallObj.notes = notes;
+        stallObj.violations = violations;
+
+        fullData.completed.unshift(stallObj);
+
+        // Save the updated list back to LocalStorage
+        localStorage.setItem('inspectionData', JSON.stringify(fullData));
+        
+        alert("Inspection Submitted Successfully!");
+        window.location.href = "Inspector.html"; 
+    } else {
+        alert("Error: Stall not found in records.");
+    }
+}
+</script>
+</body>

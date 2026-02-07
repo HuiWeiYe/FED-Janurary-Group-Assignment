@@ -11,92 +11,93 @@
 
 
         <body>
-            <nav>
-                <div class="top-nav">
-                    <span class = "fa fa-bars"></span>
-                    <div class="header-right">
-                        <span class="fa fa-envelope"></span>
-                        <span class="fa fa-bell"></span>
-                        <span class="fa fa-user-circle"></span>
-                    </div>
-                </div>
-            </nav>
-
             <section id="review-summary-section">
                 
                 <header>
-                    <h1 id="review-header">Placeholder Hawker</h1>
+                    <h1 id="review-header">Clementi Hawker Centre</h1>
                 </header>
 
                 <main>
                         <div id = "review-summary-container">
                             
-                            <!-- Left Section - Stall Info -->
-                            <section id = "left-container">
+                            <!-- Top Section -->
+                            <section id="top-container"></section>
 
-                                <!-- Header -->
-                                <header id="review-stall-top">
-                                    <h2 class="review-title">Placeholder Stall</h2>
-                                    <p id="review-location">#Location</p>
-                                </header>
+                            <section id="information-container">
+                                <!-- Left Section - Stall Info -->
+                                <section id = "left-container">
 
-                                <!-- Image -->
-                                <figure>
-                                    <img id="review-stall-image" src="https://cdn.tatlerasia.com/tatlerasia/i/2022/05/26160039-diego-lozano-me6kjov4rtg-unsplash_cover_1500x879.jpeg" alt="Image of stall's dish">
-                                </figure>
+                                    <!-- Header -->
+                                    <header id="review-stall-top">
+                                        <h2 class="review-title">Noodles Stall</h2>
+                                        <p id="review-location">#01-02</p>
+                                    </header>
+
+                                    <!-- Image -->
+                                    <figure>
+                                        <img id="review-stall-image" src="https://cdn.tatlerasia.com/tatlerasia/i/2022/05/26160039-diego-lozano-me6kjov4rtg-unsplash_cover_1500x879.jpeg" alt="Image of stall's dish">
+                                    </figure>
+                                </section>
+
+                                <!-- Right Sections - Rating Info -->
+                                <section id = "right-container">
+                                    
+                                    <!-- Rating Summary -->
+                                    <!-- <h2 class="review-title">Summary</h2> -->
+                                    <section id="rating-top">
+                                        <div id="rating-summary-number">Number</div>
+                                        <div id="rating-summary-stars"></div>
+                                        <div id="rating-summary-total">Number Placeholder</div>
+                                    </section>  
+
+                                    <!-- Rating Bars -->
+                                    <ul id="rating-bars">
+                                        <div class="rating-row">
+                                            <span class="star">5</span>
+                                            <div class="bar">
+                                                <div class="bar-fill" data-count="120"></div>
+                                            </div>
+                                        </div>
+                                        <div class="rating-row">
+                                            <span class="star">4</span>
+                                            <div class="bar">
+                                                <div class="bar-fill" data-count="80"></div>
+                                            </div>
+                                        </div>
+                                        <div class="rating-row">
+                                            <span class="star">3</span>
+                                            <div class="bar">
+                                                <div class="bar-fill" data-count="30"></div>
+                                            </div>
+                                        </div>
+                                        <div class="rating-row">
+                                            <span class="star">2</span>
+                                            <div class="bar">
+                                                <div class="bar-fill" data-count="10"></div>
+                                            </div>
+                                        </div>
+                                        <div class="rating-row">
+                                            <span class="star">1</span>
+                                            <div class="bar">
+                                                <div class="bar-fill" data-count="5"></div>
+                                            </div>
+                                        </div>
+                                    </ul>
+
+                                    <!-- Write Review Button -->
+                                    <!-- <button id="review-button" onclick="location.href='ReviewComments.html'">
+                                        <i class="fa fa-pen"></i>
+                                        <span>Write a Review</span>
+                                    </button>
+                                     -->
+                                </section>
                             </section>
-
-                            <!-- Right Sections - Rating Info -->
-                            <section id = "right-container">
-                                
-                                <!-- Rating Summary -->
-                                <!-- <h2 class="review-title">Summary</h2> -->
-                                <section id="rating-top">
-                                    <div id="rating-summary-number">Number</div>
-                                    <div id="rating-summary-stars"></div>
-                                    <div id="rating-summary-total">Number Placeholder</div>
-                                </section>  
-
-                                <!-- Rating Bars -->
-                                <ul id="rating-bars">
-                                    <div class="rating-row">
-                                        <span class="star">5</span>
-                                        <div class="bar">
-                                            <div class="bar-fill" data-count="120"></div>
-                                        </div>
-                                    </div>
-                                    <div class="rating-row">
-                                        <span class="star">4</span>
-                                        <div class="bar">
-                                            <div class="bar-fill" data-count="80"></div>
-                                        </div>
-                                    </div>
-                                    <div class="rating-row">
-                                        <span class="star">3</span>
-                                        <div class="bar">
-                                            <div class="bar-fill" data-count="30"></div>
-                                        </div>
-                                    </div>
-                                    <div class="rating-row">
-                                        <span class="star">2</span>
-                                        <div class="bar">
-                                            <div class="bar-fill" data-count="10"></div>
-                                        </div>
-                                    </div>
-                                    <div class="rating-row">
-                                        <span class="star">1</span>
-                                        <div class="bar">
-                                            <div class="bar-fill" data-count="5"></div>
-                                        </div>
-                                    </div>
-                                </ul>
-
-                                <!-- Write Review Button -->
+                            <!-- Write Review Button -->
+                            <section id="bottom-container">
                                 <button id="review-button" onclick="location.href='ReviewComments.html'">
                                     <i class="fa fa-pen"></i>
                                     <span>Write a Review</span>
                                 </button>
-                                
                             </section>
                         </div>
                 </main>

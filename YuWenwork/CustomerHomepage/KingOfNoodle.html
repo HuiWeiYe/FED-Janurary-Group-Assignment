@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Spicy & Numb Menu</title>
+        <link rel="stylesheet" href="Mala.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <body>
+        <div class="menu-container">
+            <header class="menu-header">
+                <span class="fa-solid fa-chevron-left back-nav"></span>
+                <h1>King Of Noodle</h1>
+            </header>
+            <section class="search-button">
+                <span class="fa-solid fa-magnifying-glass search-icon"></span>
+                <input type="text" id="searchInput" placeholder="Search Items..." class="search-bar">
+            </section>
+            <main>
+            <div class="items-grid" id="itemsGrid"></div>
+                
+            </main>
+            <footer class="checkout-button">
+                <button class="checkout-btn">
+                    <span>Checkout</span>
+                    <span id="totalDisplay">$0.00</span>
+                </button>
+            </footer>
+        </div>
+        <div id="itemsGrid"></div>
+        <div id="totalDisplay"></div>
+    
+        <script src="Spicy&Numb.js"></script>
+    </body>
+</html>

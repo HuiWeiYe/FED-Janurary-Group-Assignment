@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="checkout.css">
+    <title>Checkout</title>
+</head>
+<body>
+
+<div class="Checkout-container">
+    <div class="header">
+        <span class="fa-solid fa-chevron-left back-nav" onclick="window.history.back()"></span>
+        <h1>Checkout</h1>
+    </div>
+
+    <div id="order-summary">
+        <p id="total-items-count">Total Item(s): 0</p>
+        <div id="item-list"></div>
+        <h2 id="order-total-price">Order Total: $0.00</h2>
+    </div>
+
+    <section class="payment-section">
+        <h3>Payment Method: </h3>
+        <button class="btn-apple" onclick="processPayment ('Apple Pay')">
+            <span class="fa-brands fa-apple"></span>
+        </button>
+
+        <div class="select-card">
+                <select id="card-type">
+                    <option value="card">Card Payment</option>
+                    <option value="visa">Visa **** 1234</option>
+                    <option value="visa">Visa **** 2233</option>
+                    <option value="master">Mastercard **** 7788</option>
+                    <option value="master">Mastercard **** 9988</option>
+                </select>
+                <span class="fa-solid fa-chevron-down dropdown-icon"></span>
+        </div>
+    </section>
+
+    <button class="btn-collection" onclick="goToCollection()">Choose Collection Method</button>
+</div>
+
+<script src="checkout.js"></script>
+</body>
+</html>

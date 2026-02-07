@@ -18,27 +18,24 @@
                 <input type="text" id="searchInput" placeholder="Search Items..." class="search-bar">
             </section>
             <main>
-            <div class="items-grid" id="itemsGrid">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/038/144/798/small_2x/ai-generated-tasty-goodness-sausages-isolated-on-white-background-photo.jpg" alt="Sausage" class="menu-img">
-                <img src="https://m.media-amazon.com/images/I/61axCDVehZL.__AC_SY300_SX300_QL70_ML2_.jpg" alt="Maggi Mee" class="menu-img">
-                <img src="https://www.thespruceeats.com/thmb/kpt7oOfWY_nYoHf4cHIQdzqcJdc=/2121x1414/filters:no_upscale():max_bytes(150000):strip_icc()/antpkr-ee31ee7c1ab5494480b004be970c6019.jpg" alt="Lotus Root" class="menu-img">
-                <img src="https://th.bing.com/th/id/R.30db0cce9b92c24627620a5aa8eb9565?rik=SML5Z%2b0Tlyq9Lg&riu=http%3a%2f%2fpngimg.com%2fuploads%2fcorn%2fcorn_PNG5293.png&ehk=uFUcHy2Pca021l3tUTRY8Lw8bcN2olQCjcJm1hwCLBY%3d&risl=1&pid=ImgRaw&r=0" alt="Corn" class="menu-img">
-                <img src="https://th.bing.com/th/id/R.fb9c2752eb6f791a41d3336168edd187?rik=HeRvSZWC8Hi8cw&riu=http%3a%2f%2fwww.homifreez.com%2fpictures%2flist%2f385_detail.jpg%3f1392200807&ehk=k5%2beKOTYKH2aDkTKq4Z%2fXYRotDVAOkqb22fYMVfGH%2fY%3d&risl=&pid=ImgRaw&r=0" alt="Potato" class="menu-img">
-                <img src="https://th.bing.com/th/id/R.9a8a231f10a205a8d5a1d66377ac07e5?rik=OJXlcBUGbnz4sQ&riu=http%3a%2f%2fwww.chinasichuanfood.com%2fwp-content%2fuploads%2f2016%2f01%2fEnoki-mushrooms-steamed-with-garlic_.jpg&ehk=70FtGFp%2bTFye%2bAfhYc5bAMyuOLgz63xAcNjwEBmyVV8%3d&risl=&pid=ImgRaw&r=0" alt="Enoki Mushroom" class="menu-img">
-                <img src="https://c8.alamy.com/comp/EATTXM/raw-uncooked-meatballs-on-a-isolated-white-background-EATTXM.jpg" alt="MeatBall" class="menu-img">
-                <img src="https://thefrenchgrocer.com/wp-content/uploads/2024/06/Luncheon_Meat-450x300.png" alt="Luncheon Meat" class="menu-img">
-            </div>
+                <div class="items-grid" id="itemsGrid">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/038/144/798/small_2x/ai-generated-tasty-goodness-sausages-isolated-on-white-background-photo.jpg" alt="Sausage" class="menu-img">
+                    <img src="https://m.media-amazon.com/images/I/61axCDVehZL.__AC_SY300_SX300_QL70_ML2_.jpg" alt="Maggi Mee" class="menu-img">
+                    <img src="https://www.thespruceeats.com/thmb/kpt7oOfWY_nYoHf4cHIQdzqcJdc=/2121x1414/filters:no_upscale():max_bytes(150000):strip_icc()/antpkr-ee31ee7c1ab5494480b004be970c6019.jpg" alt="Lotus Root" class="menu-img">
+                    <img src="https://th.bing.com/th/id/R.30db0cce9b92c24627620a5aa8eb9565?rik=SML5Z%2b0Tlyq9Lg&riu=http%3a%2f%2fpngimg.com%2fuploads%2fcorn%2fcorn_PNG5293.png&ehk=uFUcHy2Pca021l3tUTRY8Lw8bcN2olQCjcJm1hwCLBY%3d&risl=1&pid=ImgRaw&r=0" alt="Corn" class="menu-img">
+                    <img src="https://th.bing.com/th/id/R.fb9c2752eb6f791a41d3336168edd187?rik=HeRvSZWC8Hi8cw&riu=http%3a%2f%2fwww.homifreez.com%2fpictures%2flist%2f385_detail.jpg%3f1392200807&ehk=k5%2beKOTYKH2aDkTKq4Z%2fXYRotDVAOkqb22fYMVfGH%2fY%3d&risl=&pid=ImgRaw&r=0" alt="Potato" class="menu-img">
+                    <img src="https://th.bing.com/th/id/R.9a8a231f10a205a8d5a1d66377ac07e5?rik=OJXlcBUGbnz4sQ&riu=http%3a%2f%2fwww.chinasichuanfood.com%2fwp-content%2fuploads%2f2016%2f01%2fEnoki-mushrooms-steamed-with-garlic_.jpg&ehk=70FtGFp%2bTFye%2bAfhYc5bAMyuOLgz63xAcNjwEBmyVV8%3d&risl=&pid=ImgRaw&r=0" alt="Enoki Mushroom" class="menu-img">
+                    <img src="https://c8.alamy.com/comp/EATTXM/raw-uncooked-meatballs-on-a-isolated-white-background-EATTXM.jpg" alt="MeatBall" class="menu-img">
+                    <img src="https://thefrenchgrocer.com/wp-content/uploads/2024/06/Luncheon_Meat-450x300.png" alt="Luncheon Meat" class="menu-img">
+                </div>
             </main>
             <footer class="checkout-button">
-                <button class="checkout-btn">
+                <button class="checkout-btn" id="checkoutBar">
                     <span>Checkout</span>
                     <span id="totalDisplay">$0.00</span>
                 </button>
             </footer>
-        </div>
-        <div id="itemsGrid"></div>
-        <div id="totalDisplay"></div>
-    
+        </div>   
         <script src="Spicy&Numb.js"></script>
     </body>
 </html>

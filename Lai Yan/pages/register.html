@@ -203,6 +203,16 @@
                 Loading...
             </div>
 
+            <script>
+                
+                const selectedRole = sessionStorage.getItem('selectedRole') || 'customer';
+                const roleDisplay = document.getElementById('role-display');
+                if (roleDisplay) {
+                    const roleText = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
+                    roleDisplay.textContent = `Registering as: ${roleText}`;
+                }
+            </script>
+
             <form id="registerForm">
                 <div class="form-group">
                     <label for="name">Full Name</label>
