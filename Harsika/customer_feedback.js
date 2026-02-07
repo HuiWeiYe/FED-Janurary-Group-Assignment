@@ -17,37 +17,39 @@ db.collection("analytics")
     const data = doc.data();
 
     // Average rating
-    document.getElementById("avgRating").textContent =
-      data.averageRating.toFixed(1);
+    const avg = data.averageRating;
+    document.getElementById("avgRating").textContent = avg.toFixed(1);
 
     // Stars
     const starsDiv = document.getElementById("stars");
     starsDiv.innerHTML = "";
-    const fullStars = Math.round(data.averageRating);
+    const fullStars = Math.round(avg);
 
     for (let i = 0; i < 5; i++) {
-      starsDiv.innerHTML += i < fullStars ? "⭐" : "☆";
+      starsDiv.innerHTML += i < fullStars ? "★" : "☆";
     }
 
     // Reviews
-    const reviewList = document.getElementById("reviewList");
-    reviewList.innerHTML = "";
+    const list = document.getElementById("reviewList");
+    list.innerHTML = "";
 
     data.reviews.forEach((review) => {
       const li = document.createElement("li");
       li.className = "review-item";
 
       li.innerHTML = `
-        <strong class="review-name">${review.name}</strong>
-        <span class="review-stars">${"⭐".repeat(review.rating)}</span>
+        <div class="review-header">
+          <span class="review-name">${review.name}</span>
+          <span class="review-stars">${"★".repeat(review.rating)}</span>
+        </div>
         <p class="review-comment hidden">${review.comment}</p>
       `;
 
-      // CLICK NAME → TOGGLE COMMENT
-      li.querySelector(".review-name").onclick = () => {
+      // Toggle review text
+      li.querySelector(".review-header").onclick = () => {
         li.querySelector(".review-comment").classList.toggle("hidden");
       };
 
-      reviewList.appendChild(li);
+      list.appendChild(li);
     });
   });

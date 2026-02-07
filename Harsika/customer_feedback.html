@@ -9,34 +9,46 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
   <!-- CSS -->
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 
 <body>
 
-  <!-- TOP BAR (same as other pages) -->
+  <!-- TOP BAR (SAME AS DASHBOARD) -->
   <header class="top-bar">
-    <div class="menu">☰</div>
-    <div class="icons">
-      ✉️ 🔔 👤
+    <span class="material-icons menu-icon">menu</span>
+    <div class="top-icons">
+      <span class="material-icons">mail</span>
+      <span class="material-icons">notifications</span>
+      <span class="material-icons">account_circle</span>
     </div>
   </header>
 
-  <h2>Customer Feedback</h2>
+  <main class="page-container">
 
-  <!-- AVERAGE RATING -->
-  <section class="card feedback-summary">
-    <h3>Average Rating</h3>
-    <div class="rating-circle" id="avgRating">0.0</div>
-    <div id="stars"></div>
-  </section>
+    <h2>Customer Feedback</h2>
 
-  <!-- USER REVIEWS -->
-  <section class="card">
-    <h3>User Reviews</h3>
-    <ul id="reviewList"></ul>
-  </section>
+    <!-- AVERAGE RATING CARD -->
+    <section class="card feedback-summary">
+      <h3>Average Rating</h3>
+
+      <div class="rating-row">
+        <div class="rating-circle" id="avgRating">0.0</div>
+        <div class="rating-stars" id="stars"></div>
+      </div>
+    </section>
+
+    <!-- USER REVIEWS -->
+    <section class="card">
+      <h3>User Reviews</h3>
+      <ul class="review-list" id="reviewList"></ul>
+    </section>
+
+  </main>
 
   <script src="customer_feedback.js"></script>
 </body>

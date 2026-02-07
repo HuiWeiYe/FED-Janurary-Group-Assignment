@@ -1,20 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <header class="navbar">
-  <div class="nav-left">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-
-  <div class="nav-right">
-    <i class="fa-regular fa-envelope"></i>
-    <i class="fa-regular fa-bell"></i>
-    <i class="fa-regular fa-user"></i>
-  </div>
-</header>
   <meta charset="UTF-8">
   <title>Vendor Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,58 +15,52 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <!-- CSS -->
-   <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
-
   <link rel="stylesheet" href="dashboard.css">
 </head>
 
 <body>
 
-  <!-- TOP SUMMARY (3 BOXES) -->
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <span class="material-icons menu-icon">menu</span>
+    <div class="top-icons">
+      <span class="material-icons">mail</span>
+      <span class="material-icons">notifications</span>
+      <span class="material-icons">account_circle</span>
+    </div>
+  </header>
+
   <section class="top-summary">
-
-  <!-- BIG DASHBOARD CARD -->
-  <div class="dashboard-card">
-    <div>
-      <h4>Dashboard</h4>
-      <p class="value" id="salesAmount">$0</p>
-    </div>
-    <div class="icon">📊</div>
-  </div>
-
-  <!-- SMALL CARDS -->
-  <div class="small-cards">
-    <div class="card">
-      <h4>Total</h4>
-      <p class="value">$620</p>
+    <div class="dashboard-card">
+      <div>
+        <h4>Dashboard</h4>
+        <p class="value" id="salesAmount">$0</p>
+      </div>
+      <span class="material-icons icon">analytics</span>
     </div>
 
-    <div class="card">
-      <h4>Orders</h4>
-      <p class="value" id="ordersCount">0</p>
+    <div class="small-cards">
+      <div class="card">
+        <h4>Total</h4>
+        <p class="value">$620</p>
+      </div>
+      <div class="card">
+        <h4>Orders</h4>
+        <p class="value" id="ordersCount">0</p>
+      </div>
     </div>
-  </div>
+  </section>
 
-</section>
-
-
-  <!-- SALES PERFORMANCE -->
   <section class="chart-section">
     <h3>Sales Performance</h3>
     <canvas id="salesChart"></canvas>
   </section>
 
-  <!-- PEAK HOURS -->
   <section class="chart-section">
     <h3>Peak Hours</h3>
     <canvas id="peakChart"></canvas>
   </section>
 
   <script src="dashboard.js"></script>
-
 </body>
 </html>
