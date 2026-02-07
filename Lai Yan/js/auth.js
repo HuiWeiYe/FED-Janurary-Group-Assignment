@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function redirectByRole(role) {
     if (role === "admin") window.location.href = "admin-home.html";
     else if (role === "vendor") window.location.href = "vendor-home.html";
-    else window.location.href = "customer-home.html";
+    else window.location.href = "../../YuWenwork/CustomerHomepage/Assignment.html";
     }
 
 
