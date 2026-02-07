@@ -58,7 +58,7 @@
                 <div id="error-message" class="error-message" role="alert" aria-live="polite"></div>
             </form>
 
-            <!-- Register Link (Hidden for vendor/admin) -->
+            <!-- Register Link (Hidden for vendor/staff) -->
             <p class="register-link" id="registerRow">
                 Don't have an account?
                 <a href="register.html">Register here</a>
@@ -73,7 +73,7 @@
     <script>
         /**
          * Initialize login page based on selected role
-         * Displays role and hides registration for vendor/admin
+         * Displays role and hides registration for vendor/staff
          */
         (function initializeLoginPage() {
             const selectedRole = (sessionStorage.getItem('selectedRole') || 'customer').toLowerCase();
@@ -86,8 +86,8 @@
                 roleDisplay.textContent = `Logging in as: ${roleText}`;
             }
 
-            // Hide register link for vendor and admin (pre-approved accounts only)
-            if (registerRow && (selectedRole === 'vendor' || selectedRole === 'admin')) {
+            // Hide register link for vendor and staff (pre-approved accounts only)
+            if (registerRow && (selectedRole === 'vendor' || selectedRole === 'staff')) {
                 registerRow.style.display = 'none';
             }
         })();

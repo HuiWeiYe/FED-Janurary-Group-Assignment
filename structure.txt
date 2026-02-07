@@ -1,0 +1,92 @@
+.
+├── Chloe
+│   ├── Conduct-Inspection.css
+│   ├── Conduct-Inspection.html
+│   ├── Conduct-Inspection.js
+│   ├── Data.js
+│   ├── firebase-config.js
+│   ├── HawkerDetails.html
+│   ├── HawkerFinder.css
+│   ├── HawkerFinder.html
+│   ├── HawkerFinder.js
+│   ├── HawkerList.html
+│   ├── Inspector.css
+│   ├── Inspector.html
+│   ├── Inspector.js
+│   └── migrate.js
+├── Harsika
+│   ├── customer_feedback.html
+│   ├── customer_feedback.js
+│   ├── dashboard.css
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── popular_products.html
+│   ├── sales_analytics.html
+│   └── sales_analytics.js
+├── Lai Yan
+│   ├── css
+│   │   ├── admin-management.css
+│   │   ├── global.css
+│   │   ├── home.css
+│   │   ├── index.css
+│   │   ├── login.css
+│   │   ├── menu-management.css
+│   │   └── profile.css
+│   ├── images
+│   ├── index.html
+│   ├── js
+│   │   ├── admin-management.js
+│   │   ├── auth.js
+│   │   ├── avatar-helper.js
+│   │   ├── firebase-config.js
+│   │   ├── menu-management.js
+│   │   ├── profile.js
+│   │   └── role-manager.js
+│   └── pages
+│       ├── admin-home.html
+│       ├── admin-management.html
+│       ├── customer-home.html
+│       ├── login.html
+│       ├── menu-management.html
+│       ├── nea-home.html
+│       ├── profile.html
+│       ├── register.html
+│       └── vendor-home.html
+├── README.md
+├── structure.txt
+├── WeiYeWork
+│   ├── CustomerSample.json
+│   ├── ReviewComments.html
+│   ├── Reviews.css
+│   ├── Reviews.html
+│   ├── Reviews.js
+│   ├── ReviewsComments.css
+│   └── ReviewsComments.js
+└── YuWenwork
+    ├── CheckOutPage
+    │   ├── Checkout.css
+    │   ├── Checkout.html
+    │   └── checkout.js
+    ├── CustomerHomepage
+    │   ├── Assignment.html
+    │   ├── assignment.js
+    │   ├── KingOfNoodle.html
+    │   ├── Mala.css
+    │   ├── Spicy&Numb.html
+    │   ├── Spicy&Numb.js
+    │   ├── stalls.css
+    │   ├── stalls.html
+    │   ├── style.css
+    │   └── WesternDelights.html
+    ├── Delivery
+    │   ├── confirmdelivery.css
+    │   ├── DeliveryPage.html
+    │   ├── deliverypage.js
+    │   └── Images
+    │       └── map-10mins.jpeg
+    └── PaymentPage
+        ├── applepay.css
+        ├── ApplePay.html
+        └── applepay.js
+
+15 directories, 75 files

@@ -1,277 +1,144 @@
 /**
- * Admin Management JavaScript
+ * Admin User Management JavaScript
  * Author: Lai Yan (S10274594G)
- * Features: Manage stalls, vendors, inspections, and access control
+ * Features: Complete CRUD operations on all system users
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  let currentAdmin = null;
+  // DOM elements
+  const loadingSpinner = document.getElementById('loadingSpinner');
+  const tableContainer = document.getElementById('tableContainer');
+  const emptyState = document.getElementById('emptyState');
+  const usersTableBody = document.getElementById('usersTableBody');
+  const searchInput = document.getElementById('searchInput');
+  const roleFilter = document.getElementById('roleFilter');
+  const userModal = document.getElementById('userModal');
+  const userForm = document.getElementById('userForm');
+  const modalTitle = document.getElementById('modalTitle');
+  const submitBtn = document.getElementById('submitBtn');
+  const passwordGroup = document.getElementById('passwordGroup');
+
+  let allUsers = [];
+  let currentEditUserId = null;
 
   /**
-   * Initialize admin dashboard
+   * Initialize admin management
    */
   async function initialize() {
     try {
-      const userData = await checkAuth('admin');
-      currentAdmin = userData;
+      // Verify admin access
+      await checkAuth('admin');
       
-      loadStatistics();
-      loadStalls();
-      loadVendors();
-      loadInspections();
-      loadAllowlist();
+      // Load all users
+      await loadUsers();
       
+      // Setup event listeners
       setupEventListeners();
+      
     } catch (error) {
-      console.error('Error initializing admin dashboard:', error);
+      console.error('Error initializing admin management:', error);
+      showError('Failed to initialize. Please refresh the page.');
     }
   }
 
   /**
-   * Load dashboard statistics
+   * Load all users from Firestore
    */
-  async function loadStatistics() {
+  async function loadUsers() {
+    showLoading(true);
+
     try {
-      // Count total stalls
-      const stallsSnapshot = await db.collection('stalls').get();
-      document.getElementById('totalStalls').textContent = stallsSnapshot.size;
-
-      // Count total vendors
-      const vendorsSnapshot = await db.collection('allowedAccounts')
-        .where('role', '==', 'vendor')
-        .get();
-      document.getElementById('totalVendors').textContent = vendorsSnapshot.size;
-
-      // Count pending inspections (example - adjust based on your data structure)
-      const inspectionsSnapshot = await db.collection('inspections')
-        .where('status', '==', 'pending')
-        .get();
-      document.getElementById('pendingInspections').textContent = inspectionsSnapshot.size;
-
-      // Count active complaints (example - adjust based on your data structure)
-      const complaintsSnapshot = await db.collection('complaints')
-        .where('status', '==', 'active')
-        .get();
-      document.getElementById('activeComplaints').textContent = complaintsSnapshot.size;
-
-    } catch (error) {
-      console.error('Error loading statistics:', error);
-    }
-  }
-
-  /**
-   * Load stalls data
-   */
-  async function loadStalls() {
-    try {
-      const stallsSnapshot = await db.collection('stalls').orderBy('name').get();
-      const tbody = document.getElementById('stallsTableBody');
+      const usersSnapshot = await db.collection('users').get();
       
-      if (stallsSnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No stalls found</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = '';
-      
-      stallsSnapshot.forEach(doc => {
-        const stall = doc.data();
-        const row = createStallRow(doc.id, stall);
-        tbody.appendChild(row);
-      });
-
-    } catch (error) {
-      console.error('Error loading stalls:', error);
-      document.getElementById('stallsTableBody').innerHTML = 
-        '<tr><td colspan="6" style="text-align: center; padding: 20px; color: red;">Error loading stalls</td></tr>';
-    }
-  }
-
-  /**
-   * Create stall table row
-   */
-  function createStallRow(stallId, stall) {
-    const row = document.createElement('tr');
-    const grade = stall.hygieneGrade || 'N/A';
-    const gradeClass = grade !== 'N/A' ? `grade-${grade.toLowerCase()}` : '';
-    
-    row.innerHTML = `
-      <td>${escapeHtml(stallId)}</td>
-      <td>${escapeHtml(stall.name)}</td>
-      <td>${escapeHtml(stall.cuisine || 'N/A')}</td>
-      <td><span class="hygiene-grade ${gradeClass}">${grade}</span></td>
-      <td>${stall.lastInspection ? formatDate(stall.lastInspection.toDate()) : 'Never'}</td>
-      <td>
-        <div class="table-actions">
-          <button class="btn-icon" onclick="viewStallDetails('${stallId}')">View</button>
-          <button class="btn-icon" onclick="scheduleInspection('${stallId}')">Inspect</button>
-        </div>
-      </td>
-    `;
-    
-    return row;
-  }
-
-  /**
-   * Load vendors data
-   */
-  async function loadVendors() {
-    try {
-      const usersSnapshot = await db.collection('users')
-        .where('role', '==', 'vendor')
-        .get();
-      
-      const tbody = document.getElementById('vendorsTableBody');
-      
-      if (usersSnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No vendors found</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = '';
-      
+      allUsers = [];
       usersSnapshot.forEach(doc => {
-        const vendor = doc.data();
-        const row = createVendorRow(doc.id, vendor);
-        tbody.appendChild(row);
+        allUsers.push({
+          id: doc.id,
+          ...doc.data()
+        });
       });
 
+      updateStatistics();
+      renderUsers(allUsers);
+      
     } catch (error) {
-      console.error('Error loading vendors:', error);
-      document.getElementById('vendorsTableBody').innerHTML = 
-        '<tr><td colspan="6" style="text-align: center; padding: 20px; color: red;">Error loading vendors</td></tr>';
+      console.error('Error loading users:', error);
+      showError('Failed to load users. Please refresh the page.');
+    } finally {
+      showLoading(false);
     }
   }
 
   /**
-   * Create vendor table row
+   * Update statistics cards
    */
-  function createVendorRow(vendorId, vendor) {
-    const row = document.createElement('tr');
-    
-    row.innerHTML = `
-      <td>${escapeHtml(vendor.name || 'N/A')}</td>
-      <td>${escapeHtml(vendor.email)}</td>
-      <td>${escapeHtml(vendor.stallName || 'Not assigned')}</td>
-      <td>${escapeHtml(vendor.phone || 'N/A')}</td>
-      <td><span class="status-badge status-active">Active</span></td>
-      <td>
-        <div class="table-actions">
-          <button class="btn-icon" onclick="viewVendorDetails('${vendorId}')">View</button>
-        </div>
-      </td>
-    `;
-    
-    return row;
+  function updateStatistics() {
+    const total = allUsers.length;
+    const customers = allUsers.filter(u => u.role === 'customer').length;
+    const vendors = allUsers.filter(u => u.role === 'vendor').length;
+    const nea = allUsers.filter(u => u.role === 'nea').length;
+
+    document.getElementById('totalUsers').textContent = total;
+    document.getElementById('totalCustomers').textContent = customers;
+    document.getElementById('totalVendors').textContent = vendors;
+    document.getElementById('totalNEA').textContent = nea;
   }
 
   /**
-   * Load inspections data
+   * Render users to table
+   * @param {Array} users - Array of user objects
    */
-  async function loadInspections() {
-    try {
-      const inspectionsSnapshot = await db.collection('inspections')
-        .orderBy('date', 'desc')
-        .limit(50)
-        .get();
-      
-      const tbody = document.getElementById('inspectionsTableBody');
-      
-      if (inspectionsSnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No inspections found</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = '';
-      
-      inspectionsSnapshot.forEach(doc => {
-        const inspection = doc.data();
-        const row = createInspectionRow(doc.id, inspection);
-        tbody.appendChild(row);
-      });
-
-    } catch (error) {
-      console.error('Error loading inspections:', error);
-      document.getElementById('inspectionsTableBody').innerHTML = 
-        '<tr><td colspan="7" style="text-align: center; padding: 20px; color: red;">Error loading inspections</td></tr>';
+  function renderUsers(users) {
+    if (users.length === 0) {
+      tableContainer.style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
     }
+
+    tableContainer.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    usersTableBody.innerHTML = '';
+
+    users.forEach(user => {
+      const row = createUserRow(user);
+      usersTableBody.appendChild(row);
+    });
   }
 
   /**
-   * Create inspection table row
+   * Create table row for user
+   * @param {Object} user - User object
+   * @returns {HTMLElement} Table row element
    */
-  function createInspectionRow(inspectionId, inspection) {
+  function createUserRow(user) {
     const row = document.createElement('tr');
-    const grade = inspection.grade || 'N/A';
-    const gradeClass = grade !== 'N/A' ? `grade-${grade.toLowerCase()}` : '';
-    const status = inspection.status || 'completed';
     
+    const createdDate = user.createdAt ? 
+      formatDate(user.createdAt.toDate()) : 
+      'N/A';
+
     row.innerHTML = `
-      <td>${formatDate(inspection.date.toDate())}</td>
-      <td>${escapeHtml(inspection.stallName || 'N/A')}</td>
-      <td>${escapeHtml(inspection.inspectorName || 'N/A')}</td>
-      <td>${inspection.score || 'N/A'}</td>
-      <td><span class="hygiene-grade ${gradeClass}">${grade}</span></td>
-      <td><span class="status-badge status-${status}">${capitalize(status)}</span></td>
+      <td>${escapeHtml(user.name || 'N/A')}</td>
+      <td>${escapeHtml(user.email)}</td>
+      <td><span class="role-badge role-${user.role || 'customer'}">${user.role || 'customer'}</span></td>
+      <td>${escapeHtml(user.phone || 'N/A')}</td>
+      <td>${createdDate}</td>
       <td>
-        <div class="table-actions">
-          <button class="btn-icon" onclick="viewInspection('${inspectionId}')">View</button>
+        <div class="action-buttons">
+          <button class="btn-action btn-edit" onclick="editUser('${user.id}')" aria-label="Edit user">
+            Edit
+          </button>
+          <button class="btn-action btn-delete" onclick="deleteUser('${user.id}', '${escapeHtml(user.email)}')" aria-label="Delete user">
+            Delete
+          </button>
         </div>
       </td>
     `;
-    
-    return row;
-  }
 
-  /**
-   * Load allowlist data
-   */
-  async function loadAllowlist() {
-    try {
-      const allowlistSnapshot = await db.collection('allowedAccounts').get();
-      const tbody = document.getElementById('allowlistTableBody');
-      
-      if (allowlistSnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No allowed accounts</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = '';
-      
-      allowlistSnapshot.forEach(doc => {
-        const account = doc.data();
-        const row = createAllowlistRow(doc.id, account);
-        tbody.appendChild(row);
-      });
-
-    } catch (error) {
-      console.error('Error loading allowlist:', error);
-      document.getElementById('allowlistTableBody').innerHTML = 
-        '<tr><td colspan="5" style="text-align: center; padding: 20px; color: red;">Error loading allowlist</td></tr>';
-    }
-  }
-
-  /**
-   * Create allowlist table row
-   */
-  function createAllowlistRow(email, account) {
-    const row = document.createElement('tr');
-    
-    row.innerHTML = `
-      <td>${escapeHtml(email)}</td>
-      <td><span class="status-badge status-approved">${capitalize(account.role)}</span></td>
-      <td>${escapeHtml(account.approvedBy || 'System')}</td>
-      <td>${account.approvedAt ? formatDate(account.approvedAt.toDate()) : 'N/A'}</td>
-      <td>
-        <div class="table-actions">
-          <button class="btn-icon danger" onclick="removeFromAllowlist('${email}')">Remove</button>
-        </div>
-      </td>
-    `;
-    
     return row;
   }
 
@@ -279,176 +146,334 @@ document.addEventListener('DOMContentLoaded', async () => {
    * Setup event listeners
    */
   function setupEventListeners() {
-    // Add allowed account form
-    const addAllowedAccountForm = document.getElementById('addAllowedAccountForm');
-    addAllowedAccountForm.addEventListener('submit', handleAddAllowedAccount);
-
-    // Search and filter
-    document.getElementById('stallSearch')?.addEventListener('input', filterStalls);
-    document.getElementById('stallFilter')?.addEventListener('change', filterStalls);
-    document.getElementById('vendorSearch')?.addEventListener('input', filterVendors);
+    // Search functionality
+    searchInput.addEventListener('input', filterUsers);
+    
+    // Role filter
+    roleFilter.addEventListener('change', filterUsers);
+    
+    // Form submission
+    userForm.addEventListener('submit', handleFormSubmit);
+    
+    // Close modal on overlay click
+    userModal.addEventListener('click', (e) => {
+      if (e.target === userModal) {
+        closeModal();
+      }
+    });
   }
 
   /**
-   * Handle add allowed account form submission
+   * Filter users based on search and role filter
    */
-  async function handleAddAllowedAccount(e) {
+  function filterUsers() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const roleFilterValue = roleFilter.value.toLowerCase();
+
+    let filtered = allUsers;
+
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(user => 
+        (user.name && user.name.toLowerCase().includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm))
+      );
+    }
+
+    // Filter by role
+    if (roleFilterValue) {
+      filtered = filtered.filter(user => user.role === roleFilterValue);
+    }
+
+    renderUsers(filtered);
+  }
+
+  /**
+   * Open modal to add new user
+   */
+  window.openAddUserModal = function() {
+    currentEditUserId = null;
+    modalTitle.textContent = 'Add User';
+    submitBtn.textContent = 'Add User';
+    passwordGroup.style.display = 'block';
+    userForm.reset();
+    clearModalMessages();
+    userModal.classList.add('active');
+    document.getElementById('userName').focus();
+  };
+
+  /**
+   * Edit existing user
+   * @param {string} userId - User document ID
+   */
+  window.editUser = async function(userId) {
+    try {
+      const user = allUsers.find(u => u.id === userId);
+      
+      if (!user) {
+        alert('User not found.');
+        return;
+      }
+
+      currentEditUserId = userId;
+      modalTitle.textContent = 'Edit User';
+      submitBtn.textContent = 'Update User';
+      passwordGroup.style.display = 'none'; // Can't change password in edit mode
+
+      // Populate form
+      document.getElementById('userName').value = user.name || '';
+      document.getElementById('userEmail').value = user.email || '';
+      document.getElementById('userRole').value = user.role || 'customer';
+      document.getElementById('userPhone').value = user.phone || '';
+
+      clearModalMessages();
+      userModal.classList.add('active');
+      document.getElementById('userName').focus();
+
+    } catch (error) {
+      console.error('Error loading user for editing:', error);
+      alert('Failed to load user data.');
+    }
+  };
+
+  /**
+   * Handle form submission (add or update)
+   */
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    
-    const email = document.getElementById('allowedEmail').value.trim().toLowerCase();
-    const role = document.getElementById('allowedRole').value;
-    const messageEl = document.getElementById('allowlist-message');
-    const successEl = document.getElementById('allowlist-success');
+    clearModalMessages();
 
-    messageEl.textContent = '';
-    successEl.textContent = '';
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim().toLowerCase();
+    const role = document.getElementById('userRole').value;
+    const phone = document.getElementById('userPhone').value.trim();
+    const password = document.getElementById('userPassword').value;
 
-    if (!email || !role) {
-      messageEl.textContent = 'Please fill in all fields.';
+    // Validation
+    if (!name || !email || !role) {
+      showModalError('Please fill in all required fields.');
+      return;
+    }
+
+    if (!currentEditUserId && !password) {
+      showModalError('Password is required for new users.');
+      return;
+    }
+
+    if (password && password.length < 6) {
+      showModalError('Password must be at least 6 characters.');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showModalError('Please enter a valid email address.');
       return;
     }
 
     try {
+      submitBtn.disabled = true;
+      submitBtn.textContent = currentEditUserId ? 'Updating...' : 'Adding...';
+
+      if (currentEditUserId) {
+        // Update existing user
+        await updateUser(currentEditUserId, { name, email, role, phone });
+      } else {
+        // Create new user
+        await createUser({ name, email, role, phone, password });
+      }
+
+      showModalSuccess(currentEditUserId ? 'User updated successfully!' : 'User added successfully!');
+      
+      // Reload users
+      await loadUsers();
+      
+      // Close modal after brief delay
+      setTimeout(() => {
+        closeModal();
+      }, 1500);
+
+    } catch (error) {
+      console.error('Error saving user:', error);
+      showModalError(error.message || 'Failed to save user. Please try again.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = currentEditUserId ? 'Update User' : 'Add User';
+    }
+  }
+
+  /**
+   * Create new user
+   * @param {Object} userData - User data
+   */
+  async function createUser(userData) {
+    const { name, email, role, phone, password } = userData;
+
+    // Create user in Firebase Authentication
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const userId = userCredential.user.uid;
+
+    // Create user document in Firestore
+    await db.collection('users').doc(userId).set({
+      name: name,
+      email: email,
+      role: role,
+      phone: phone,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // If vendor or admin, add to allowedAccounts
+    if (role === 'vendor' || role === 'admin') {
       await db.collection('allowedAccounts').doc(email).set({
         role: role,
-        approvedBy: currentAdmin.email,
+        approvedBy: auth.currentUser.email,
         approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
         approved: true
       });
-
-      successEl.textContent = `Successfully added ${email} to allowlist as ${role}.`;
-      
-      // Reset form
-      e.target.reset();
-      
-      // Reload allowlist
-      loadAllowlist();
-      loadStatistics();
-
-      setTimeout(() => {
-        successEl.textContent = '';
-      }, 3000);
-
-    } catch (error) {
-      console.error('Error adding to allowlist:', error);
-      messageEl.textContent = 'Failed to add account. Please try again.';
     }
   }
 
   /**
-   * Remove account from allowlist
+   * Update existing user
+   * @param {string} userId - User document ID
+   * @param {Object} userData - Updated user data
    */
-  window.removeFromAllowlist = async function(email) {
-    if (!confirm(`Are you sure you want to remove ${email} from the allowlist?`)) {
+  async function updateUser(userId, userData) {
+    const { name, email, role, phone } = userData;
+
+    const user = allUsers.find(u => u.id === userId);
+    const oldEmail = user.email;
+    const oldRole = user.role;
+
+    // Update user document in Firestore
+    await db.collection('users').doc(userId).update({
+      name: name,
+      email: email,
+      role: role,
+      phone: phone,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Handle allowedAccounts changes if role changed
+    if (oldRole !== role) {
+      // Remove old allowlist entry if was vendor/admin
+      if (oldRole === 'vendor' || oldRole === 'admin') {
+        await db.collection('allowedAccounts').doc(oldEmail).delete();
+      }
+
+      // Add new allowlist entry if now vendor/admin
+      if (role === 'vendor' || role === 'admin') {
+        await db.collection('allowedAccounts').doc(email).set({
+          role: role,
+          approvedBy: auth.currentUser.email,
+          approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          approved: true
+        });
+      }
+    } else if ((role === 'vendor' || role === 'admin') && oldEmail !== email) {
+      // If email changed but role stayed vendor/admin, update allowlist
+      await db.collection('allowedAccounts').doc(oldEmail).delete();
+      await db.collection('allowedAccounts').doc(email).set({
+        role: role,
+        approvedBy: auth.currentUser.email,
+        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        approved: true
+      });
+    }
+  }
+
+  /**
+   * Delete user
+   * @param {string} userId - User document ID
+   * @param {string} email - User email
+   */
+  window.deleteUser = async function(userId, email) {
+    if (!confirm(`Are you sure you want to delete user: ${email}?\n\nThis action cannot be undone.`)) {
       return;
     }
 
     try {
-      await db.collection('allowedAccounts').doc(email).delete();
-      loadAllowlist();
-      loadStatistics();
-      alert('Account removed from allowlist.');
+      const user = allUsers.find(u => u.id === userId);
+
+      // Delete from Firestore
+      await db.collection('users').doc(userId).delete();
+
+      // Delete from allowedAccounts if vendor/admin
+      if (user.role === 'vendor' || user.role === 'admin') {
+        await db.collection('allowedAccounts').doc(email).delete();
+      }
+
+      // Note: Cannot delete from Firebase Auth without admin SDK
+      // In production, you'd need Cloud Functions for this
+      alert('User deleted from database successfully.\n\nNote: The authentication account still exists. Contact a Firebase administrator to fully delete the account.');
+
+      // Reload users
+      await loadUsers();
+
     } catch (error) {
-      console.error('Error removing from allowlist:', error);
-      alert('Failed to remove account.');
+      console.error('Error deleting user:', error);
+      alert('Failed to delete user. Please try again.');
     }
-  };
-
-  /**
-   * Filter stalls
-   */
-  function filterStalls() {
-    const searchTerm = document.getElementById('stallSearch').value.toLowerCase();
-    const gradeFilter = document.getElementById('stallFilter').value;
-    const rows = document.querySelectorAll('#stallsTableBody tr');
-
-    rows.forEach(row => {
-      const name = row.cells[1]?.textContent.toLowerCase() || '';
-      const grade = row.cells[3]?.textContent.trim() || '';
-      
-      const matchesSearch = name.includes(searchTerm);
-      const matchesFilter = !gradeFilter || grade === gradeFilter;
-
-      row.style.display = matchesSearch && matchesFilter ? '' : 'none';
-    });
-  }
-
-  /**
-   * Filter vendors
-   */
-  function filterVendors() {
-    const searchTerm = document.getElementById('vendorSearch').value.toLowerCase();
-    const rows = document.querySelectorAll('#vendorsTableBody tr');
-
-    rows.forEach(row => {
-      const name = row.cells[0]?.textContent.toLowerCase() || '';
-      const email = row.cells[1]?.textContent.toLowerCase() || '';
-      
-      const matches = name.includes(searchTerm) || email.includes(searchTerm);
-      row.style.display = matches ? '' : 'none';
-    });
-  }
-
-  /**
-   * Switch tabs
-   */
-  window.switchTab = function(tabName) {
-    // Update tab buttons
-    document.querySelectorAll('.tab-button').forEach(btn => {
-      btn.classList.remove('active');
-      btn.setAttribute('aria-selected', 'false');
-    });
-    event.target.classList.add('active');
-    event.target.setAttribute('aria-selected', 'true');
-
-    // Update tab content
-    document.querySelectorAll('.tab-content').forEach(content => {
-      content.classList.remove('active');
-    });
-    document.getElementById(`${tabName}-tab`).classList.add('active');
-  };
-
-  /**
-   * View stall details (placeholder)
-   */
-  window.viewStallDetails = function(stallId) {
-    alert(`View details for stall: ${stallId}\n(Feature to be implemented)`);
-  };
-
-  /**
-   * Schedule inspection (placeholder)
-   */
-  window.scheduleInspection = function(stallId) {
-    alert(`Schedule inspection for stall: ${stallId}\n(Feature to be implemented)`);
-  };
-
-  /**
-   * View vendor details (placeholder)
-   */
-  window.viewVendorDetails = function(vendorId) {
-    alert(`View details for vendor: ${vendorId}\n(Feature to be implemented)`);
-  };
-
-  /**
-   * View inspection details (placeholder)
-   */
-  window.viewInspection = function(inspectionId) {
-    document.getElementById('inspectionModal').classList.add('active');
-    document.getElementById('inspectionDetails').innerHTML = `
-      <p>Inspection ID: ${inspectionId}</p>
-      <p>Detailed inspection view coming soon...</p>
-    `;
   };
 
   /**
    * Close modal
    */
   window.closeModal = function() {
-    document.getElementById('inspectionModal').classList.remove('active');
+    userModal.classList.remove('active');
+    userForm.reset();
+    currentEditUserId = null;
+    clearModalMessages();
   };
 
   /**
-   * Utility: Format date
+   * Show loading spinner
+   * @param {boolean} show - Whether to show spinner
+   */
+  function showLoading(show) {
+    loadingSpinner.style.display = show ? 'flex' : 'none';
+  }
+
+  /**
+   * Show modal error message
+   * @param {string} message - Error message
+   */
+  function showModalError(message) {
+    document.getElementById('modal-error').textContent = message;
+    document.getElementById('modal-success').textContent = '';
+  }
+
+  /**
+   * Show modal success message
+   * @param {string} message - Success message
+   */
+  function showModalSuccess(message) {
+    document.getElementById('modal-success').textContent = message;
+    document.getElementById('modal-error').textContent = '';
+  }
+
+  /**
+   * Clear modal messages
+   */
+  function clearModalMessages() {
+    document.getElementById('modal-error').textContent = '';
+    document.getElementById('modal-success').textContent = '';
+  }
+
+  /**
+   * Show general error message
+   * @param {string} message - Error message
+   */
+  function showError(message) {
+    alert(message);
+  }
+
+  /**
+   * Format date
+   * @param {Date} date - Date to format
+   * @returns {string} Formatted date
    */
   function formatDate(date) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -456,21 +481,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   /**
-   * Utility: Capitalize first letter
-   */
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  /**
-   * Utility: Escape HTML
+   * Escape HTML to prevent XSS
+   * @param {string} text - Text to escape
+   * @returns {string} Escaped text
    */
   function escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
   }
 
-  // Initialize dashboard
+  // Initialize admin management
   initialize();
 });

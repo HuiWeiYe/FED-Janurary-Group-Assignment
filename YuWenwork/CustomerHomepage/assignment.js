@@ -1,3 +1,12 @@
+window.logout = async function logout() {
+  try {
+    await firebase.auth().signOut();
+    window.location.href = "../../Lai Yan/pages/login.html";
+  } catch (err) {
+    console.error("Logout error:", err);
+    alert("Failed to logout.");
+  }
+};
 
 // Used on stalls.html to load stalls based on cuisine type 
 
