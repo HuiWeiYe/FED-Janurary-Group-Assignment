@@ -1,264 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Hawker Centre System</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    body {
-      background-color: #f1f1f1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 500px;
-      min-height: 100vh;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .header {
-      background: #5dbb91;
-      color: white;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .back-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      padding: 5px;
-    }
-
-    .header-text h1 {
-      font-size: 20px;
-      margin-bottom: 3px;
-    }
-
-    .header-text p {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-
-    .login-container {
-      flex: 1;
-      padding: 30px 20px;
-      overflow-y: auto;
-    }
-
-    .role-display {
-      background: #f4f4f4;
-      padding: 12px 15px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      font-size: 14px;
-      color: #666;
-      text-align: center;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 8px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background: #f9f9f9;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: #5dbb91;
-      background: white;
-    }
-
-    .btn-primary {
-      width: 100%;
-      padding: 14px;
-      background: #5dbb91;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-    }
-
-    .btn-primary:hover {
-      background: #4a9d7d;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(93, 187, 145, 0.3);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .error-message {
-      background: #ffebee;
-      border-left: 4px solid #e74c3c;
-      color: #c0392b;
-      padding: 12px 15px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-top: 15px;
-      display: none;
-    }
-
-    .error-message:not(:empty) {
-      display: block;
-    }
-
-    .register-link {
-      text-align: center;
-      margin-top: 25px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .register-link a {
-      color: #5dbb91;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .register-link a:hover {
-      text-decoration: underline;
-    }
-
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      color: #999;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .back-link:hover {
-      color: #5dbb91;
-    }
-
-    @media (max-width: 768px) {
-      .app-container {
-        max-width: 100%;
-      }
-
-      .login-container {
-        padding: 20px 15px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to Singapore Hawker Centre Management System">
+    <title>Login - Hawker Centre System</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-  <div class="app-container">
-    <div class="header">
-      <button class="back-btn" onclick="window.location.href='../index.html'">←</button>
-      <div class="header-text">
-        <h1>Login</h1>
-        <p>Welcome back to Hawker Centre System</p>
-      </div>
-    </div>
-
-    <div class="login-container">
-      <div class="role-display" id="role-display">Loading...</div>
-
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            required
-            placeholder="Enter your email"
-            autocomplete="email"
-          />
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='../index.html'" aria-label="Go back to role selection">←</button>
+            <div class="header-text">
+                <h1>Login</h1>
+                <p>Welcome back to Hawker Centre System</p>
+            </div>
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            required
-            placeholder="Enter your password"
-            autocomplete="current-password"
-          />
+        <!-- Login Container -->
+        <div class="login-container">
+            <!-- Role Display -->
+            <div class="role-display" id="role-display">Loading...</div>
+
+            <!-- Login Form -->
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        aria-required="true"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        aria-required="true"
+                    />
+                </div>
+
+                <button type="submit" class="btn-primary">Login</button>
+                <div id="error-message" class="error-message" role="alert" aria-live="polite"></div>
+            </form>
+
+            <!-- Register Link (Hidden for vendor/admin) -->
+            <p class="register-link" id="registerRow">
+                Don't have an account?
+                <a href="register.html">Register here</a>
+            </p>
+
+            <!-- Back Link -->
+            <a href="../index.html" class="back-link">← Change Role</a>
         </div>
-
-        <button type="submit" class="btn-primary">Login</button>
-        <div id="error-message" class="error-message"></div>
-      </form>
-
-      <!-- Added id="registerRow" so we can hide this for vendor/admin -->
-      <p class="register-link" id="registerRow">
-        Don't have an account?
-        <a href="register.html">Register here</a>
-      </p>
-
-      <a href="../index.html" class="back-link">← Change Role</a>
     </div>
-  </div>
 
-  <!-- Admin and Vendor can't register -->
-  <script>
-    (function () {
-      const selectedRole = (sessionStorage.getItem('selectedRole') || 'customer').toLowerCase();
+    <!-- Display selected role and hide register link for staff -->
+    <script>
+        /**
+         * Initialize login page based on selected role
+         * Displays role and hides registration for vendor/admin
+         */
+        (function initializeLoginPage() {
+            const selectedRole = (sessionStorage.getItem('selectedRole') || 'customer').toLowerCase();
+            const roleDisplay = document.getElementById('role-display');
+            const registerRow = document.getElementById('registerRow');
 
-      const roleDisplay = document.getElementById('role-display');
-      const registerRow = document.getElementById('registerRow');
+            // Display selected role
+            if (roleDisplay) {
+                const roleText = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
+                roleDisplay.textContent = `Logging in as: ${roleText}`;
+            }
 
-      if (roleDisplay) {
-        const roleText = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
-        roleDisplay.textContent = `Logging in as: ${roleText}`;
-      }
+            // Hide register link for vendor and admin (pre-approved accounts only)
+            if (registerRow && (selectedRole === 'vendor' || selectedRole === 'admin')) {
+                registerRow.style.display = 'none';
+            }
+        })();
+    </script>
 
-      // Hide register link for vendor/admin
-      if (registerRow && (selectedRole === 'vendor' || selectedRole === 'admin')) {
-        registerRow.style.display = 'none';
-      }
-    })();
-  </script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-  <!-- JavaScript -->
-  <script src="../js/firebase-config.js"></script>
-  <script src="../js/auth.js"></script>
+    <!-- JavaScript -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
 </body>
 </html>

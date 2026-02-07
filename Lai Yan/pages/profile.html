@@ -3,264 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User Profile - Hawker Centre System">
     <title>Profile - Hawker Centre System</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        body {
-            background-color: #f1f1f1;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 500px;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            background: #5dbb91;
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            font-size: 20px;
-        }
-
-        .btn-logout {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-logout:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .profile-header {
-            text-align: center;
-            padding: 30px 20px;
-            background: #f8f9fa;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            background: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        #avatar-initial {
-            font-size: 48px;
-            font-weight: bold;
-            color: #666;
-        }
-
-        #profile-name {
-            font-size: 24px;
-            margin: 10px 0 5px;
-            color: #333;
-        }
-
-        #profile-role {
-            font-size: 14px;
-            color: #666;
-            text-transform: capitalize;
-            background: #e8f5e9;
-            padding: 5px 15px;
-            border-radius: 15px;
-            display: inline-block;
-        }
-
-        .profile-form {
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background: #f9f9f9;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #5dbb91;
-            background: white;
-        }
-
-        .form-group input:disabled {
-            background: #e9ecef;
-            color: #6c757d;
-        }
-
-        #vendor-fields {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        #vendor-fields h3 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background: #5dbb91;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .btn-primary:hover {
-            background: #4a9d7d;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(93, 187, 145, 0.3);
-        }
-
-        .success-message {
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            color: #2e7d32;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .success-message:not(:empty) {
-            display: block;
-        }
-
-        .error-message {
-            background: #ffebee;
-            border-left: 4px solid #e74c3c;
-            color: #c0392b;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .error-message:not(:empty) {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .app-container {
-                max-width: 100%;
-            }
-        }
-    </style>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/profile.css">
 </head>
 <body>
     <div class="app-container">
+        <!-- Header -->
         <div class="header">
             <h1>My Profile</h1>
-            <button onclick="logout()" class="btn-logout">Logout</button>
+            <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
         </div>
 
+        <!-- Profile Header with Avatar -->
         <div class="profile-header">
             <div class="profile-avatar" id="profile-avatar">
-                <span id="avatar-initial">?</span>
+                <span id="avatar-initial" aria-hidden="true">?</span>
             </div>
             <h2 id="profile-name">Loading...</h2>
-            <p id="profile-role"></p>
+            <p id="profile-role" aria-label="User role"></p>
         </div>
 
-        <form id="profileForm" class="profile-form">
+        <!-- Profile Form -->
+        <form id="profileForm" class="profile-form" novalidate>
+            <!-- Full Name -->
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" id="name" required>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name"
+                    required
+                    aria-required="true"
+                />
             </div>
 
+            <!-- Email (disabled) -->
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" disabled>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email"
+                    disabled
+                    aria-disabled="true"
+                />
             </div>
 
+            <!-- Phone Number -->
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" placeholder="+65 1234 5678">
+                <input 
+                    type="tel" 
+                    id="phone"
+                    name="phone"
+                    placeholder="+65 1234 5678"
+                    pattern="[+]?[0-9\s-]+"
+                />
             </div>
 
+            <!-- Vendor-specific Fields (hidden by default) -->
             <div id="vendor-fields" style="display: none;">
                 <h3>Stall Information</h3>
 
                 <div class="form-group">
                     <label for="stallName">Stall Name</label>
-                    <input type="text" id="stallName" placeholder="e.g., Ah Seng Chicken Rice">
+                    <input 
+                        type="text" 
+                        id="stallName"
+                        name="stallName"
+                        placeholder="e.g., Ah Seng Chicken Rice"
+                    />
                 </div>
 
                 <div class="form-group">
                     <label for="stallId">Stall ID</label>
-                    <select id="stallId">
+                    <select id="stallId" name="stallId">
                         <option value="">Select your stall</option>
                     </select>
                 </div>
             </div>
 
+            <!-- Submit Button -->
             <button type="submit" class="btn-primary">Update Profile</button>
-            <div id="success-message" class="success-message"></div>
-            <div id="error-message" class="error-message"></div>
+            
+            <!-- Messages -->
+            <div id="success-message" class="success-message" role="alert" aria-live="polite"></div>
+            <div id="error-message" class="error-message" role="alert" aria-live="polite"></div>
         </form>
     </div>
 
@@ -269,6 +101,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
+    <!-- Application JavaScript -->
     <script src="../js/firebase-config.js"></script>
     <script src="../js/avatar-helper.js"></script>
     <script src="../js/auth.js"></script>
