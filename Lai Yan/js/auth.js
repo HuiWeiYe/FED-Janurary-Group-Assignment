@@ -1,9 +1,17 @@
+/*
+ * Author: Lai Yan (S10274594G)
+ * 
+ * Portal selection:
+ * - sessionStorage.selectedRole = "customer" | "vendor" | "staff"
+ * - staff portal allows roles: admin, nea
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
   // Firebase services
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // DOM references 
+  // DOM references
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -15,17 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedRole = (sessionStorage.getItem("selectedRole") || "customer").toLowerCase();
 
   /**
-   * UI: hide registration link on staff portals
-   * Staff accounts should be pre-approved (allowlist)
+   * UI: hide registration link on staff/vendor portals (pre-approved accounts only)
    */
   const registerRow = document.getElementById("registerRow");
-  if (registerRow && (selectedRole === "admin" || selectedRole === "vendor")) {
+  if (registerRow && (selectedRole === "staff" || selectedRole === "vendor")) {
     registerRow.style.display = "none";
   }
 
   /**
-   * Redirect user to the correct page based on their role.
-   * Customer -> customer-home.html
+   * Redirect user to the correct page based on their actual role.
+   * Customer -> Yu Wen customer homepage
    * Vendor -> vendor-home.html
    * NEA -> nea-home.html
    * Admin -> admin-management.html
@@ -38,26 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * STAFF GATE:
-   * allowedAccounts/{emailLower} is used to control which staff emails are allowed.
-   * - allowedRoles is an array of roles that can access the current portal.
-   * - returns { ok: boolean, role: string|null }
-   */
-  async function checkAllowlistForStaff(emailLower, allowedRoles) {
-    const snap = await db.collection("allowedAccounts").doc(emailLower).get();
-    if (!snap.exists) return { ok: false, role: null };
-
-    const data = snap.data() || {};
-
-    const role = (data.role || "").toLowerCase();
-    return { ok: allowedRoles.includes(role), role };
-  }
-
-  /**
    * PROFILE GATE:
    * users/{uid} stores the user's profile + role + status.
    * - if missing -> deny access
-   * - if disabled -> deny access
+   * - if inactive/disabled -> deny access
    */
   async function getAndValidateUserProfile(uid) {
     const userSnap = await db.collection("users").doc(uid).get();
@@ -69,8 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const userData = userSnap.data() || {};
     const status = (userData.status || "active").toLowerCase();
 
-    if (status === "disabled") {
-      return { ok: false, reason: "Access denied: your account is disabled." };
+    // Support both "inactive" and "disabled" as blocked states
+    if (status === "inactive" || status === "disabled") {
+      return { ok: false, reason: "Access denied: your account is inactive." };
     }
 
     return { ok: true, userData };
@@ -98,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await auth.signInWithEmailAndPassword(emailLower, password);
         const uid = result.user.uid;
 
-        // 2) Firestore: verify user profile exists and is not disabled
+        // 2) Firestore: verify user profile exists and is active
         const profile = await getAndValidateUserProfile(uid);
         if (!profile.ok) {
           await auth.signOut();
@@ -106,56 +98,38 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // This is the user's role from database
+        // Role from Firestore 
         const firestoreRole = (profile.userData.role || "customer").toLowerCase();
 
         // 3) Portal logic (selectedRole is the portal)
         // ------------------------------------------------
-        // STAFF PORTAL: NEA & Admin
+
+        // STAFF PORTAL: only admin or nea accounts
         if (selectedRole === "staff") {
-          // Allowlist must contain role admin OR nea
-          const allow = await checkAllowlistForStaff(emailLower, ["admin", "nea"]);
-          if (!allow.ok) {
+          if (firestoreRole !== "admin" && firestoreRole !== "nea") {
             await auth.signOut();
             alert("Not approved to access the staff portal.");
             return;
           }
-
-          // Firestore role must also be admin OR nea (prevents customer entering admin portal)
-          if (firestoreRole !== "admin" && firestoreRole !== "nea") {
-            await auth.signOut();
-            alert("Role mismatch. Your account is not a staff account.");
-            return;
-          }
-
-          // Redirect based on user's actual Firestore role
           redirectByRole(firestoreRole);
           return;
         }
 
         // VENDOR PORTAL: only vendor accounts
         if (selectedRole === "vendor") {
-          const allow = await checkAllowlistForStaff(emailLower, ["vendor"]);
-          if (!allow.ok) {
+          if (firestoreRole !== "vendor") {
             await auth.signOut();
             alert("Not approved to access the vendor portal.");
             return;
           }
-
-          if (firestoreRole !== "vendor") {
-            await auth.signOut();
-            alert("Role mismatch. Please use the correct portal.");
-            return;
-          }
-
           redirectByRole("vendor");
           return;
         }
 
-        // CUSTOMER PORTAL: only customers
+        // CUSTOMER PORTAL: only customer accounts
         if (firestoreRole !== "customer") {
           await auth.signOut();
-          alert("Please use the correct staff portal for your account.");
+          alert("Please use the correct portal for your account.");
           return;
         }
 
@@ -186,13 +160,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const emailLower = email.toLowerCase();
-
-      // Block staff registration from UI
+      // Block staff/vendor registration
       if (selectedRole === "staff" || selectedRole === "vendor") {
         alert("Registration is only available for customers.");
         return;
       }
+
+      const emailLower = email.toLowerCase();
 
       try {
         // Create Auth account
@@ -205,6 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
           email: emailLower,
           phone,
           role: "customer",
+          status: "active",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         redirectByRole("customer");
@@ -229,21 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const emailLower = email.toLowerCase();
 
       try {
-        // If user is on a staff portal, only allow reset if allowlisted for that portal
-        if (selectedRole === "staff") {
-          const allow = await checkAllowlistForStaff(emailLower, ["admin", "nea"]);
-          if (!allow.ok) {
-            alert("This email is not approved for the admin portal.");
-            return;
-          }
-        } else if (selectedRole === "vendor") {
-          const allow = await checkAllowlistForStaff(emailLower, ["vendor"]);
-          if (!allow.ok) {
-            alert("This email is not approved for the vendor portal.");
-            return;
-          }
-        }
-
+        // Password reset is handled by Firebase Auth.
         await auth.sendPasswordResetEmail(emailLower);
         alert("Password reset link sent. Check your email.");
       } catch (err) {
@@ -259,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
       await auth.signOut();
+      sessionStorage.clear();
       window.location.href = "login.html";
     });
   }

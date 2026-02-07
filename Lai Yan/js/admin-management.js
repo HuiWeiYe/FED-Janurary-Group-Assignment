@@ -7,6 +7,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
+  
+  // Secondary Firebase app for creating users without switching session
+  const secondaryApp = firebase.apps.find(app => app.name === "Secondary")
+    ? firebase.app("Secondary")
+    : firebase.initializeApp(firebaseConfig, "Secondary");
+
+  const secondaryAuth = secondaryApp.auth();
+
 
   // DOM elements
   const loadingSpinner = document.getElementById('loadingSpinner');
@@ -200,6 +208,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     clearModalMessages();
     userModal.classList.add('active');
     document.getElementById('userName').focus();
+    document.getElementById('userEmail').disabled = false;
   };
 
   /**
@@ -219,6 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       modalTitle.textContent = 'Edit User';
       submitBtn.textContent = 'Update User';
       passwordGroup.style.display = 'none'; // Can't change password in edit mode
+      document.getElementById('userEmail').disabled = true; // Can't change email in edit mode
 
       // Populate form
       document.getElementById('userName').value = user.name || '';
@@ -278,7 +288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (currentEditUserId) {
         // Update existing user
-        await updateUser(currentEditUserId, { name, email, role, phone });
+        await updateUser(currentEditUserId, { name, role, phone });
       } else {
         // Create new user
         await createUser({ name, email, role, phone, password });
@@ -292,6 +302,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Close modal after brief delay
       setTimeout(() => {
         closeModal();
+        document.getElementById('userEmail').disabled = false;
       }, 1500);
 
     } catch (error) {
@@ -311,7 +322,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { name, email, role, phone, password } = userData;
 
     // Create user in Firebase Authentication
-    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const userCredential = await secondaryAuth.createUserWithEmailAndPassword(email, password);
     const userId = userCredential.user.uid;
 
     // Create user document in Firestore
@@ -324,13 +335,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    // If vendor or admin, add to allowedAccounts
-    if (role === 'vendor' || role === 'admin') {
+    // If vendor, nea or admin, add to allowedAccounts
+    if (role === 'vendor' || role === 'admin' || role === 'nea') {
       await db.collection('allowedAccounts').doc(email).set({
         role: role,
-        approvedBy: auth.currentUser.email,
-        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        approved: true
       });
     }
   }
@@ -340,42 +348,31 @@ document.addEventListener('DOMContentLoaded', async () => {
    * @param {string} userId - User document ID
    * @param {Object} userData - Updated user data
    */
-  async function updateUser(userId, userData) {
-    const { name, email, role, phone } = userData;
+async function updateUser(userId, userData) {
+  const { name, role, phone } = userData;
 
-    const user = allUsers.find(u => u.id === userId);
-    const oldEmail = user.email;
-    const oldRole = user.role;
+  const user = allUsers.find(u => u.id === userId);
+  const oldEmail = user.email;
+  const oldRole = user.role;
 
-    // Update user document in Firestore
-    await db.collection('users').doc(userId).update({
-      name: name,
-      email: email,
-      role: role,
-      phone: phone,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+  await db.collection('users').doc(userId).update({
+    name,
+    role,
+    phone,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
 
-    // Handle allowedAccounts changes if role changed
-    if (oldRole !== role) {
-      // Remove old allowlist entry if was vendor/admin
-      if (oldRole === 'vendor' || oldRole === 'admin') {
-        await db.collection('allowedAccounts').doc(oldEmail).delete();
-      }
+  // Handle allowlist when role changes
+  if (oldRole !== role) {
 
-      // Add new allowlist entry if now vendor/admin
-      if (role === 'vendor' || role === 'admin') {
-        await db.collection('allowedAccounts').doc(email).set({
-          role: role,
-          approvedBy: auth.currentUser.email,
-          approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          approved: true
-        });
-      }
-    } else if ((role === 'vendor' || role === 'admin') && oldEmail !== email) {
-      // If email changed but role stayed vendor/admin, update allowlist
+    // Remove old allowlist entry if needed
+    if (oldRole === 'vendor' || oldRole === 'admin' || oldRole === 'nea') {
       await db.collection('allowedAccounts').doc(oldEmail).delete();
-      await db.collection('allowedAccounts').doc(email).set({
+    }
+
+    // Add new allowlist entry if needed
+    if (role === 'vendor' || role === 'admin' || role === 'nea') {
+      await db.collection('allowedAccounts').doc(oldEmail).set({
         role: role,
         approvedBy: auth.currentUser.email,
         approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -383,6 +380,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
   }
+}
+
 
   /**
    * Delete user
