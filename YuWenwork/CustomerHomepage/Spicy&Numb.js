@@ -2,7 +2,6 @@ const stallNames = {
     "Spicy&Numb.html": "Spicy & Numb",
     "KingOfNoodle.html": "King Of Noodle",
     "WesternDelights.html": "Western Delights",
-    "TteobokiHeaven.html": "Tteoboki Heaven" // Ensure this matches the filename!
 }
 const allStallMenu = {
     "Spicy&Numb.html":[
@@ -33,15 +32,6 @@ const allStallMenu = {
         {name: "Fried Chicken Wing", price: 6.00, qty: 0, img:"https://tse3.mm.bing.net/th/id/OIP.ypIDRyYFbMxvGzyKujNbsAHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3"},
         {name: "Fish & Chips", price: 7.00, qty: 0, img:"https://media.timeout.com/images/103696698/image.jpg"},
         {name: "Mushroom Soup", price: 3.00, qty: 0, img:"https://bigoven-res.cloudinary.com/image/upload/t_recipe-1280/mushroom-soup-f2e36e.jpg"}
-    ],
-
-    "TteobokiHeaven.html":[
-        {name: "Tteobokki", price: 5.00, qty: 0, img:"https://www.mashed.com/img/gallery/what-is-tteokbokki-and-what-does-it-taste-like/l-intro-1617134138.jpg"},
-        {name: "Mandu (fried dumpling)", price: 2.00, qty: 0, img:"https://www.koreanbapsang.com/wp-content/uploads/2009/09/DSC_1191-e1538625826525.jpg"},
-        {name: "Korean Ramen", price: 5.00, qty: 0, img:"https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k/Photo/People/2022-05-AAPI-Month-Third-Culture/Raymum/K_AAPI_2022_Ramyun_003"},
-        {name: "Spicy Pork Bulgogi", price: 5.50, qty: 0, img:"https://tse3.mm.bing.net/th/id/OIP.VquC1yx898k-MXrWP0pYFgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"},
-        {name: "Kimchi Stew", price: 5.00, qty: 0, img:"https://tse4.mm.bing.net/th/id/OIP.AoWSXzmluxllf5KsWP_N6AHaLH?rs=1&pid=ImgDetMain&o=7&rm=3"},
-        {name: "Beef Hotplate", price: 5.90, qty: 0, img:"https://eatbook.sg/wp-content/uploads/2018/01/Daebak-Korean-Restaurant-Beef-Hot-Plate.jpg"}
     ]
 };
 const filename = decodeURIComponent(window.location.pathname.split("/").pop().trim()); 
