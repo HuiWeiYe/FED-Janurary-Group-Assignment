@@ -1,9 +1,6 @@
-// Used on assignment.html to navigate to stalls.html with a cuisine type 
-function goToCuisine(cuisineType){
-    window.location.href = `stalls.html?type=${encodeURIComponent(cuisineType)}`;
-}
+
 // Used on stalls.html to load stalls based on cuisine type 
-document.addEventListener('DOMContentLoaded', function(){
+
     const activeStalls =  [
     "Spicy & Numb (Mala HotPot)", 
     "King of Noodle (Noodle)", 
@@ -31,17 +28,12 @@ document.addEventListener('DOMContentLoaded', function(){
         {unit: "#1-03", name: "Western Delights", link: "WesternDelights.html", image: "https://danielfooddiary.com/wp-content/uploads/2018/02/marketstreet26.jpg"}, 
         {unit: "#2-09", name: "John's Steak House", link: "#", image:"https://mustsharenews.com/wp-content/uploads/2021/01/rasa-sayang-western-food-amk-4.jpg"},
         {unit: "#3-07", name: "Family Western", link: "#", image: "https://danielfooddiary.com/wp-content/uploads/2019/07/marineparade32.jpg"},
-    ],
+    ]
 };
-    // 1. Looking at the URL 
-    //Get the full address bar details: 
-    const addrBar = window.location;
-    //Get just the part after the '?' (e.g. "?type=Chinese"): 
-    const queryString = addrBar.search;
-    //Create the tool to read that string: 
-    const urlTool = new URLSearchParams(queryString);
-    //Finally, get the specific value: 
-    const cuisineType = urlTool.get('type')
+document.addEventListener('DOMContentLoaded', function(){
+    // This one line replaces your addrBar, queryString, and urlTool variables
+   const urlTool = new URLSearchParams(window.location.search);
+   const cuisineType = urlTool.get('type');
 
 // 2. Grab elements from HTML 
     const titleElement = document.getElementById('cuisine-title');
@@ -79,7 +71,12 @@ document.addEventListener('DOMContentLoaded', function(){
         titleElement.innerText = "Cuisine not found";
         list.innerHTML = "<p>No Stalls found in this category.</p>";
     }
-});
+})
 function goToCheckout() {
     window.location.href = "../CheckOutPage/Checkout.html"; 
+}
+
+// Used on assignment.html to navigate to stalls.html with a cuisine type 
+function goToCuisine(cuisineType){
+    window.location.href = `stalls.html?type=${encodeURIComponent(cuisineType)}`;
 }
