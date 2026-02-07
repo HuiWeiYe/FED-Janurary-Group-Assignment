@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const pageNumber = document.getElementById("page-number");
   const leftArrow = document.getElementById("left-arrow");
   const rightArrow = document.getElementById("right-arrow");
+  const ratingFilter = document.getElementById("rating-filter");
+  const helpfulFilter = document.getElementById("helpful-filter");
 
   // =========================
   // FETCH DATA
@@ -41,6 +43,37 @@ document.addEventListener("DOMContentLoaded", () => {
         const totalPages = Math.ceil(allReviews.length / REVIEWS_PER_PAGE);
 
         // =========================
+        // FILTER
+        // =========================
+        function getFilteredReviews() {
+            let filtered = [...allReviews];
+
+            // Rating filter
+            const ratingValue = ratingFilter.value;
+            if (ratingValue) {
+                filtered = filtered.filter(
+                review => review.rating === parseInt(ratingValue)
+                );
+            }
+
+            // Helpful filter
+            const helpfulValue = helpfulFilter.value;
+            if (helpfulValue === "most-helpful") {
+                filtered = filtered.filter(
+                review => review.helpfulCount > review.notHelpfulCount
+                );
+            } else if (helpfulValue === "least-helpful") {
+                filtered = filtered.filter(
+                review => review.notHelpfulCount >= review.helpfulCount
+                );
+            }
+
+            return filtered;
+        }
+
+
+
+        // =========================
         // STAR RENDERER
         // =========================
         function renderStars(rating) {
@@ -59,7 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const start = (currentPage - 1) * REVIEWS_PER_PAGE;
         const end = start + REVIEWS_PER_PAGE;
-        const pageReviews = allReviews.slice(start, end);
+        const filteredReviews = getFilteredReviews(); //TEST
+        const pageReviews = filteredReviews.slice(start, end);
+        const totalPages = Math.ceil(filteredReviews.length / REVIEWS_PER_PAGE);
+        if (currentPage > totalPages) currentPage = 1; //TEST
+
 
         pageReviews.forEach(review => {
             const reviewEl = document.createElement("section");
@@ -67,7 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             reviewEl.innerHTML = `
             <div class="profile">
-                <img class="user-picture" alt="User Profile">
+                <img 
+                    class="user-picture" 
+                    alt="User Profile"
+                    src="https://ui-avatars.com/api/?name=${encodeURIComponent(review.customerName)}&background=random&color=fff&size=128"
+                />
                 <div class="user-name">${review.customerName}</div>
             </div>
 
@@ -198,6 +239,19 @@ document.addEventListener("DOMContentLoaded", () => {
             renderReviews();
         }
         });
+
+
+        // Filters
+        ratingFilter.addEventListener("change", () => {
+            currentPage = 1;
+            renderReviews();
+        });
+
+        helpfulFilter.addEventListener("change", () => {
+            currentPage = 1;
+            renderReviews();
+        });
+
 
         // =========================
         // INITIAL LOAD
