@@ -52,17 +52,24 @@ document.addEventListener('DOMContentLoaded', function(){
             // Check if there is a real link, not just "#"
             const hasPage = store.link != "#";
 
+            // Modified to implement button to link to Reviews Page.
             list.innerHTML += `
-                <a href="${store.link}" class="stall-card${hasPage ? '' : ' disabled'}">
-                   <div class ="image-box">
-                    <img src="${store.image}" alt="${store.name}" class="store-img">
-                   </div>
-                   <div class ="store-info">
-                       <h2 class="store-name">${store.name}</h2>
-                       <p class="store-desc">
-                           Unit-No: ${store.unit}
-                        </p>
-                    </div>
+            
+                <a 
+                    href="${store.link}" class="stall-card${hasPage ? '' : ' disabled'}"
+                    data-stall="${store.name}"
+                    data-stallimage="${store.image}"
+                    data-stallunit="${store.unit}">
+                        <div class ="image-box">
+                            <img src="${store.image}" alt="${store.name}" class="store-img">
+                        </div>
+                        <div class ="store-info">
+                            <h2 class="store-name">${store.name}</h2>
+                            <p class="store-desc">
+                                Unit-No: ${store.unit}
+                                </p>
+                            </div>
+                            <span class="review-button">View Reviews</span>
                 </a>
             `;
         })
@@ -80,3 +87,19 @@ function goToCheckout() {
 function goToCuisine(cuisineType){
     window.location.href = `stalls.html?type=${encodeURIComponent(cuisineType)}`;
 }
+
+// Goes to Reviews Page
+document.addEventListener("click", function (e) {
+    const stallLink = e.target.closest("a.stall-card");
+    if (!stallLink) return; 
+    if (!e.target.classList.contains("review-button")) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const stallName = stallLink.dataset.stall;
+    const stallImage = stallLink.dataset.stallimage; 
+    const stallUnit = stallLink.dataset.stallunit;
+
+    window.location.href = `../../WeiYeWork/Reviews.html?stall=${encodeURIComponent(stallName)}&from=Assignment.html&stallImage=${encodeURIComponent(stallImage)}&stallUnit=${encodeURIComponent(stallUnit)}`;
+});

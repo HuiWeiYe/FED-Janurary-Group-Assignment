@@ -10,16 +10,6 @@ body {
     padding: 40px;
 }
 
-/* "Placeholder Hawker" at top */
-#review-header {
-    width: 100%;
-    text-align: center;
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 24px;
-}
-
-
 /* ================ */
 /* Entire Container */
 /* ================ */
@@ -45,24 +35,16 @@ body {
 }
 
 /* Example arrow box */
-#top-container::before {
-    content: "←";
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 25px;
+#return-arrow{
+    margin: 0 18px;
+    padding: 5px 8px;
+    background-color: #b7e2c4;
     border-radius: 5px;
-    background-color: #f0f0f0;
-    font-size: 20px;
-    margin: 20px;
-    padding: 2.5px;
-    cursor: pointer;
-    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.2);
 }
-
-
+#return-arrow:hover{
+    background-color: #b7e2c4a9;
+    cursor: pointer;
+}
 
 #information-container {
     display: flex;
@@ -83,7 +65,7 @@ body {
     padding-right: 12px;
 }
 
-#review-stall-top h2 {
+#review-title {
     font-size: 2.5rem;
     text-align: center;
 }
