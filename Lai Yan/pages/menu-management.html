@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Menu Management - Manage your stall menu items">
+    <title>Menu Management - Hawker Centre System</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/menu-management.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='vendor-home.html'" aria-label="Back to vendor dashboard">←</button>
+            <div class="header-text">
+                <h1>Menu Management</h1>
+                <p>Manage your menu items</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="menu-management-container">
+            <!-- Add New Menu Item Section -->
+            <section class="add-menu-section">
+                <h2>Add New Menu Item</h2>
+                <form id="addMenuForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemName">Item Name *</label>
+                            <input 
+                                type="text" 
+                                id="itemName" 
+                                name="itemName"
+                                required
+                                placeholder="e.g., Chicken Rice"
+                                aria-required="true"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemPrice">Price (SGD) *</label>
+                            <input 
+                                type="number" 
+                                id="itemPrice" 
+                                name="itemPrice"
+                                required
+                                min="0"
+                                step="0.50"
+                                placeholder="5.00"
+                                aria-required="true"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemDescription">Description</label>
+                        <textarea 
+                            id="itemDescription" 
+                            name="itemDescription"
+                            rows="3"
+                            placeholder="Brief description of the dish"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemCategory">Category *</label>
+                            <select 
+                                id="itemCategory" 
+                                name="itemCategory"
+                                required
+                                aria-required="true"
+                            >
+                                <option value="">Select category</option>
+                                <option value="Main Dish">Main Dish</option>
+                                <option value="Side Dish">Side Dish</option>
+                                <option value="Beverage">Beverage</option>
+                                <option value="Dessert">Dessert</option>
+                                <option value="Snack">Snack</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemCuisine">Cuisine *</label>
+                            <select 
+                                id="itemCuisine" 
+                                name="itemCuisine"
+                                required
+                                aria-required="true"
+                            >
+                                <option value="">Select cuisine</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="Malay">Malay</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Western">Western</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Korean">Korean</option>
+                                <option value="Thai">Thai</option>
+                                <option value="Fusion">Fusion</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Add Menu Item</button>
+                    <div id="form-message" class="error-message" role="alert" aria-live="polite"></div>
+                    <div id="success-message" class="success-message" role="alert" aria-live="polite"></div>
+                </form>
+            </section>
+
+            <!-- Existing Menu Items Section -->
+            <section class="menu-items-section">
+                <h2>Your Menu Items</h2>
+                
+                <!-- Loading State -->
+                <div id="loading" class="loading-spinner" style="display: none;">
+                    <div class="spinner" role="status" aria-label="Loading menu items"></div>
+                </div>
+
+                <!-- Menu Items Grid -->
+                <div id="menuItemsGrid" class="menu-items-grid">
+                    <!-- Menu items will be dynamically inserted here -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon" aria-hidden="true">🍽️</div>
+                    <h3>No menu items yet</h3>
+                    <p>Add your first menu item using the form above</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Application JavaScript -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/role-manager.js"></script>
+    <script src="../js/menu-management.js"></script>
+</body>
+</html>

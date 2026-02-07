@@ -21,9 +21,9 @@ window.onload = () => {
     // --- 3. DETAILS PAGE SETUP ---
     const detailsElement = document.getElementById('detTitle');
     if (detailsElement) {
-        const params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window.location.search);  // Get the name of the stall from URL
         const stallName = params.get('name');
-        const stall = stalls.find(s => s.name === stallName);
+        const stall = stalls.find(s => s.name === stallName);       // Use .find() to search through stalls array for object that matches that name
 
         if (stall) {
             detailsElement.innerText = stall.name;
@@ -38,8 +38,8 @@ window.onload = () => {
 
             // Mini Map Setup
             if (document.getElementById('miniMap')) {
-                const miniMap = L.map('miniMap', {zoomControl: false, attributionControl: false}).setView([stall.lat, stall.lng], 15);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMap);
+                const miniMap = L.map('miniMap', {zoomControl: false, attributionControl: false}).setView([stall.lat, stall.lng], 15);  // Disabled the zoomControl and attributionControl to keep the UI clean
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(miniMap);   // Initialized a second Leaflet map instance specifically targeting the miniMap ID
                 L.marker([stall.lat, stall.lng]).addTo(miniMap);
             }
         }
@@ -69,10 +69,10 @@ function applyFilters() {
     const filtered = stalls.filter(s => {
         const matchesSearch = s.name.toLowerCase().includes(term);
         // Use === for comparison, NEVER a single =
-        const matchesGrade = gradeVal === 'all' || s.grade === gradeVal;
+        const matchesGrade = gradeVal === 'all' || s.grade === gradeVal;        
         const matchesRegion = regionVal === 'all' || s.region === regionVal;
         
-        return matchesSearch && matchesGrade && matchesRegion;
+        return matchesSearch && matchesGrade && matchesRegion;  // Used the logical AND (&&) operator. For a stall to show up, it must return true for the search match AND the grade match AND the region match.
     });
 
     updateUI(filtered);
