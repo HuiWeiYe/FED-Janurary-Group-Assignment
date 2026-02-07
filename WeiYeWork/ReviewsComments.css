@@ -50,7 +50,6 @@ body {
     height: 35px;
     border-radius: 10px;
     background-color: #b7e2c4;
-    /* border: 1px solid #ddd; */
     box-shadow: 0 6px 15px rgba(0,0,0,0.05);
 
     display: flex;
@@ -237,10 +236,14 @@ body {
 ========================= */
 .comments {
     margin-top: 8px;
+    background-color: #eee;
+    box-shadow: 0 0 12px rgb(0, 0, 0, 0.075);
+    border-radius: 10px;
+    padding: 20px 10px;
 }
 
 .user-comments {
-    font-size: 1rem;
+    font-size: 0.9rem;
     /* line-height: 1.4; */
     color: #333;
 }

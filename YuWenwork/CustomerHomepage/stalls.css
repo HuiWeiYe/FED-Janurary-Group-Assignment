@@ -73,4 +73,15 @@
     text-decoration: none;
     color: black;
     background-color: white;
+    overflow: hidden;
+}
+.review-button{
+    border: none;
+    padding: 8px 8px 48px 48px;
+    align-self: flex-start;
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #5dbb91;
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
 }
