@@ -79,5 +79,7 @@ document.addEventListener('DOMContentLoaded', function(){
         titleElement.innerText = "Cuisine not found";
         list.innerHTML = "<p>No Stalls found in this category.</p>";
     }
-
 });
+function goToCheckout() {
+    window.location.href = "../CheckOutPage/Checkout.html"; 
+}

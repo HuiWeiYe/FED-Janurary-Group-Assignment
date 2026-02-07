@@ -1,6 +1,6 @@
 window.onload = function(){
     // 1. Trigger slide up animation
-    this.document.getElementByID('applePaySheet').classList.add('show');
+    this.document.getElementById('applePaySheet').classList.add('show');
 
     // 2. Load total from localStorange (from cart)
     const data = JSON.parse(localStorage.getItem('canteenCart'))
@@ -10,7 +10,7 @@ window.onload = function(){
             if (item.qty > 0) total += item.price * item.qty;
         });
     }
-    this.document.getElementByID('display-total').innerText = `$${total.toFixed(2)}`;
+    this.document.getElementById('display-total').innerText = `$${total.toFixed(2)}`;
 };
 
 function simulatePayment(){
@@ -23,8 +23,16 @@ function simulatePayment(){
 
     // Simulate a 2-second delay for faceId
     setTimeout(() =>{
-        statusIcon.className = "fa-solid fa-cirle-check";
+        statusIcon.className = "fa-solid fa-circle-check";
         statusIcon.parentElement.classList.add('success-state');
         statusText.innerText = "Payment Complete";
+        setTimeout(() => {
+            // This moves from PaymentPage folder to CollectionPage folder
+            window.location.href = "../Delivery/DeliveryPage.html"; 
+        }, 1500);
     },2000)
+}
+
+function goBackToCheckout() {
+    window.location.href = "../CheckOutPage/Checkout.html";
 }

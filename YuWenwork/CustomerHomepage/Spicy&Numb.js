@@ -141,7 +141,7 @@ if (checkoutBar) {
     checkoutBar.addEventListener("click", () => {
         // This takes the user to your second image page
         // Adjust the path if your checkout file is in a different folder
-        window.location.href = "checkout.html"; 
+        window.location.href = "../CheckOutPage/Checkout.html"; 
     });
 }
 // initial draw

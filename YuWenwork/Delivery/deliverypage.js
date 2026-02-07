@@ -107,10 +107,13 @@ document.querySelector('.confirm-btn').addEventListener('click', () =>{
     const method = isDelivery ? "Delivery" : "Pick Up"
 
     // Save the choice to local storage
-    localStorage.setItem("chosenCollectionMethod", method);
+    localStorage.setItem("chosenCollectionMethod", method)
+    
+    // This creates a standard browser popup
+    alert("Order Confirmed! Your " + method + " order is being processed.");
 
     // Redirect to Payment Confirmed
-    window.location.href = "confirmation.html";
+    window.location.href = "../CustomerHomepage/Assignment.html";
 });
 
 setTimeout(function() {

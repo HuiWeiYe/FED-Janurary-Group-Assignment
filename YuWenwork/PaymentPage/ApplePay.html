@@ -11,33 +11,37 @@
     <main class="overlay">
         <section class="apple-pay-card" id="applePaySheet">
             <header class="card-header">
-                <span class="back-link" onclick="location.href='../CustomerHomePage/Assignment.html'"></span>
-                <span class="fa-solid fa-chevron-left"></span>
-                <span class="apple-logo"><i class="fa-brands fa-apple"></i>Pay</span>
+                <span class="back-link" onclick="goBackToCheckout()">
+                    <i class="fa-solid fa-chevron-left"></i> Checkout
+                </span>
             </header>
 
-            <div class="payment-details">
-                <div class="detail-row">
-                    <span class="label">CARD</span>
-                    <span class="value">Visa *** 1234</span>
+            <div class="inner-details-card">
+                <div class="payment-details">
+                    <div class="detail-row">
+                        <span class="label">CARD</span>
+                        <span class="value">Visa *** 1234</span>
+                    </div>
                 </div>
+
                 <div class="detail-row">
                     <span class="label">CONTACT</span>
                     <span class="value">Jane@gmail.com</span>
                 </div>
+                
                 <div class="detail-row total-row">
                     <span class="label">TOTAL</span>
                     <span class="total-price" id="display-total">$0.00</span>
                 </div>
-
-                <footer class="authentication-section" id="authenticationsection">
-                    <div class="confirm-icon">
-                        <span class="fa-solid fa-face-smile" id="statusIcon"></span>
-                    </div>
+            </div>
+            
+            <footer class="authentication-section" id="authenticationsection">
+                <div class="confirm-icon">
+                    <span class="fa-solid fa-face-smile" id="statusIcon"></span>
+                </div>
                     <p id="statusText">Confirm with FaceID</p>
                     <button class="pay-button" onclick="simulatePayment()">Pay Now</button>
-                </footer>
-            </div>
+            </footer>
         </section>
     </main>    
 <script src="applepay.js"></script>
