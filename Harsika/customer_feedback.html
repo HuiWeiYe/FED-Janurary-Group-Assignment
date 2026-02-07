@@ -20,38 +20,69 @@
 
 <body>
 
-  <!-- TOP BAR -->
-  <header class="top-bar">
-    <i class="fa-solid fa-bars menu-icon"></i>
-    <div class="top-icons">
-      <i class="fa-regular fa-envelope"></i>
-      <i class="fa-regular fa-bell"></i>
-      <i class="fa-regular fa-user"></i>
+<header class="top-bar">
+  <i class="fa-solid fa-bars menu-icon"></i>
+  <div class="top-icons">
+    <i class="fa-regular fa-envelope"></i>
+    <i class="fa-regular fa-bell"></i>
+    <i class="fa-regular fa-user"></i>
+  </div>
+</header>
+
+<main class="page-container">
+
+  <!-- HEADER -->
+  <h2>
+    Feedback ⭐ <span id="overallRating">0.0</span>
+  </h2>
+  <p id="totalRatings">(0 ratings overall)</p>
+
+  <!-- SUMMARY CARDS -->
+  <section class="feedback-cards">
+
+    <div class="card">
+      <h3>Food Quality</h3>
+      <div class="rating-circle" id="foodRating">0.0</div>
+      <div class="rating-stars" id="foodStars"></div>
+      <p id="foodCount">0 ratings</p>
     </div>
-  </header>
 
-  <main class="page-container">
+    <div class="card">
+      <h3>Delivery Service</h3>
+      <div class="rating-circle" id="deliveryRating">0.0</div>
+      <div class="rating-stars" id="deliveryStars"></div>
+      <p id="deliveryCount">0 ratings</p>
+    </div>
 
-    <h2>Customer Feedback</h2>
-
-    <!-- AVERAGE RATING -->
-    <section class="card">
-      <h3>Average Rating</h3>
-
-      <div class="rating-row">
-        <div class="rating-circle" id="avgRating">0.0</div>
-        <div class="rating-stars" id="stars"></div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Comments</h3>
+        <button class="see-all">See All</button>
       </div>
-    </section>
+      <ul class="comment-preview" id="commentPreview"></ul>
+    </div>
 
-    <!-- USER REVIEWS -->
-    <section class="card">
-      <h3>User Reviews</h3>
-      <ul class="review-list" id="reviewList"></ul>
-    </section>
+  </section>
 
-  </main>
+  <!-- CUSTOMER TABLE -->
+  <section class="card">
+    <h3>Customers</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Food Rating</th>
+          <th>Delivery Rating</th>
+          <th>Delivery Time</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody id="customerTable"></tbody>
+    </table>
+  </section>
 
-  <script src="customer_feedback.js"></script>
+</main>
+
+<script src="customer_feedback.js"></script>
 </body>
 </html>

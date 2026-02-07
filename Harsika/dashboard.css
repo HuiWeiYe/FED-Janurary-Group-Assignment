@@ -296,3 +296,170 @@ tbody tr:last-child td {
 .hidden {
   display: none;
 }
+
+/* ===== FEEDBACK LAYOUT ===== */
+.feedback-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  background: #f5f6fa;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  margin: 20px;
+}
+
+.logo {
+  font-weight: 700;
+  color: #5dbb91;
+  margin-bottom: 30px;
+}
+
+.menu a {
+  display: block;
+  padding: 10px 0;
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.menu a.active {
+  color: #5dbb91;
+  font-weight: 600;
+}
+
+/* ===== MAIN ===== */
+.feedback-main {
+  padding: 40px;
+}
+
+.subtext {
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+/* ===== CARDS ROW ===== */
+.feedback-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 24px;
+}
+
+/* ===== RATING CARD ===== */
+.rating-card {
+  text-align: center;
+}
+
+.rating-circle {
+  width: 70px;
+  height: 70px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: #e5f7ef;
+  color: #5dbb91;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.rating-circle.green {
+  background: #5dbb91;
+  color: white;
+}
+
+/* ===== COMMENTS ===== */
+.comments-card {
+  padding: 20px;
+}
+
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.see-all {
+  border: 1px solid #5dbb91;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #5dbb91;
+  cursor: pointer;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.review-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* avatar */
+.review-item::before {
+  content: attr(data-initial);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #d1fae5;
+  color: #065f46;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.review-comment {
+  color: #6b7280;
+}
+/* LAYOUT */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  padding: 24px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+}
+
+.sidebar-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #5dbb91;
+  margin-bottom: 32px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+}
+
+.sidebar-menu a.active {
+  color: #5dbb91;
+  font-weight: 700;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  background: #f5f6fa;
+}
