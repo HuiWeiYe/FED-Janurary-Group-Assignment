@@ -1,103 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vendor Dashboard - Hawker Centre System">
-    <title>Vendor Dashboard - Hawker Centre System</title>
-    
-    <!-- External CSS -->
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/home.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Vendor Dashboard - Hawker Centre System" />
+  <title>Vendor Dashboard - Hawker Centre System</title>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/home.css" />
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <div class="header">
-            <h1>👨‍🍳 Vendor Dashboard</h1>
-            <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <!-- User Info Card -->
-            <div class="user-info">
-                <h2>Welcome, <span id="userName">Vendor</span>!</h2>
-                <p>Manage your stall operations and view analytics</p>
-            </div>
-
-            <!-- Welcome Section -->
-            <div class="welcome-section">
-                <p class="welcome-message">
-                    Track your stall performance, manage menu items, and respond to customer feedback 
-                    from your personalized vendor dashboard.
-                </p>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="quick-actions">
-                <div class="action-card" onclick="window.location.href='profile.html'" role="button" tabindex="0">
-                    <div class="action-card-icon" aria-hidden="true">👤</div>
-                    <h3>My Profile</h3>
-                    <p>Manage stall information</p>
-                </div>
-
-                <div class="action-card" role="button" tabindex="0">
-                    <div class="action-card-icon" aria-hidden="true">📋</div>
-                    <h3>Menu Management</h3>
-                    <p>Update your menu items</p>
-                </div>
-
-                <a href="../../Harsika/sales_analytics.html" class="action-card" role="button">
-                    <div class="action-card-icon" aria-hidden="true">📊</div>
-                    <h3>Sales Analytics</h3>
-                    <p>View performance metrics</p>
-                </a>
-
-                <a href="../../Harsika/customer_feedback.html" class="action-card" role="button">
-                    <div class="action-card-icon" aria-hidden="true">⭐</div>
-                    <h3>Customer Feedback</h3>
-                    <p>Reviews and ratings</p>
-                </a>
-
-                </div>
-            </div>
-        </div>
+  <div class="app-container">
+    <!-- Header -->
+    <div class="header">
+      <h1>👨‍🍳 Vendor Dashboard</h1>
+      <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Main Content -->
+    <div class="content">
+      <!-- User Info Card -->
+      <div class="user-info">
+        <h2>Welcome, <span id="userName">Vendor</span>!</h2>
+        <p>Manage your stall operations and view analytics</p>
+      </div>
 
-    <!-- Application JavaScript -->
-    <script src="../js/firebase-config.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/role-manager.js"></script>
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <p class="welcome-message">
+          Track your stall performance, manage menu items, and respond to customer feedback
+          from your personalized vendor dashboard.
+        </p>
+      </div>
 
-    <script>
-        /**
-         * Initialize vendor home page
-         * Loads vendor data and displays stall information
-         */
-        checkAuth('vendor').then(userData => {
-            const userNameElement = document.getElementById('userName');
-            if (userNameElement && userData.name) {
-                userNameElement.textContent = userData.name;
-            }
-        }).catch(error => {
-            console.error('Error loading vendor data:', error);
-        });
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <!-- Your profile page -->
+        <div class="action-card" onclick="window.location.href='profile.html'" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">👤</div>
+          <h3>My Profile</h3>
+          <p>Manage stall information</p>
+        </div>
 
-        // Add keyboard support for action cards
-        document.querySelectorAll('.action-card').forEach(card => {
-            card.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    card.click();
-                }
-            });
-        });
-    </script>
+        <!-- Your menu management page (now clickable like the others) -->
+        <div class="action-card" onclick="window.location.href='menu-management.html'" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">📋</div>
+          <h3>Menu Management</h3>
+          <p>Update your menu items</p>
+        </div>
+
+        <!-- Keep navigations to Harsika files -->
+        <a href="../../Harsika/sales_analytics.html" class="action-card" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">📊</div>
+          <h3>Sales Analytics</h3>
+          <p>View performance metrics</p>
+        </a>
+
+        <a href="../../Harsika/customer_feedback.html" class="action-card" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">⭐</div>
+          <h3>Customer Feedback</h3>
+          <p>Reviews and ratings</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Application JavaScript -->
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/role-manager.js"></script>
+
+  <script>
+    /**
+     * Initialize vendor home page
+     * Loads vendor data and displays stall information
+     */
+    checkAuth('vendor')
+      .then((userData) => {
+        const userNameElement = document.getElementById('userName');
+        if (userNameElement && userData.name) {
+          userNameElement.textContent = userData.name;
+        }
+      })
+      .catch((error) => {
+        console.error('Error loading vendor data:', error);
+      });
+
+    // Keyboard support (Enter/Space) for both div.action-card and a.action-card
+    document.querySelectorAll('.action-card').forEach((card) => {
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
