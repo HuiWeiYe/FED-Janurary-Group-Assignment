@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Admin Management - Manage stalls, users, and inspections">
-    <title>Admin Management - Hawker Centre System</title>
+    <meta name="description" content="Admin User Management - Manage all system users">
+    <title>User Management - Hawker Centre System</title>
     
     <!-- External CSS -->
     <link rel="stylesheet" href="../css/global.css">
@@ -14,221 +14,180 @@
     <div class="app-container">
         <!-- Header -->
         <div class="header">
-            <button class="back-btn" onclick="window.location.href='admin-home.html'" aria-label="Back to admin dashboard">←</button>
-            <div class="header-text">
-                <h1>Admin Management</h1>
-                <p>Manage system operations</p>
-            </div>
+            <h1>🛡️ Admin Dashboard</h1>
+            <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
         </div>
 
-        <!-- Admin Dashboard -->
-        <div class="admin-dashboard">
+        <!-- Main Content -->
+        <div class="admin-container">
+
+            <!-- Header Section -->
+            <section class="admin-header-section">
+                <h2>Welcome, <span id="userName">Admin</span>!</h2>
+                <p>Create, view, update, and delete user accounts across all roles.</p>
+            </section>
+
             <!-- Statistics Cards -->
-            <div class="stats-grid">
+            <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-icon" aria-hidden="true">🏪</div>
-                    <div class="stat-label">Total Stalls</div>
-                    <h2 class="stat-value" id="totalStalls">0</h2>
+                    <div class="stat-icon" aria-hidden="true">👥</div>
+                    <div class="stat-label">Total Users</div>
+                    <h2 class="stat-value" id="totalUsers">0</h2>
                 </div>
 
-                <div class="stat-card secondary">
+                <div class="stat-card customer">
                     <div class="stat-icon" aria-hidden="true">👤</div>
-                    <div class="stat-label">Total Vendors</div>
+                    <div class="stat-label">Customers</div>
+                    <h2 class="stat-value" id="totalCustomers">0</h2>
+                </div>
+
+                <div class="stat-card vendor">
+                    <div class="stat-icon" aria-hidden="true">👨‍🍳</div>
+                    <div class="stat-label">Vendors</div>
                     <h2 class="stat-value" id="totalVendors">0</h2>
                 </div>
 
-                <div class="stat-card tertiary">
-                    <div class="stat-icon" aria-hidden="true">🔍</div>
-                    <div class="stat-label">Pending Inspections</div>
-                    <h2 class="stat-value" id="pendingInspections">0</h2>
-                </div>
-
-                <div class="stat-card quaternary">
-                    <div class="stat-icon" aria-hidden="true">⚠️</div>
-                    <div class="stat-label">Active Complaints</div>
-                    <h2 class="stat-value" id="activeComplaints">0</h2>
+                <div class="stat-card nea">
+                    <div class="stat-icon" aria-hidden="true">🛡️</div>
+                    <div class="stat-label">NEA Officers</div>
+                    <h2 class="stat-value" id="totalNEA">0</h2>
                 </div>
             </div>
 
-            <!-- Tab Navigation -->
-            <nav class="tab-navigation" role="tablist">
-                <button class="tab-button active" onclick="switchTab('stalls')" role="tab" aria-selected="true" aria-controls="stalls-tab">
-                    Stalls
-                </button>
-                <button class="tab-button" onclick="switchTab('vendors')" role="tab" aria-selected="false" aria-controls="vendors-tab">
-                    Vendors
-                </button>
-                <button class="tab-button" onclick="switchTab('inspections')" role="tab" aria-selected="false" aria-controls="inspections-tab">
-                    Inspections
-                </button>
-                <button class="tab-button" onclick="switchTab('allowlist')" role="tab" aria-selected="false" aria-controls="allowlist-tab">
-                    Access Control
-                </button>
-            </nav>
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Search by name or email..."
+                    aria-label="Search users"
+                />
+                
+                <select class="filter-select" id="roleFilter" aria-label="Filter by role">
+                    <option value="">All Roles</option>
+                    <option value="customer">Customer</option>
+                    <option value="vendor">Vendor</option>
+                    <option value="admin">Admin</option>
+                </select>
 
-            <!-- Stalls Tab -->
-            <div id="stalls-tab" class="tab-content active" role="tabpanel">
-                <div class="search-filter-bar">
-                    <input 
-                        type="text" 
-                        class="search-input" 
-                        id="stallSearch"
-                        placeholder="Search stalls..."
-                        aria-label="Search stalls"
-                    />
-                    <select class="filter-select" id="stallFilter" aria-label="Filter stalls by hygiene grade">
-                        <option value="">All Grades</option>
-                        <option value="A">Grade A</option>
-                        <option value="B">Grade B</option>
-                        <option value="C">Grade C</option>
-                        <option value="D">Grade D</option>
-                    </select>
-                </div>
+                <button class="btn-add-user" onclick="openAddUserModal()" aria-label="Add new user">
+                    + Add User
+                </button>
+            </div>
 
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Stall ID</th>
-                                <th>Name</th>
-                                <th>Cuisine</th>
-                                <th>Hygiene Grade</th>
-                                <th>Last Inspection</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stallsTableBody">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 20px;">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Loading State -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner" role="status">
+                    <span class="sr-only">Loading users...</span>
                 </div>
             </div>
 
-            <!-- Vendors Tab -->
-            <div id="vendors-tab" class="tab-content" role="tabpanel">
-                <div class="search-filter-bar">
-                    <input 
-                        type="text" 
-                        class="search-input" 
-                        id="vendorSearch"
-                        placeholder="Search vendors..."
-                        aria-label="Search vendors"
-                    />
-                </div>
-
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Stall</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vendorsTableBody">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 20px;">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Users Table -->
+            <div id="tableContainer" class="table-container" style="display: none;">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Phone</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be dynamically inserted here -->
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Inspections Tab -->
-            <div id="inspections-tab" class="tab-content" role="tabpanel">
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Stall</th>
-                                <th>Inspector</th>
-                                <th>Score</th>
-                                <th>Grade</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inspectionsTableBody">
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 20px;">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Access Control Tab -->
-            <div id="allowlist-tab" class="tab-content" role="tabpanel">
-                <!-- Add Allowed Account Form -->
-                <div class="add-user-section">
-                    <h3>Add Allowed Account</h3>
-                    <form id="addAllowedAccountForm" novalidate>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="allowedEmail">Email Address *</label>
-                                <input 
-                                    type="email" 
-                                    id="allowedEmail" 
-                                    required
-                                    placeholder="vendor@example.com"
-                                    aria-required="true"
-                                />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="allowedRole">Role *</label>
-                                <select id="allowedRole" required aria-required="true">
-                                    <option value="">Select role</option>
-                                    <option value="vendor">Vendor</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-primary">Add to Allowlist</button>
-                        <div id="allowlist-message" class="error-message" role="alert" aria-live="polite"></div>
-                        <div id="allowlist-success" class="success-message" role="alert" aria-live="polite"></div>
-                    </form>
-                </div>
-
-                <!-- Allowed Accounts Table -->
-                <div class="data-table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Approved By</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allowlistTableBody">
-                            <tr>
-                                <td colspan="5" style="text-align: center; padding: 20px;">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state-icon" aria-hidden="true">👥</div>
+                <h3>No users found</h3>
+                <p>Add your first user to get started</p>
             </div>
         </div>
     </div>
 
-    <!-- Inspection Details Modal -->
-    <div id="inspectionModal" class="modal-overlay">
+    <!-- Add/Edit User Modal -->
+    <div id="userModal" class="modal-overlay" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Inspection Details</h3>
+                <h3 id="modalTitle">Add User</h3>
                 <button class="modal-close" onclick="closeModal()" aria-label="Close modal">×</button>
             </div>
-            <div id="inspectionDetails">
-                <!-- Inspection details will be loaded here -->
+            
+            <div class="modal-body">
+                <form id="userForm" novalidate>
+                    <div class="form-group">
+                        <label for="userName">Full Name *</label>
+                        <input 
+                            type="text" 
+                            id="userName" 
+                            name="userName"
+                            required
+                            placeholder="John Doe"
+                            aria-required="true"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="userEmail" 
+                            name="userEmail"
+                            required
+                            placeholder="john@example.com"
+                            aria-required="true"
+                        />
+                    </div>
+
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label for="userRole">Role *</label>
+                            <select 
+                                id="userRole" 
+                                name="userRole"
+                                required
+                                aria-required="true"
+                            >
+                                <option value="">Select role</option>
+                                <option value="customer">Customer</option>
+                                <option value="vendor">Vendor</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userPhone">Phone Number</label>
+                            <input 
+                                type="tel" 
+                                id="userPhone"
+                                name="userPhone"
+                                placeholder="+65 1234 5678"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Password field only shown when adding new user -->
+                    <div class="form-group" id="passwordGroup">
+                        <label for="userPassword">Password *</label>
+                        <input 
+                            type="password" 
+                            id="userPassword"
+                            name="userPassword"
+                            placeholder="Minimum 6 characters"
+                            minlength="6"
+                        />
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">Add User</button>
+                    <div id="modal-error" class="error-message" role="alert" aria-live="polite"></div>
+                    <div id="modal-success" class="success-message" role="alert" aria-live="polite"></div>
+                </form>
             </div>
         </div>
     </div>
