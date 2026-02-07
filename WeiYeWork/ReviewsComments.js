@@ -56,16 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             }
 
-            // Helpful filter
             const helpfulValue = helpfulFilter.value;
             if (helpfulValue === "most-helpful") {
-                filtered = filtered.filter(
-                review => review.helpfulCount > review.notHelpfulCount
-                );
+                filtered.sort((a, b) => b.helpfulCount - a.helpfulCount);
             } else if (helpfulValue === "least-helpful") {
-                filtered = filtered.filter(
-                review => review.notHelpfulCount >= review.helpfulCount
-                );
+                filtered.sort((a, b) => a.helpfulCount - b.helpfulCount);
             }
 
             return filtered;
