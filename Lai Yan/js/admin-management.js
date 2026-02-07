@@ -7,14 +7,13 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
-  
+
   // Secondary Firebase app for creating users without switching session
   const secondaryApp = firebase.apps.find(app => app.name === "Secondary")
     ? firebase.app("Secondary")
     : firebase.initializeApp(firebaseConfig, "Secondary");
 
   const secondaryAuth = secondaryApp.auth();
-
 
   // DOM elements
   const loadingSpinner = document.getElementById('loadingSpinner');
@@ -29,6 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitBtn = document.getElementById('submitBtn');
   const passwordGroup = document.getElementById('passwordGroup');
 
+  // NEW: Stall ID elements
+  const stallIdGroup = document.getElementById('stallIdGroup');
+  const userStallIdInput = document.getElementById('userStallId');
+
   let allUsers = [];
   let currentEditUserId = null;
 
@@ -39,13 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       // Verify admin access
       await checkAuth('admin');
-      
+
       // Load all users
       await loadUsers();
-      
+
       // Setup event listeners
       setupEventListeners();
-      
+
     } catch (error) {
       console.error('Error initializing admin management:', error);
       showError('Failed to initialize. Please refresh the page.');
@@ -60,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       const usersSnapshot = await db.collection('users').get();
-      
+
       allUsers = [];
       usersSnapshot.forEach(doc => {
         allUsers.push({
@@ -73,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
       renderUsers(activeUsers);
 
-      
     } catch (error) {
       console.error('Error loading users:', error);
       showError('Failed to load users. Please refresh the page.');
@@ -85,20 +87,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   /**
    * Update statistics cards
    */
-    function updateStatistics() {
-      const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
+  function updateStatistics() {
+    const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
 
-      const total = activeUsers.length;
-      const customers = activeUsers.filter(u => (u.role || 'customer') === 'customer').length;
-      const vendors = activeUsers.filter(u => u.role === 'vendor').length;
-      const nea = activeUsers.filter(u => u.role === 'nea').length;
+    const total = activeUsers.length;
+    const customers = activeUsers.filter(u => (u.role || 'customer') === 'customer').length;
+    const vendors = activeUsers.filter(u => u.role === 'vendor').length;
+    const nea = activeUsers.filter(u => u.role === 'nea').length;
 
-      document.getElementById('totalUsers').textContent = total;
-      document.getElementById('totalCustomers').textContent = customers;
-      document.getElementById('totalVendors').textContent = vendors;
-      document.getElementById('totalNEA').textContent = nea;
-    }
-
+    document.getElementById('totalUsers').textContent = total;
+    document.getElementById('totalCustomers').textContent = customers;
+    document.getElementById('totalVendors').textContent = vendors;
+    document.getElementById('totalNEA').textContent = nea;
+  }
 
   /**
    * Render users to table
@@ -129,9 +130,9 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   function createUserRow(user) {
     const row = document.createElement('tr');
-    
-    const createdDate = user.createdAt ? 
-      formatDate(user.createdAt.toDate()) : 
+
+    const createdDate = user.createdAt ?
+      formatDate(user.createdAt.toDate()) :
       'N/A';
 
     row.innerHTML = `
@@ -161,18 +162,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   function setupEventListeners() {
     // Search functionality
     searchInput.addEventListener('input', filterUsers);
-    
+
     // Role filter
     roleFilter.addEventListener('change', filterUsers);
-    
+
     // Form submission
     userForm.addEventListener('submit', handleFormSubmit);
-    
+
     // Close modal on overlay click
     userModal.addEventListener('click', (e) => {
       if (e.target === userModal) {
         closeModal();
       }
+    });
+
+    // Show/hide stallId based on role in modal
+    document.getElementById('userRole').addEventListener('change', () => {
+      const role = document.getElementById('userRole').value;
+      const isVendor = role === 'vendor';
+      if (stallIdGroup) stallIdGroup.style.display = isVendor ? 'block' : 'none';
+      if (!isVendor && userStallIdInput) userStallIdInput.value = '';
     });
   }
 
@@ -187,7 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(user => 
+      filtered = filtered.filter(user =>
         (user.name && user.name.toLowerCase().includes(searchTerm)) ||
         (user.email && user.email.toLowerCase().includes(searchTerm))
       );
@@ -210,6 +219,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     submitBtn.textContent = 'Add User';
     passwordGroup.style.display = 'block';
     userForm.reset();
+
+    // NEW: reset stallId UI
+    if (stallIdGroup) stallIdGroup.style.display = 'none';
+    if (userStallIdInput) userStallIdInput.value = '';
+
     clearModalMessages();
     userModal.classList.add('active');
     document.getElementById('userName').focus();
@@ -223,7 +237,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.editUser = async function(userId) {
     try {
       const user = allUsers.find(u => u.id === userId);
-      
+
       if (!user) {
         alert('User not found.');
         return;
@@ -240,6 +254,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('userEmail').value = user.email || '';
       document.getElementById('userRole').value = user.role || 'customer';
       document.getElementById('userPhone').value = user.phone || '';
+
+      // NEW: populate stallId
+      if (userStallIdInput) userStallIdInput.value = user.stallId || '';
+      if (stallIdGroup) stallIdGroup.style.display = (user.role === 'vendor') ? 'block' : 'none';
 
       clearModalMessages();
       userModal.classList.add('active');
@@ -264,9 +282,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const phone = document.getElementById('userPhone').value.trim();
     const password = document.getElementById('userPassword').value;
 
+    // NEW: read stallId
+    const stallIdRaw = userStallIdInput ? userStallIdInput.value.trim() : '';
+    const stallId = stallIdRaw ? stallIdRaw.toUpperCase() : '';
+
     // Validation
     if (!name || !email || !role) {
       showModalError('Please fill in all required fields.');
+      return;
+    }
+
+    // NEW: stallId required for vendor
+    if (role === 'vendor' && !stallId) {
+      showModalError('Stall ID is required for vendors.');
       return;
     }
 
@@ -293,17 +321,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (currentEditUserId) {
         // Update existing user
-        await updateUser(currentEditUserId, { name, role, phone });
+        await updateUser(currentEditUserId, { name, role, phone, stallId });
       } else {
         // Create new user
-        await createUser({ name, email, role, phone, password });
+        await createUser({ name, email, role, phone, password, stallId });
       }
 
       showModalSuccess(currentEditUserId ? 'User updated successfully!' : 'User added successfully!');
-      
+
       // Reload users
       await loadUsers();
-      
+
       // Close modal after brief delay
       setTimeout(() => {
         closeModal();
@@ -324,7 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    * @param {Object} userData - User data
    */
   async function createUser(userData) {
-    const { name, email, role, phone, password } = userData;
+    const { name, email, role, phone, password, stallId } = userData;
 
     const userCredential = await secondaryAuth.createUserWithEmailAndPassword(email, password);
     const userId = userCredential.user.uid;
@@ -334,6 +362,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       email,
       role,
       phone,
+      stallId: role === 'vendor' ? stallId : '',
       status: 'active',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -342,23 +371,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     await secondaryAuth.signOut();
   }
 
-
   /**
    * Update existing user
    * @param {string} userId - User document ID
    * @param {Object} userData - Updated user data
    */
-async function updateUser(userId, userData) {
-  const { name, role, phone } = userData;
+  async function updateUser(userId, userData) {
+    const { name, role, phone, stallId } = userData;
 
-  await db.collection('users').doc(userId).update({
-    name,
-    role,
-    phone,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-}
+    const payload = {
+      name,
+      role,
+      phone,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
+    payload.stallId = (role === 'vendor') ? stallId : '';
+
+    await db.collection('users').doc(userId).update(payload);
+  }
 
   /**
    * Delete user
@@ -379,14 +410,11 @@ async function updateUser(userId, userData) {
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-
       // Delete from allowedAccounts if vendor/admin
       if (user.role === 'vendor' || user.role === 'admin') {
         await db.collection('allowedAccounts').doc(email).delete();
       }
 
-      // Note: Cannot delete from Firebase Auth without admin SDK
-      // In production, you'd need Cloud Functions for this
       alert('User deleted from database successfully.\n\nNote: The authentication account still exists. Contact a Firebase administrator to fully delete the account.');
 
       // Reload users
@@ -405,6 +433,11 @@ async function updateUser(userId, userData) {
     userModal.classList.remove('active');
     userForm.reset();
     currentEditUserId = null;
+
+    // NEW: reset stallId UI
+    if (stallIdGroup) stallIdGroup.style.display = 'none';
+    if (userStallIdInput) userStallIdInput.value = '';
+
     clearModalMessages();
   };
 
