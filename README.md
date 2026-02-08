@@ -62,11 +62,13 @@ The application focuses on **responsive design**, **usability**, and **front-end
 
 ## 🛠 Technologies Used
 
-- **HTML5** – semantic structure and accessibility  
-- **CSS3** – responsive layout and styling  
-- **JavaScript (ES6)** – interactivity and dynamic behaviour  
-- **Git & GitHub** – version control and collaboration  
-- **GitHub Pages** – deployment platform  
+- **HTML5** – semantic markup and accessibility
+- **CSS3** – responsive layout and styling
+- **JavaScript (ES6)** – front-end interactivity and dynamic behaviour
+- **Leaflet.js** – interactive map rendering and location visualisation
+- **Firebase** – authentication and cloud-based data storage
+- **Git & GitHub** – version control and collaboration
+- **GitHub Pages** – deployment platform
 
 ---
 
