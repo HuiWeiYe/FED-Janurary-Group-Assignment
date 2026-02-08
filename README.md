@@ -89,7 +89,6 @@ The application focuses on **responsive design**, **usability**, and **front-end
 The application is deployed using **GitHub Pages**.
 
 🔗 **Live Demo:**  
-> *(Link to be added)*  
 > https://<your-github-username>.github.io/<repository-name>/
 
 ---
