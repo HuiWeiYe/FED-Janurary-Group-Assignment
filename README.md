@@ -173,5 +173,5 @@ The application is deployed using **GitHub Pages**.
         ├── ApplePay.html
         └── applepay.js
 
-14 directories, 76 files
+14 directories, 75 files
 
