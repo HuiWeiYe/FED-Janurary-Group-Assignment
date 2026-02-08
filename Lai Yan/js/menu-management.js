@@ -173,7 +173,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       if (editingItemId) {
-        // UPDATE (do NOT overwrite createdAt, do NOT force available=true)
         await db.collection('menuItems').doc(editingItemId).update({
           name,
           price,

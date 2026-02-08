@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedRole = (sessionStorage.getItem("selectedRole") || "customer").toLowerCase();
 
   /**
-   * UI: hide registration link on staff/vendor portals (pre-approved accounts only)
+   * hide registration link on staff/vendor portals (pre-approved accounts only)
    */
   const registerRow = document.getElementById("registerRow");
   if (registerRow && (selectedRole === "staff" || selectedRole === "vendor")) {
@@ -101,8 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Role from Firestore 
         const firestoreRole = (profile.userData.role || "customer").toLowerCase();
 
-        // 3) Portal logic (selectedRole is the portal)
-        // ------------------------------------------------
 
         // STAFF PORTAL: only admin or nea accounts
         if (selectedRole === "staff") {
