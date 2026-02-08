@@ -33,8 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const counts = data.customers.flatMap(customer => 
                 customer.reviews
-                    .filter(review => review.stall.toLowerCase() === `${stallTitle.toLowerCase()}`) // Change stall here
+                    .filter(review => review.stall.toLowerCase() === `${stallTitle.toLowerCase()}`)
                     .map(review => review.rating));
+                    
             const maxCount = counts.reduce((total, current) => total + current, 0);
             const averageRating = (maxCount / counts.length).toFixed(2);
 
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const totalReviews = counts.reduce((a, b) => a + b, 0);
             console.log(counts)
             document.getElementById("rating-summary-number").textContent = `${averageRating}`
-            document.getElementById("rating-summary-total").innerText = `${totalReviews} Total reviews`;
+            document.getElementById("rating-summary-total").innerText = `${counts.length} Total reviews`;
 
             for (let i = 1; i <= totalStars; i++) {
                 const wrapper = document.createElement("span");
