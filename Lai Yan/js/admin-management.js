@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitBtn = document.getElementById('submitBtn');
   const passwordGroup = document.getElementById('passwordGroup');
 
-  // NEW: Stall ID elements
+  // Stall ID elements
   const stallIdGroup = document.getElementById('stallIdGroup');
   const userStallIdInput = document.getElementById('userStallId');
 
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     passwordGroup.style.display = 'block';
     userForm.reset();
 
-    // NEW: reset stallId UI
+    // reset stallId 
     if (stallIdGroup) stallIdGroup.style.display = 'none';
     if (userStallIdInput) userStallIdInput.value = '';
 
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('userRole').value = user.role || 'customer';
       document.getElementById('userPhone').value = user.phone || '';
 
-      // NEW: populate stallId
+      // populate stallId
       if (userStallIdInput) userStallIdInput.value = user.stallId || '';
       if (stallIdGroup) stallIdGroup.style.display = (user.role === 'vendor') ? 'block' : 'none';
 
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const phone = document.getElementById('userPhone').value.trim();
     const password = document.getElementById('userPassword').value;
 
-    // NEW: read stallId
+    // read stallId
     const stallIdRaw = userStallIdInput ? userStallIdInput.value.trim() : '';
     const stallId = stallIdRaw ? stallIdRaw.toUpperCase() : '';
 
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    // NEW: stallId required for vendor
+    // stallId required for vendor
     if (role === 'vendor' && !stallId) {
       showModalError('Stall ID is required for vendors.');
       return;
@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     userForm.reset();
     currentEditUserId = null;
 
-    // NEW: reset stallId UI
+    // reset stallId UI
     if (stallIdGroup) stallIdGroup.style.display = 'none';
     if (userStallIdInput) userStallIdInput.value = '';
 

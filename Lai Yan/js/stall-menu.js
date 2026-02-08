@@ -52,11 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
     showLoading(true);
 
     try {
-      // IMPORTANT: Firestore requires a composite index for multiple where clauses sometimes.
-      // If this query returns nothing but you KNOW data exists, remove the "available" filter.
       const snap = await db.collection("menuItems")
         .where("stallId", "==", stallId)
-        .where("available", "==", true)
         .get();
 
       const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
