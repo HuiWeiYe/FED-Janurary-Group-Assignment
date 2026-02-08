@@ -54,9 +54,21 @@ The application focuses on **responsive design**, **usability**, and **front-end
 
 ## 👥 User Roles
 
-- **Patrons**: Browse stalls, place orders, submit feedback and reviews  
-- **Vendors**: Manage menus, stalls, rental agreements, and view performance data  
-- **NEA Officers**: Conduct inspections, record hygiene scores, and monitor compliance  
+- **Customers**  
+  Browse stalls and menus, place orders as registered users or guests,
+  and submit feedback, ratings, and likes.
+
+- **Vendors**  
+  Manage stall information, menus, rental agreements, and view stall
+  performance dashboards.
+
+- **NEA Officers**  
+  Conduct inspections, record hygiene scores and remarks, and view
+  historical inspection records.
+
+- **Administrators**  
+  Manage system-level data and oversee user accounts, including
+  vendors, patrons, and NEA officers, through a centralized admin interface.
 
 ---
 
