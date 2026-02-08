@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="HawkerFinder.css">
 </head>
 <body>
-    <div class="app-container">
+    <section class="app-container">
         <header>
             <div class="top-bar">
                 <button class="back-btn" onclick="location.href='../../YuWenwork/CustomerHomepage/Assignment.html'">←</button>
@@ -19,11 +19,11 @@
                 </div>
                 <button class="loc-btn">⊕ My Location</button>
             </div>
-            <div class="search-box">
+            <nav class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" placeholder="Search Hawker Centres...">
-            </div>
-            <div class="filter-bar">
+            </nav>
+            <nav class="filter-bar">
                 <select id="gradeFilter" class="filter-dropdown">
                     <option value="all">Grade</option>
                     <option value="A">Grade A</option>
@@ -38,23 +38,23 @@
                     <option value="West">West</option>
                     <option value="Central">Central</option>
                 </select>
-                <div class="toggle-group">
+                <nav class="toggle-group">
                     <button class="toggle-item active">🗺️</button>
                     <button class="toggle-item" onclick="location.href='HawkerList.html'">⊞</button>
-                </div>
-            </div>
+                </nav>
+            </nav>
         </header>
 
         <div id="map">
-            <div class="legend">
+            <aside class="legend">
                 <strong>Hygiene Grades</strong>
                 <div class="legend-item"><span class="dot a"></span> A - Excellent</div>
                 <div class="legend-item"><span class="dot b"></span> B - Good</div>
                 <div class="legend-item"><span class="dot c"></span> C - Average</div>
                 <div class="legend-item"><span class="dot d"></span> D - Poor</div>
-            </div>
+            </aside>
         </div>
-    </div>
+    </section>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="data.js"></script>

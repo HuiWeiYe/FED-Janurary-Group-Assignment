@@ -94,7 +94,7 @@ function updateUI(data) {
         container.innerHTML = data.map(s => `
             <div class="card">
                 <div class="card-img-container">
-                    <img src="${s.img || 'https://via.placeholder.com/400x160'}" class="card-img">
+                    <img src="${s.img || 'https://images.lifestyleasia.com/wp-content/uploads/sites/6/2022/07/08120232/Old_Airport_Road_FC_front_sign_and_garden-1024x768.jpg'}" class="card-img">
                     <span class="grade-badge">🛡️ Grade ${s.grade}</span>
                 </div>
                 <div class="card-content">
