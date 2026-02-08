@@ -1,14 +1,26 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { set, push, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDCWdRLOOjQJQkuCyB2tUBTddgtJvdna2M",
+  authDomain: "fed-customer-review.firebaseapp.com",
+  databaseURL: "https://fed-customer-review-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "fed-customer-review",
+  storageBucket: "fed-customer-review.firebasestorage.app",
+  messagingSenderId: "574394175471",
+  appId: "1:574394175471:web:7a02132fa3be0cec10701a"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================
-    // CONFIG
-    // =========================
+    // Declaring variables
     const REVIEWS_PER_PAGE = 5;
     let currentPage = 1;
 
-    // =========================
-    // DOM ELEMENTS
-    // =========================
     const container = document.getElementById("user-review-container");
     const pageNumber = document.getElementById("page-number");
     const leftArrow = document.getElementById("left-arrow");
@@ -22,38 +34,55 @@ document.addEventListener("DOMContentLoaded", () => {
     const stallUnit = params.get("stallUnit");
     console.log(currentStall);
 
-    // =========================
-    // FETCH DATA
-    // =========================
-    fetch("CustomerSample.json")
-        .then(res => res.json())
-        .then(data => {
-            // Flatten reviews
-            let reviewIndex = 0;
-            let allReviews = data.customers.flatMap(customer =>
-                customer.reviews.map(review => ({
-                    id: reviewIndex++,
-                    customerName: customer.customerName,
-                    rating: review.rating,
-                    date: review.date,
-                    stall: review.stall,
-                    comment: review.comment,
-                    helpfulCount: review.helpfulCount,
-                    notHelpfulCount: review.notHelpfulCount,
-                    userVote: null
-                }))
-            );
+    // Fetch data
+    get(ref(database, "customers"))
+    .then(snapshot => {
+        const rawData = snapshot.val();
 
-            // =========================
-            // SORT BY DATE (NEWEST FIRST)
-            // =========================
+        // Convert object to array
+        const data = { customers: Object.values(rawData || {}) };
+
+            // Flatten reviews
+            // let reviewIndex = 0;
+            // let allReviews = data.customers.flatMap(customer => {
+            //     const reviews = Object.values(customer.reviews || {});
+            //     return reviews
+            //         .filter(r => r.stall && r.rating != null) 
+            //         .map(r => ({
+            //             id: reviewIndex++,
+            //             customerName: customer.customerName || "Anonymous",
+            //             rating: Number(r.rating),           
+            //             date: r.date || "2026-01-01",      
+            //             stall: r.stall,
+            //             comment: r.comment || "",
+            //             helpfulCount: Number(r.helpfulCount) || 0,
+            //             notHelpfulCount: Number(r.notHelpfulCount) || 0,
+            //             userVote: null
+            //         }));
+            // });
+
+            let reviewIndex = 0;
+            let allReviews = Object.entries(rawData || {}).flatMap(([custKey, customer]) => {
+                return Object.entries(customer.reviews || {}).map(([revKey, r]) => ({
+                    id: reviewIndex++,
+                    customerName: customer.customerName || "Anonymous",
+                    rating: Number(r.rating),           
+                    date: r.date || "2026-01-01",      
+                    stall: r.stall,
+                    comment: r.comment || "",
+                    helpfulCount: Number(r.helpfulCount) || 0,
+                    notHelpfulCount: Number(r.notHelpfulCount) || 0,
+                    userVote: null,
+                    firebasePath: `customers/${custKey}/reviews/${revKey}` 
+                }));
+            });
+
+            // Sort by date - Recent to latest
             allReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             const totalPages = Math.ceil(allReviews.length / REVIEWS_PER_PAGE);
 
-            // =========================
-            // FILTER
-            // =========================
+            // Filtering
             function getFilteredReviews() {
                 let filtered = [...allReviews];
 
@@ -76,7 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (b.helpfulCount !== a.helpfulCount) {
                             return b.helpfulCount - a.helpfulCount;
                         }
-                        return new Date(b.date) - new Date(a.date); // tie-breaker
+                        // Incase tied sort by date
+                        return new Date(b.date) - new Date(a.date);
                     });
                 }
 
@@ -85,7 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (a.helpfulCount !== b.helpfulCount) {
                             return a.helpfulCount - b.helpfulCount;
                         }
-                        return new Date(b.date) - new Date(a.date); // tie-breaker
+                        // Incase tied sort by date
+                        return new Date(b.date) - new Date(a.date); 
                     });
                 }
 
@@ -94,9 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-            // =========================
-            // STAR RENDERER
-            // =========================
+            // Render Stars
             function renderStars(rating) {
                 let stars = "";
                 for (let i = 1; i <= 5; i++) {
@@ -105,9 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return stars;
             }
 
-            // =========================
-            // RENDER REVIEWS
-            // =========================
+            // Render Reviews
             function renderReviews() {
                 container.innerHTML = "";
 
@@ -163,14 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 pageNumber.textContent = currentPage;
             }
 
-            /////////////////////////////////////////////////////////////////////////////////////
-            // NEWLY ADDED //////////////////////////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////////////
             function shouldResort() {
                 return helpfulFilter.value === "most-helpful" ||
                     helpfulFilter.value === "least-helpful";
             }
-
 
             function attachThumbsEvents(pageReviews) {
                 const reviewSections = container.querySelectorAll(".user-review");
@@ -182,6 +205,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     const upCountEl = upBtn.querySelector(".thumb-count");
                     const downCountEl = downBtn.querySelector(".thumb-count");
                     const reviewData = pageReviews[index];
+
+                    // Prevents thumbs up or down on ur own reviews
+                    if (reviewData.customerName === "You") {
+                        upBtn.disabled = true;
+                        downBtn.disabled = true;
+                        upBtn.classList.add("disabled");
+                        downBtn.classList.add("disabled");
+                        return;
+                    }
 
                     let active = reviewData.userVote;
 
@@ -196,11 +228,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         helpfulCountEl.textContent = `${reviewData.helpfulCount} People found this review helpful`;
                     }
 
+                    // Logic for thumbs up button
                     upBtn.addEventListener("click", () => {
+
+                        // Checks if button is active ( Pressed on either up  button ) - Removes like if true
                         if (active === "up") {
                             active = null;
                             reviewData.helpfulCount--;
                             upBtn.classList.remove("active");
+                        
+                        // Checks if button is inactive ( Pressed on either down button ) - Removes dislike if true then turns like on
                         } else {
                             if (active === "down") {
                                 reviewData.notHelpfulCount--;
@@ -212,16 +249,23 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         reviewData.userVote = active;
 
+                        // Updates text
                         updateHelpfulText();
-                        // upCountEl.textContent = reviewData.helpfulCount; /////////////////////////////////////////////////////////////
+                        upCountEl.textContent = reviewData.helpfulCount;
                         downCountEl.textContent = reviewData.notHelpfulCount;
 
-                        if (shouldResort()) {
-                            renderReviews();
-                        }
+                        if (shouldResort()) renderReviews();
+
+                        // Updates firebase
+                        update(ref(database, reviewData.firebasePath), {
+                            helpfulCount: reviewData.helpfulCount,
+                            notHelpfulCount: reviewData.notHelpfulCount
+                        }).catch(err => console.error(err));
+
 
                     });
 
+                    // Logic for thumbs up button ( Logic same for above )
                     downBtn.addEventListener("click", () => {
                         if (active === "down") {
                             active = null;
@@ -240,91 +284,94 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         updateHelpfulText();
                         upCountEl.textContent = reviewData.helpfulCount;
-                        // downCountEl.textContent = reviewData.notHelpfulCount; //////////////////////////////////////////////
                         downCountEl.textContent = reviewData.notHelpfulCount;
 
-                        if (shouldResort()) {
-                            renderReviews();
-                        }
+                        if (shouldResort()) renderReviews();
+
+                        update(ref(database, reviewData.firebasePath), {
+                            helpfulCount: reviewData.helpfulCount,
+                            notHelpfulCount: reviewData.notHelpfulCount
+                        }).catch(err => console.error(err));
+
+
                     });
                 });
             }
 
+            // Writing a review
             const submitBtn = document.getElementById("submit-review");
             const ratingInput = document.getElementById("review-rating");
             const commentInput = document.getElementById("review-comment");
 
+
             submitBtn.addEventListener("click", () => {
-                const rating = ratingInput.value;
+                const rating = parseInt(ratingInput.value);
                 const comment = commentInput.value.trim();
 
+                // Prompts incase review box is empty or star rating is empty
                 if (!rating || !comment) {
                     alert("Please provide a rating and a review.");
                     return;
                 }
 
-                // const reviewEl = document.createElement("section");
-                // reviewEl.className = "user-review";
-
-                // reviewEl.innerHTML = `
-                //     <div class="profile">
-                //         <img 
-                //             class="user-picture"
-                //             src="https://ui-avatars.com/api/?name=You&background=random&color=fff"
-                //         >
-                //         <div class="user-name">You</div>
-                //     </div>
-
-                //     <div class="information">
-                //         <div class="user-stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</div>
-                //         <div class="user-date">${new Date().toISOString().slice(0, 10)}</div>
-                //     </div>
-
-                //     <div class="helpful-count">0 People found this review helpful</div>
-
-                //     <div class="helpful-input">
-                //         <div class="helpful-text">Was this review helpful?</div>
-                //         <button class="helpful-button">
-                //             <i class="fa-solid fa-thumbs-up"></i>
-                //             <span class="thumb-count">0</span>
-                //         </button>
-                //         <button class="helpful-button">
-                //             <i class="fa-solid fa-thumbs-down"></i>
-                //             <span class="thumb-count">0</span>
-                //         </button>
-                //     </div>
-
-                //     <div class="comments">
-                //         <div class="user-comments">${comment}</div>
-                //     </div>
-                // `;
-
-                // // Add to top of reviews
-                // container.prepend(reviewEl);
-
-                /////////////////////////////////////////////////////////////////////////////////////
-                // NEWLY ADDED //////////////////////////////////////////////////////////////////////
-                /////////////////////////////////////////////////////////////////////////////////////
-                allReviews.unshift({
-                    id: allReviews.length,
-                    customerName: "You",
-                    rating: parseInt(rating),
+                const newReview = {
+                    rating: rating,
+                    comment: comment,
                     date: new Date().toISOString().slice(0, 10),
                     stall: currentStall,
-                    comment: comment,
                     helpfulCount: 0,
-                    notHelpfulCount: 0,
-                    userVote: null
-                });
+                    notHelpfulCount: 0
+                };
 
-                currentPage = 1;
-                renderReviews();
+                // Check if user review already exist
+                get(ref(database, "customers"))
+                    .then(snapshot => {
+                        const customers = snapshot.val() || {};
+                        let youCustomerId = null;
 
+                        // Find existing customer
+                        for (const [key, customer] of Object.entries(customers)) {
+                            if (customer.customerName === "You") {
+                                youCustomerId = key;
+                                break;
+                            }
+                        }
 
-                // Reset inputs
-                ratingInput.value = "";
-                commentInput.value = "";
+                        if (youCustomerId === null) {
+                            // create new customer
+                            const newCustomerRef = push(ref(database, "customers"));
+                            youCustomerId = newCustomerRef.key;
+                            set(newCustomerRef, {
+                                customerName: "You",
+                                reviews: {} 
+                            });
+                        }
+
+                        // Push the new review
+                        const reviewsRef = ref(database, `customers/${youCustomerId}/reviews`);
+                        const newReviewRef = push(reviewsRef);
+                        set(newReviewRef, newReview)
+                            .then(() => {
+
+                                // Update local array and render
+                                allReviews.unshift({
+                                    id: allReviews.length,
+                                    customerName: "You",
+                                    ...newReview,
+                                    userVote: null
+                                });
+                                currentPage = 1;
+                                renderReviews();
+
+                                // reset form
+                                ratingInput.value = "";
+                                commentInput.value = "";
+                            })
+                            .catch(err => console.error(err));
+                    })
+                    .catch(err => console.error(err));
             });
+
 
             // Turn to next or previous page of reviews
             leftArrow.addEventListener("click", () => {
@@ -355,6 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderReviews();
             });
 
+            // Goes back to summary page with relevant data to load page
             document.getElementById("return-arrow").addEventListener('click', () =>{
                 window.location.href=`Reviews.html?stall=${encodeURIComponent(currentStall)}&from=Assignment.html&stallImage=${encodeURIComponent(stallImage)}&stallUnit=${encodeURIComponent(stallUnit)}`;
             });
