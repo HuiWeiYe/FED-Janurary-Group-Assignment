@@ -163,6 +163,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 pageNumber.textContent = currentPage;
             }
 
+            /////////////////////////////////////////////////////////////////////////////////////
+            // NEWLY ADDED //////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////
+            function shouldResort() {
+                return helpfulFilter.value === "most-helpful" ||
+                    helpfulFilter.value === "least-helpful";
+            }
+
+
             function attachThumbsEvents(pageReviews) {
                 const reviewSections = container.querySelectorAll(".user-review");
 
@@ -204,8 +213,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         reviewData.userVote = active;
 
                         updateHelpfulText();
-                        upCountEl.textContent = reviewData.helpfulCount;
+                        // upCountEl.textContent = reviewData.helpfulCount; /////////////////////////////////////////////////////////////
                         downCountEl.textContent = reviewData.notHelpfulCount;
+
+                        if (shouldResort()) {
+                            renderReviews();
+                        }
+
                     });
 
                     downBtn.addEventListener("click", () => {
@@ -226,14 +240,93 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         updateHelpfulText();
                         upCountEl.textContent = reviewData.helpfulCount;
+                        // downCountEl.textContent = reviewData.notHelpfulCount; //////////////////////////////////////////////
                         downCountEl.textContent = reviewData.notHelpfulCount;
+
+                        if (shouldResort()) {
+                            renderReviews();
+                        }
                     });
                 });
             }
 
-            // =========================
-            // PAGINATION CONTROLS
-            // =========================
+            const submitBtn = document.getElementById("submit-review");
+            const ratingInput = document.getElementById("review-rating");
+            const commentInput = document.getElementById("review-comment");
+
+            submitBtn.addEventListener("click", () => {
+                const rating = ratingInput.value;
+                const comment = commentInput.value.trim();
+
+                if (!rating || !comment) {
+                    alert("Please provide a rating and a review.");
+                    return;
+                }
+
+                // const reviewEl = document.createElement("section");
+                // reviewEl.className = "user-review";
+
+                // reviewEl.innerHTML = `
+                //     <div class="profile">
+                //         <img 
+                //             class="user-picture"
+                //             src="https://ui-avatars.com/api/?name=You&background=random&color=fff"
+                //         >
+                //         <div class="user-name">You</div>
+                //     </div>
+
+                //     <div class="information">
+                //         <div class="user-stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</div>
+                //         <div class="user-date">${new Date().toISOString().slice(0, 10)}</div>
+                //     </div>
+
+                //     <div class="helpful-count">0 People found this review helpful</div>
+
+                //     <div class="helpful-input">
+                //         <div class="helpful-text">Was this review helpful?</div>
+                //         <button class="helpful-button">
+                //             <i class="fa-solid fa-thumbs-up"></i>
+                //             <span class="thumb-count">0</span>
+                //         </button>
+                //         <button class="helpful-button">
+                //             <i class="fa-solid fa-thumbs-down"></i>
+                //             <span class="thumb-count">0</span>
+                //         </button>
+                //     </div>
+
+                //     <div class="comments">
+                //         <div class="user-comments">${comment}</div>
+                //     </div>
+                // `;
+
+                // // Add to top of reviews
+                // container.prepend(reviewEl);
+
+                /////////////////////////////////////////////////////////////////////////////////////
+                // NEWLY ADDED //////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////////////////
+                allReviews.unshift({
+                    id: allReviews.length,
+                    customerName: "You",
+                    rating: parseInt(rating),
+                    date: new Date().toISOString().slice(0, 10),
+                    stall: currentStall,
+                    comment: comment,
+                    helpfulCount: 0,
+                    notHelpfulCount: 0,
+                    userVote: null
+                });
+
+                currentPage = 1;
+                renderReviews();
+
+
+                // Reset inputs
+                ratingInput.value = "";
+                commentInput.value = "";
+            });
+
+            // Turn to next or previous page of reviews
             leftArrow.addEventListener("click", () => {
                 if (currentPage > 1) {
                     currentPage--;

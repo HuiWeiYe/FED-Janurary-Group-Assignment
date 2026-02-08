@@ -32,10 +32,31 @@
                 </section>
             </section>
 
+            <!-- Input here -->
+            <section id="write-review">
+                <h3>Write a Review</h3>
 
+                <label for="review-rating">Select Rating:</label>
+                <select id="review-rating">
+                    <option value="">Select</option>
+                    <option value="5">5 ★</option>
+                    <option value="4">4 ★</option>
+                    <option value="3">3 ★</option>
+                    <option value="2">2 ★</option>
+                    <option value="1">1 ★</option>
+                </select>
+
+                <textarea
+                    id="review-comment"
+                    placeholder="Share your experience..."
+                    rows="4"
+                ></textarea>
+
+                <button id="submit-review">Submit Review</button>
+            </section>
 
             <main id="user-review-container">
-                
+
                 <section class="user-review">
                     <div class="profile">
                         <img class="user-picture" src="" alt="User's Profile">
