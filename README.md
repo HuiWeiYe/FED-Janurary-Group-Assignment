@@ -89,7 +89,7 @@ The application focuses on **responsive design**, **usability**, and **front-end
 The application is deployed using **GitHub Pages**.
 
 🔗 **Live Demo:**  
-> https://<your-github-username>.github.io/<repository-name>/
+> https://huiweiye.github.io/FED-Janurary-Group-Assignment/
 
 ---
 
