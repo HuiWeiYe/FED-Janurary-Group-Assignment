@@ -84,14 +84,94 @@ The application is deployed using **GitHub Pages**.
 
 ```plaintext
 /
+├── README.md
+├── structure.txt
+├── credits.html
 ├── Chloe
-│  
+│   ├── Conduct-Inspection.css
+│   ├── Conduct-Inspection.html
+│   ├── Conduct-Inspection.js
+│   ├── Data.js
+│   ├── firebase-config.js
+│   ├── HawkerDetails.html
+│   ├── HawkerFinder.css
+│   ├── HawkerFinder.html
+│   ├── HawkerFinder.js
+│   ├── HawkerList.html
+│   ├── Inspector.css
+│   ├── Inspector.html
+│   └── Inspector.js
 ├── Harsika
-│  
+│   ├── customer_feedback.html
+│   ├── customer_feedback.js
+│   ├── dashboard.css
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── popular_products.html
+│   ├── sales_analytics.html
+│   └── sales_analytics.js
 ├── Lai Yan
-│   
-├── Wei Ye
-│   
-├── Yu Wen
-│
-└── README.md
+│   ├── css
+│   │   ├── admin-management.css
+│   │   ├── global.css
+│   │   ├── home.css
+│   │   ├── index.css
+│   │   ├── login.css
+│   │   ├── menu-management.css
+│   │   └── profile.css
+│   ├── images
+│   ├── index.html
+│   ├── js
+│   │   ├── admin-management.js
+│   │   ├── auth.js
+│   │   ├── avatar-helper.js
+│   │   ├── firebase-config.js
+│   │   ├── menu-management.js
+│   │   ├── profile.js
+│   │   ├── role-manager.js
+│   │   └── stall-menu.js
+│   └── pages
+│       ├── admin-management.html
+│       ├── customer-home.html
+│       ├── login.html
+│       ├── menu-management.html
+│       ├── nea-home.html
+│       ├── profile.html
+│       ├── register.html
+│       ├── stall-menu.html
+│       └── vendor-home.html
+├── WeiYeWork
+│   ├── CustomerSample.json
+│   ├── Reviews.css
+│   ├── Reviews.html
+│   ├── Reviews.js
+│   ├── ReviewsComments.css
+│   ├── ReviewsComments.html
+│   └── ReviewsComments.js
+└── YuWenwork
+    ├── CheckOutPage
+    │   ├── Checkout.css
+    │   ├── Checkout.html
+    │   └── checkout.js
+    ├── CustomerHomepage
+    │   ├── Assignment.html
+    │   ├── assignment.js
+    │   ├── KingOfNoodle.html
+    │   ├── Mala.css
+    │   ├── Spicy&Numb.html
+    │   ├── Spicy&Numb.js
+    │   ├── stalls.css
+    │   ├── stalls.html
+    │   ├── style.css
+    │   └── WesternDelights.html
+    ├── Delivery
+    │   ├── confirmdelivery.css
+    │   ├── DeliveryPage.html
+    │   └── deliverypage.js
+    └── PaymentPage
+        ├── applepay.css
+        ├── ApplePay.html
+        └── applepay.js
+
+14 directories, 76 files
+
