@@ -113,3 +113,35 @@ function updateUI(data) {
 function goToDetails(stallName) {
     window.location.href = `HawkerDetails.html?name=${encodeURIComponent(stallName)}`;
 }
+
+// Inspection timeline in HawkerDetails
+document.addEventListener('DOMContentLoaded', () => {
+    const historyContainer = document.getElementById('historyContent');
+    
+    // Check if we are actually on the Details page
+    if (historyContainer) {
+        const params = new URLSearchParams(window.location.search);
+        const stallName = params.get('name');
+        const stall = stalls.find(s => s.name === stallName);
+
+        if (stall && stall.history) {
+            historyContainer.innerHTML = stall.history.map((h, index) => `
+                <div class="timeline-item">
+                    <div class="timeline-marker">${h.grade}</div>
+                    <div class="timeline-card">
+                        <div class="card-header">
+                            <h3>${h.date}</h3>
+                            ${index === 0 ? '<span class="badge-latest">Latest</span>' : ''}
+                            <span class="grade-pill">🛡️ Grade ${h.grade}</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="status-ok">✅ No Violations found</p>
+                            <hr>
+                            <p class="notes-text">📋 ${h.notes}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+});

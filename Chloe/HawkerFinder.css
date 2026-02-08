@@ -65,9 +65,24 @@ header { padding: 15px; background: white; border-bottom: 1px solid #eee; }
 .info-card { background: white; padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .section-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-/* Timeline UI */
-.timeline-item { border-left: 2px solid #5dbb91; padding-left: 20px; position: relative; margin-bottom: 20px; }
-.timeline-item::before { content: "A"; position: absolute; left: -11px; top: 0; background: #c1f2dc; width: 20px; height: 20px; border-radius: 50%; text-align: center; font-size: 12px; font-weight: bold; color: #2d5a27; }
+
+/* Container for the whole history section */
+#historyContent { position: relative; padding: 20px 0; margin-left: 20px;}
+
+/* The vertical line */
+#historyContent::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: #e0e0e0;}
+
+.timeline-item { position: relative; margin-bottom: 30px; padding-left: 50px;}
+
+/* The circular Grade marker */
+.timeline-marker { position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: #d4edda; color: #155724; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 1;}
+
+/* The Card styling */
+.timeline-card { background: #f8faff; border-radius: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+
+.badge-latest { background: #e2f9e1; color: #28a745; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 10px;}
+
+.grade-pill { float: right; background: #c3e6cb; padding: 4px 10px; border-radius: 20px; font-size: 12px;}
 
 /* Grade Info Boxes */
 .grade-info { padding: 10px; border-radius: 8px; margin-top: 5px; font-size: 12px; }
