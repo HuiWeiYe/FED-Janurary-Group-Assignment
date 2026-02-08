@@ -150,7 +150,7 @@ function submitInspection() {
     const stallName = localStorage.getItem('currentInspectionStall');
     const category = localStorage.getItem('currentCategory');
 
-    // FIX: Pull the data from LocalStorage instead of a global variable
+    // Pull the data from LocalStorage instead of a global variable
     let fullData = JSON.parse(localStorage.getItem('inspectionData'));
 
     if (!fullData) {

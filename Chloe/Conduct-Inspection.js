@@ -23,8 +23,7 @@ function submitInspection() {
     // We parse it into a local variable called 'data'
     let fullData = JSON.parse(localStorage.getItem('inspectionData'));
 
-    // 4. If LocalStorage is empty (first time), we need to handle that
-    // (In a real app, this would be your default inspectionData object)
+    // 4. If LocalStorage is empty (first time), need to handle this part
     if (!fullData) {
         alert("Error: Could not find inspection records. Please restart from the dashboard.");
         window.location.href = "Inspector.html";

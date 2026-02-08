@@ -118,7 +118,7 @@ function goToDetails(stallName) {
 document.addEventListener('DOMContentLoaded', () => {
     const historyContainer = document.getElementById('historyContent');
     
-    // Check if we are actually on the Details page
+    // Check if user actually on the Details page
     if (historyContainer) {
         const params = new URLSearchParams(window.location.search);
         const stallName = params.get('name');
