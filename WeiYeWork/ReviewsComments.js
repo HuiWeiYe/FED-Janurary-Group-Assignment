@@ -231,9 +231,64 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // =========================
-            // PAGINATION CONTROLS
-            // =========================
+            const submitBtn = document.getElementById("submit-review");
+            const ratingInput = document.getElementById("review-rating");
+            const commentInput = document.getElementById("review-comment");
+
+            submitBtn.addEventListener("click", () => {
+                const rating = ratingInput.value;
+                const comment = commentInput.value.trim();
+
+                if (!rating || !comment) {
+                    alert("Please provide a rating and a review.");
+                    return;
+                }
+
+                const reviewEl = document.createElement("section");
+                reviewEl.className = "user-review";
+
+                reviewEl.innerHTML = `
+                    <div class="profile">
+                        <img 
+                            class="user-picture"
+                            src="https://ui-avatars.com/api/?name=You&background=random&color=fff"
+                        >
+                        <div class="user-name">You</div>
+                    </div>
+
+                    <div class="information">
+                        <div class="user-stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</div>
+                        <div class="user-date">${new Date().toLocaleDateString()}</div>
+                    </div>
+
+                    <div class="helpful-count">0 People found this review helpful</div>
+
+                    <div class="helpful-input">
+                        <div class="helpful-text">Was this review helpful?</div>
+                        <button class="helpful-button">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span class="thumb-count">0</span>
+                        </button>
+                        <button class="helpful-button">
+                            <i class="fa-solid fa-thumbs-down"></i>
+                            <span class="thumb-count">0</span>
+                        </button>
+                    </div>
+
+                    <div class="comments">
+                        <div class="user-comments">${comment}</div>
+                    </div>
+                `;
+
+                // Add to top of reviews
+                container.prepend(reviewEl);
+
+                // Reset inputs
+                ratingInput.value = "";
+                commentInput.value = "";
+});
+
+            // Turn to next or previous page of reviews
             leftArrow.addEventListener("click", () => {
                 if (currentPage > 1) {
                     currentPage--;
@@ -257,10 +312,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderReviews();
             });
 
-            helpfulFilter.addEventListener("change", () => {
-                currentPage = 1;
-                renderReviews();
-            });
+            // helpfulFilter.addEventListener("change", () => {
+            //     currentPage = 1;
+            //     renderReviews();
+            // });
 
             document.getElementById("return-arrow").addEventListener('click', () =>{
                 window.location.href=`Reviews.html?stall=${encodeURIComponent(currentStall)}&from=Assignment.html&stallImage=${encodeURIComponent(stallImage)}&stallUnit=${encodeURIComponent(stallUnit)}`;
