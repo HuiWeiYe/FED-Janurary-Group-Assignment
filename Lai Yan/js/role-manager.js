@@ -53,13 +53,7 @@ async function checkAuth(requiredRole) {
             reject(new Error('Not staff'));
             return;
           }
-        } else if (role !== requiredRole) {
-          await firebase.auth().signOut();
-          alert(`Role mismatch. Your account is ${role}, not ${requiredRole}.`);
-          window.location.href = '../index.html';
-          reject(new Error('Role mismatch'));
-          return;
-        }
+        } 
 
         resolve({
           uid: user.uid,
@@ -154,7 +148,7 @@ function redirectToHome(role) {
     customer: 'customer-home.html',
     vendor: 'vendor-home.html',
     admin: 'admin-home.html',
-    nea: 'nea-home.html'
+    nea: '../../Chloe/Inspector.html'
   };
 
   const page = rolePages[role.toLowerCase()] || 'customer-home.html';

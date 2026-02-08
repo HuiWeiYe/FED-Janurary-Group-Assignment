@@ -7,14 +7,13 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
-  
+
   // Secondary Firebase app for creating users without switching session
   const secondaryApp = firebase.apps.find(app => app.name === "Secondary")
     ? firebase.app("Secondary")
     : firebase.initializeApp(firebaseConfig, "Secondary");
 
   const secondaryAuth = secondaryApp.auth();
-
 
   // DOM elements
   const loadingSpinner = document.getElementById('loadingSpinner');
@@ -29,6 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitBtn = document.getElementById('submitBtn');
   const passwordGroup = document.getElementById('passwordGroup');
 
+  // NEW: Stall ID elements
+  const stallIdGroup = document.getElementById('stallIdGroup');
+  const userStallIdInput = document.getElementById('userStallId');
+
   let allUsers = [];
   let currentEditUserId = null;
 
@@ -39,13 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       // Verify admin access
       await checkAuth('admin');
-      
+
       // Load all users
       await loadUsers();
-      
+
       // Setup event listeners
       setupEventListeners();
-      
+
     } catch (error) {
       console.error('Error initializing admin management:', error);
       showError('Failed to initialize. Please refresh the page.');
@@ -60,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
       const usersSnapshot = await db.collection('users').get();
-      
+
       allUsers = [];
       usersSnapshot.forEach(doc => {
         allUsers.push({
@@ -70,8 +73,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       updateStatistics();
-      renderUsers(allUsers);
-      
+      const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
+      renderUsers(activeUsers);
+
     } catch (error) {
       console.error('Error loading users:', error);
       showError('Failed to load users. Please refresh the page.');
@@ -84,10 +88,12 @@ document.addEventListener('DOMContentLoaded', async () => {
    * Update statistics cards
    */
   function updateStatistics() {
-    const total = allUsers.length;
-    const customers = allUsers.filter(u => u.role === 'customer').length;
-    const vendors = allUsers.filter(u => u.role === 'vendor').length;
-    const nea = allUsers.filter(u => u.role === 'nea').length;
+    const activeUsers = allUsers.filter(u => (u.status || 'active').toLowerCase() === 'active');
+
+    const total = activeUsers.length;
+    const customers = activeUsers.filter(u => (u.role || 'customer') === 'customer').length;
+    const vendors = activeUsers.filter(u => u.role === 'vendor').length;
+    const nea = activeUsers.filter(u => u.role === 'nea').length;
 
     document.getElementById('totalUsers').textContent = total;
     document.getElementById('totalCustomers').textContent = customers;
@@ -124,9 +130,9 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   function createUserRow(user) {
     const row = document.createElement('tr');
-    
-    const createdDate = user.createdAt ? 
-      formatDate(user.createdAt.toDate()) : 
+
+    const createdDate = user.createdAt ?
+      formatDate(user.createdAt.toDate()) :
       'N/A';
 
     row.innerHTML = `
@@ -156,18 +162,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   function setupEventListeners() {
     // Search functionality
     searchInput.addEventListener('input', filterUsers);
-    
+
     // Role filter
     roleFilter.addEventListener('change', filterUsers);
-    
+
     // Form submission
     userForm.addEventListener('submit', handleFormSubmit);
-    
+
     // Close modal on overlay click
     userModal.addEventListener('click', (e) => {
       if (e.target === userModal) {
         closeModal();
       }
+    });
+
+    // Show/hide stallId based on role in modal
+    document.getElementById('userRole').addEventListener('change', () => {
+      const role = document.getElementById('userRole').value;
+      const isVendor = role === 'vendor';
+      if (stallIdGroup) stallIdGroup.style.display = isVendor ? 'block' : 'none';
+      if (!isVendor && userStallIdInput) userStallIdInput.value = '';
     });
   }
 
@@ -182,7 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(user => 
+      filtered = filtered.filter(user =>
         (user.name && user.name.toLowerCase().includes(searchTerm)) ||
         (user.email && user.email.toLowerCase().includes(searchTerm))
       );
@@ -205,6 +219,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     submitBtn.textContent = 'Add User';
     passwordGroup.style.display = 'block';
     userForm.reset();
+
+    // NEW: reset stallId UI
+    if (stallIdGroup) stallIdGroup.style.display = 'none';
+    if (userStallIdInput) userStallIdInput.value = '';
+
     clearModalMessages();
     userModal.classList.add('active');
     document.getElementById('userName').focus();
@@ -218,7 +237,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.editUser = async function(userId) {
     try {
       const user = allUsers.find(u => u.id === userId);
-      
+
       if (!user) {
         alert('User not found.');
         return;
@@ -235,6 +254,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('userEmail').value = user.email || '';
       document.getElementById('userRole').value = user.role || 'customer';
       document.getElementById('userPhone').value = user.phone || '';
+
+      // NEW: populate stallId
+      if (userStallIdInput) userStallIdInput.value = user.stallId || '';
+      if (stallIdGroup) stallIdGroup.style.display = (user.role === 'vendor') ? 'block' : 'none';
 
       clearModalMessages();
       userModal.classList.add('active');
@@ -259,9 +282,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const phone = document.getElementById('userPhone').value.trim();
     const password = document.getElementById('userPassword').value;
 
+    // NEW: read stallId
+    const stallIdRaw = userStallIdInput ? userStallIdInput.value.trim() : '';
+    const stallId = stallIdRaw ? stallIdRaw.toUpperCase() : '';
+
     // Validation
     if (!name || !email || !role) {
       showModalError('Please fill in all required fields.');
+      return;
+    }
+
+    // NEW: stallId required for vendor
+    if (role === 'vendor' && !stallId) {
+      showModalError('Stall ID is required for vendors.');
       return;
     }
 
@@ -288,17 +321,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (currentEditUserId) {
         // Update existing user
-        await updateUser(currentEditUserId, { name, role, phone });
+        await updateUser(currentEditUserId, { name, role, phone, stallId });
       } else {
         // Create new user
-        await createUser({ name, email, role, phone, password });
+        await createUser({ name, email, role, phone, password, stallId });
       }
 
       showModalSuccess(currentEditUserId ? 'User updated successfully!' : 'User added successfully!');
-      
+
       // Reload users
       await loadUsers();
-      
+
       // Close modal after brief delay
       setTimeout(() => {
         closeModal();
@@ -319,28 +352,23 @@ document.addEventListener('DOMContentLoaded', async () => {
    * @param {Object} userData - User data
    */
   async function createUser(userData) {
-    const { name, email, role, phone, password } = userData;
+    const { name, email, role, phone, password, stallId } = userData;
 
-    // Create user in Firebase Authentication
     const userCredential = await secondaryAuth.createUserWithEmailAndPassword(email, password);
     const userId = userCredential.user.uid;
 
-    // Create user document in Firestore
     await db.collection('users').doc(userId).set({
-      name: name,
-      email: email,
-      role: role,
-      phone: phone,
+      name,
+      email,
+      role,
+      phone,
+      stallId: role === 'vendor' ? stallId : '',
+      status: 'active',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    // If vendor, nea or admin, add to allowedAccounts
-    if (role === 'vendor' || role === 'admin' || role === 'nea') {
-      await db.collection('allowedAccounts').doc(email).set({
-        role: role,
-      });
-    }
+    await secondaryAuth.signOut();
   }
 
   /**
@@ -348,40 +376,20 @@ document.addEventListener('DOMContentLoaded', async () => {
    * @param {string} userId - User document ID
    * @param {Object} userData - Updated user data
    */
-async function updateUser(userId, userData) {
-  const { name, role, phone } = userData;
+  async function updateUser(userId, userData) {
+    const { name, role, phone, stallId } = userData;
 
-  const user = allUsers.find(u => u.id === userId);
-  const oldEmail = user.email;
-  const oldRole = user.role;
+    const payload = {
+      name,
+      role,
+      phone,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-  await db.collection('users').doc(userId).update({
-    name,
-    role,
-    phone,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
+    payload.stallId = (role === 'vendor') ? stallId : '';
 
-  // Handle allowlist when role changes
-  if (oldRole !== role) {
-
-    // Remove old allowlist entry if needed
-    if (oldRole === 'vendor' || oldRole === 'admin' || oldRole === 'nea') {
-      await db.collection('allowedAccounts').doc(oldEmail).delete();
-    }
-
-    // Add new allowlist entry if needed
-    if (role === 'vendor' || role === 'admin' || role === 'nea') {
-      await db.collection('allowedAccounts').doc(oldEmail).set({
-        role: role,
-        approvedBy: auth.currentUser.email,
-        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        approved: true
-      });
-    }
+    await db.collection('users').doc(userId).update(payload);
   }
-}
-
 
   /**
    * Delete user
@@ -396,16 +404,17 @@ async function updateUser(userId, userData) {
     try {
       const user = allUsers.find(u => u.id === userId);
 
-      // Delete from Firestore
-      await db.collection('users').doc(userId).delete();
+      // "Delete" from Firestore, change to inactive
+      await db.collection('users').doc(userId).update({
+        status: 'inactive',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
       // Delete from allowedAccounts if vendor/admin
       if (user.role === 'vendor' || user.role === 'admin') {
         await db.collection('allowedAccounts').doc(email).delete();
       }
 
-      // Note: Cannot delete from Firebase Auth without admin SDK
-      // In production, you'd need Cloud Functions for this
       alert('User deleted from database successfully.\n\nNote: The authentication account still exists. Contact a Firebase administrator to fully delete the account.');
 
       // Reload users
@@ -424,6 +433,11 @@ async function updateUser(userId, userData) {
     userModal.classList.remove('active');
     userForm.reset();
     currentEditUserId = null;
+
+    // NEW: reset stallId UI
+    if (stallIdGroup) stallIdGroup.style.display = 'none';
+    if (userStallIdInput) userStallIdInput.value = '';
+
     clearModalMessages();
   };
 

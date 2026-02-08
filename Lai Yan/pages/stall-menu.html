@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stall Menu</title>
+
+  <link rel="stylesheet" href="../css/global.css" />
+</head>
+<body>
+  <div class="app-container">
+    <div class="header">
+      <button class="back-btn" onclick="window.history.back()" aria-label="Back">←</button>
+      <div class="header-text">
+        <h1 id="stallTitle">Stall Menu</h1>
+        <p id="stallSubtitle">Loading...</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="loading" class="loading-spinner" style="display:none;">
+        <div class="spinner"></div>
+      </div>
+
+      <div id="menuList"></div>
+
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">🍽️</div>
+        <h3>No items available</h3>
+        <p>This stall has no available menu items yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Your Firebase init -->
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/stall-menu.js"></script>
+</body>
+</html>

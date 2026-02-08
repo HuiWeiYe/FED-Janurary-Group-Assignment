@@ -111,3 +111,13 @@ function resetInspections() {
         location.reload();
     }
 }
+
+function logout() {
+  firebase.auth().signOut()
+    .then(() => {
+      window.location.href = "../../Lai Yan/pages/login.html";
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+    });
+}

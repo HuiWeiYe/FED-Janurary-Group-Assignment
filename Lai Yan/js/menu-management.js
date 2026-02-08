@@ -15,9 +15,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loadingSpinner = document.getElementById('loading');
   const formMessage = document.getElementById('form-message');
   const successMessage = document.getElementById('success-message');
+  const submitBtn = addMenuForm.querySelector('button[type="submit"]');
+
 
   let currentStallId = null;
   let editingItemId = null;
+  let editingItemAvailable = true; // keep availability when editing
+
 
   /**
    * Check authentication and get vendor stall ID
@@ -53,23 +57,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       const menuItemsSnapshot = await db
         .collection('menuItems')
         .where('stallId', '==', currentStallId)
-        .orderBy('name')
-        .get();
+        .get(); // <-- removed orderBy to avoid index requirement
 
       if (menuItemsSnapshot.empty) {
         showEmptyState(true);
         menuItemsGrid.innerHTML = '';
       } else {
         showEmptyState(false);
-        renderMenuItems(menuItemsSnapshot.docs);
+
+        // Sort by name on the client side
+        const docs = menuItemsSnapshot.docs.sort((a, b) => {
+          const an = (a.data().name || '').toLowerCase();
+          const bn = (b.data().name || '').toLowerCase();
+          return an.localeCompare(bn);
+        });
+
+        renderMenuItems(docs);
       }
     } catch (error) {
       console.error('Error loading menu items:', error);
-      showError('Failed to load menu items. Please refresh the page.');
+      showError(error.message || 'Failed to load menu items. Please refresh the page.');
     } finally {
       showLoading(false);
     }
   }
+
 
   /**
    * Render menu items to the grid
@@ -125,6 +137,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     return card;
   }
 
+  function resetFormMode() {
+    editingItemId = null;
+    editingItemAvailable = true;
+    submitBtn.textContent = 'Add Menu Item';
+  }
+
   /**
    * Handle add menu item form submission
    */
@@ -137,61 +155,68 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    // Get form values
-    const itemData = {
-      stallId: currentStallId,
-      name: document.getElementById('itemName').value.trim(),
-      price: parseFloat(document.getElementById('itemPrice').value),
-      description: document.getElementById('itemDescription').value.trim(),
-      category: document.getElementById('itemCategory').value,
-      cuisine: document.getElementById('itemCuisine').value,
-      available: true,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
+    const name = document.getElementById('itemName').value.trim();
+    const price = parseFloat(document.getElementById('itemPrice').value);
+    const description = document.getElementById('itemDescription').value.trim();
+    const category = document.getElementById('itemCategory').value;
+    const cuisine = document.getElementById('itemCuisine').value;
 
-    // Validation
-    if (!itemData.name || !itemData.price || !itemData.category || !itemData.cuisine) {
+    if (!name || !price || !category || !cuisine) {
       showError('Please fill in all required fields.');
       return;
     }
 
-    if (itemData.price <= 0) {
+    if (price <= 0) {
       showError('Price must be greater than 0.');
       return;
     }
 
     try {
       if (editingItemId) {
-        // Update existing item
+        // UPDATE (do NOT overwrite createdAt, do NOT force available=true)
         await db.collection('menuItems').doc(editingItemId).update({
-          ...itemData,
-          createdAt: firebase.firestore.FieldValue.delete() // Don't update createdAt
+          name,
+          price,
+          description,
+          category,
+          cuisine,
+          stallId: currentStallId,
+          available: editingItemAvailable,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
+
         showSuccess('Menu item updated successfully!');
-        editingItemId = null;
+        resetFormMode();
       } else {
-        // Add new item
-        await db.collection('menuItems').add(itemData);
+        // ADD
+        await db.collection('menuItems').add({
+          stallId: currentStallId,
+          name,
+          price,
+          description,
+          category,
+          cuisine,
+          available: true,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
         showSuccess('Menu item added successfully!');
       }
 
-      // Reset form
       addMenuForm.reset();
-      
-      // Reload menu items
       loadMenuItems();
 
-      // Clear success message after 3 seconds
       setTimeout(() => {
         successMessage.textContent = '';
       }, 3000);
 
     } catch (error) {
       console.error('Error saving menu item:', error);
-      showError('Failed to save menu item. Please try again.');
+      showError(error.message || 'Failed to save menu item. Please try again.');
     }
   });
+
 
   /**
    * Edit a menu item - populate form with existing data
@@ -200,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.editMenuItem = async function(itemId) {
     try {
       const itemDoc = await db.collection('menuItems').doc(itemId).get();
-      
+
       if (!itemDoc.exists) {
         showError('Menu item not found.');
         return;
@@ -209,17 +234,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       const item = itemDoc.data();
 
       // Populate form
-      document.getElementById('itemName').value = item.name;
-      document.getElementById('itemPrice').value = item.price;
+      document.getElementById('itemName').value = item.name || '';
+      document.getElementById('itemPrice').value = item.price ?? '';
       document.getElementById('itemDescription').value = item.description || '';
-      document.getElementById('itemCategory').value = item.category;
-      document.getElementById('itemCuisine').value = item.cuisine;
+      document.getElementById('itemCategory').value = item.category || '';
+      document.getElementById('itemCuisine').value = item.cuisine || '';
 
       // Set editing mode
       editingItemId = itemId;
+      editingItemAvailable = item.available !== false;
 
       // Update button text
-      const submitBtn = addMenuForm.querySelector('button[type="submit"]');
       submitBtn.textContent = 'Update Menu Item';
 
       // Scroll to form
@@ -227,9 +252,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
       console.error('Error loading menu item for editing:', error);
-      showError('Failed to load menu item.');
+      showError(error.message || 'Failed to load menu item.');
     }
   };
+
 
   /**
    * Toggle menu item availability
