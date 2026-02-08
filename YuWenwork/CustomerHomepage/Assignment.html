@@ -13,7 +13,10 @@
                 <div class="header-right">
                     <!-- <span class="fa fa-envelope"></span>
                     <span class="fa fa-bell"></span> -->
-                    <span class="fa fa-user-circle"</span>
+
+                    <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
+
+
                 </div>
             </div>
         </header>
@@ -32,10 +35,13 @@
                         <img src="https://mymorningmocha.com/wp-content/uploads/2022/11/Homemade-chow-mein-with-this-Chinese-style-UK-recipe.jpg" alt="Chow Mein Image">
                         <p class="label">Noodle</p>
                     </div>
-                    <div class="food">
+
+                    <div class="food" onclick="window.location.href='../../Lai Yan/pages/stall-menu.html?stallId=ST001'">
                         <img src="https://i1.wp.com/blog.suvie.com/wp-content/uploads/2020/09/Banh-Mi_HERO.jpg?fit=1360%2C1020&ssl=1" alt="Banh Mi Sandwich Image">
                         <p class="label">Vietnamese</p>
                     </div>
+
+
                     <div class="food">
                         <img src="https://d22ir9aoo7cbf6.cloudfront.net/wp-content/uploads/sites/2/2016/03/roti-prata-in-singapore.jpg" alt="Roti Prata Image">
                         <p class="label">Indian</p>
@@ -196,19 +202,16 @@
                         <span class="fa fa-receipt"></span>
                         <p class="iconname">Order</p>
                     </div>
-                    <div class="gearicon">
-                        <span class="fa fa-gear"></span>
-                        <p class="iconname">Settings</p>
-                    </div>
                 </div>
             </div>
         </footer>
 
-
-
-
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script src="../../Lai Yan/js/firebase-config.js"></script>
 
         <script src="assignment.js"></script>
+
     </body>
 
 

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin User Management - Manage all system users">
+    <title>User Management - Hawker Centre System</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin-management.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🛡️ Admin Dashboard</h1>
+            <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-container">
+
+            <!-- Header Section -->
+            <section class="admin-header-section">
+                <h2>Welcome, <span id="adminName">Admin</span>!</h2>
+                <p>Create, view, update, and delete user accounts across all roles.</p>
+            </section>
+
+            <!-- Statistics Cards -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon" aria-hidden="true">👥</div>
+                    <div class="stat-label">Total Users</div>
+                    <h2 class="stat-value" id="totalUsers">0</h2>
+                </div>
+
+                <div class="stat-card customer">
+                    <div class="stat-icon" aria-hidden="true">👤</div>
+                    <div class="stat-label">Customers</div>
+                    <h2 class="stat-value" id="totalCustomers">0</h2>
+                </div>
+
+                <div class="stat-card vendor">
+                    <div class="stat-icon" aria-hidden="true">👨‍🍳</div>
+                    <div class="stat-label">Vendors</div>
+                    <h2 class="stat-value" id="totalVendors">0</h2>
+                </div>
+
+                <div class="stat-card nea">
+                    <div class="stat-icon" aria-hidden="true">🛡️</div>
+                    <div class="stat-label">NEA Officers</div>
+                    <h2 class="stat-value" id="totalNEA">0</h2>
+                </div>
+            </div>
+
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Search by name or email..."
+                    aria-label="Search users"
+                />
+                
+                <select class="filter-select" id="roleFilter" aria-label="Filter by role">
+                    <option value="">All Roles</option>
+                    <option value="customer">Customer</option>
+                    <option value="vendor">Vendor</option>
+                    <option value="nea">NEA Officer</option>
+                    <option value="admin">Admin</option>
+                </select>
+
+                <button class="btn-add-user" onclick="openAddUserModal()" aria-label="Add new user">
+                    + Add User
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner" role="status">
+                    <span class="sr-only">Loading users...</span>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div id="tableContainer" class="table-container" style="display: none;">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Phone</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state-icon" aria-hidden="true">👥</div>
+                <h3>No users found</h3>
+                <p>Add your first user to get started</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div id="userModal" class="modal-overlay" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add User</h3>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close modal">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="userForm" novalidate>
+                    <div class="form-group">
+                        <label for="userName">Full Name *</label>
+                        <input 
+                            type="text" 
+                            id="userName" 
+                            name="userName"
+                            required
+                            placeholder="John Doe"
+                            aria-required="true"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="userEmail" 
+                            name="userEmail"
+                            required
+                            placeholder="john@example.com"
+                            aria-required="true"
+                        />
+                    </div>
+
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label for="userRole">Role *</label>
+                            <select 
+                                id="userRole" 
+                                name="userRole"
+                                required
+                                aria-required="true"
+                            >
+                                <option value="">Select role</option>
+                                <option value="customer">Customer</option>
+                                <option value="vendor">Vendor</option>
+                                <option value="nea">NEA Officer</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userPhone">Phone Number</label>
+                            <input 
+                                type="tel" 
+                                id="userPhone"
+                                name="userPhone"
+                                placeholder="+65 1234 5678"
+                            />
+                        </div>
+
+                        <!-- Stall ID field (Vendor only) -->
+                        <div class="form-group" id="stallIdGroup" style="display:none;">
+                        <label for="userStallId">Stall ID (Vendor only)</label>
+                        <input
+                            type="text"
+                            id="userStallId"
+                            name="userStallId"
+                            placeholder="e.g. ST001"
+                        />
+                        </div>
+
+                    </div>
+
+                    <!-- Password field only shown when adding new user -->
+                    <div class="form-group" id="passwordGroup">
+                        <label for="userPassword">Password *</label>
+                        <input 
+                            type="password" 
+                            id="userPassword"
+                            name="userPassword"
+                            placeholder="Minimum 6 characters"
+                            minlength="6"
+                        />
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">Add User</button>
+                    <div id="modal-error" class="error-message" role="alert" aria-live="polite"></div>
+                    <div id="modal-success" class="success-message" role="alert" aria-live="polite"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Application JavaScript -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/role-manager.js"></script>
+    <script src="../js/admin-management.js"></script>
+</body>
+</html>

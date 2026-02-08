@@ -7,14 +7,12 @@
 /**
  * Check user authentication and verify role access
  * Redirects to login if not authenticated or wrong role
- * @param {string} requiredRole - Required role for the page ('customer', 'vendor', 'admin')
+ * @param {string} requiredRole - Required role for the page ('customer', 'vendor', 'staff')
  * @returns {Promise<Object>} User data object with name, email, role
  */
 async function checkAuth(requiredRole) {
   return new Promise((resolve, reject) => {
-    // Wait for Firebase Auth to initialize
     firebase.auth().onAuthStateChanged(async (user) => {
-      // User not logged in - redirect to role selection
       if (!user) {
         sessionStorage.setItem('selectedRole', requiredRole);
         window.location.href = '../index.html';
@@ -24,61 +22,57 @@ async function checkAuth(requiredRole) {
 
       try {
         const db = firebase.firestore();
-        
-        // For vendor and admin, check allowlist
-        if (requiredRole === 'vendor' || requiredRole === 'admin') {
-          const allowedDoc = await db
-            .collection('allowedAccounts')
-            .doc(user.email.toLowerCase())
-            .get();
+        const userDoc = await db.collection('users').doc(user.uid).get();
 
-          if (!allowedDoc.exists) {
-            // Not in allowlist - logout and redirect
-            await firebase.auth().signOut();
-            alert('Access denied. This account is not authorized.');
-            window.location.href = '../index.html';
-            reject(new Error('Not authorized'));
-            return;
-          }
-
-          const allowedRole = (allowedDoc.data().role || '').toLowerCase();
-          
-          // Check if allowlist role matches required role
-          if (allowedRole !== requiredRole) {
-            await firebase.auth().signOut();
-            alert(`This account is registered as ${allowedRole}, not ${requiredRole}.`);
-            window.location.href = '../index.html';
-            reject(new Error('Role mismatch'));
-            return;
-          }
+        if (!userDoc.exists) {
+          await firebase.auth().signOut();
+          alert('Access denied: user profile not found.');
+          window.location.href = '../index.html';
+          reject(new Error('Profile missing'));
+          return;
         }
 
-        // Get user profile data
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        
-        const userData = {
+        const data = userDoc.data() || {};
+        const role = (data.role || 'customer').toLowerCase();
+        const status = (data.status || 'active').toLowerCase();
+
+        if (status === 'disabled') {
+          await firebase.auth().signOut();
+          alert('Access denied: your account is disabled.');
+          window.location.href = '../index.html';
+          reject(new Error('Disabled'));
+          return;
+        }
+
+
+        if (requiredRole === 'staff') {
+          if (role !== 'admin' && role !== 'nea') {
+            await firebase.auth().signOut();
+            alert('Access denied. This account is not staff.');
+            window.location.href = '../index.html';
+            reject(new Error('Not staff'));
+            return;
+          }
+        } 
+
+        resolve({
           uid: user.uid,
           email: user.email,
-          name: userDoc.exists ? userDoc.data().name : user.email.split('@')[0],
-          role: requiredRole,
-          phone: userDoc.exists ? userDoc.data().phone : '',
-          createdAt: userDoc.exists ? userDoc.data().createdAt : new Date()
-        };
-
-        // Add vendor-specific data if applicable
-        if (requiredRole === 'vendor' && userDoc.exists) {
-          userData.stallId = userDoc.data().stallId || '';
-          userData.stallName = userDoc.data().stallName || '';
-        }
-
-        resolve(userData);
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-        reject(error);
+          name: data.name || user.email.split('@')[0],
+          role,
+          phone: data.phone || '',
+          stallId: data.stallId || '',
+          stallName: data.stallName || '',
+          createdAt: data.createdAt || new Date()
+        });
+      } catch (err) {
+        console.error(err);
+        reject(err);
       }
     });
   });
 }
+
 
 /**
  * Logout function - signs out user and redirects to home
@@ -101,7 +95,6 @@ async function logout() {
 
 /**
  * Get current user data without role verification
- * Useful for profile page where role doesn't matter
  * @returns {Promise<Object>} User data
  */
 async function getCurrentUser() {
@@ -148,13 +141,14 @@ function isAuthenticated() {
 
 /**
  * Redirect to appropriate home page based on role
- * @param {string} role - User role ('customer', 'vendor', 'admin')
+ * @param {string} role - User role ('customer', 'vendor', 'admin', 'nea')
  */
 function redirectToHome(role) {
   const rolePages = {
     customer: 'customer-home.html',
     vendor: 'vendor-home.html',
-    admin: 'admin-home.html'
+    admin: 'admin-home.html',
+    nea: '../../Chloe/Inspector.html'
   };
 
   const page = rolePages[role.toLowerCase()] || 'customer-home.html';

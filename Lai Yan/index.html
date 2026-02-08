@@ -42,7 +42,7 @@
         </div>
 
         <!-- Staff Login Button (Bottom Right) -->
-        <button class="staff-login-btn" onclick="selectRole('admin')" aria-label="Staff and Admin Login">
+        <button class="staff-login-btn" onclick="selectRole('staff')" aria-label="Staff: NEA and Admin Login">
             Staff Login
         </button>
     </div>
@@ -51,7 +51,7 @@
     <script>
         /**
          * Handle role selection and redirect to login
-         * @param {string} role - Selected role (customer, vendor, or admin)
+         * @param {string} role - Selected role (customer, vendor, or staff)
          */
         function selectRole(role) {
             // Store selected role in session storage for login page

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Vendor Dashboard - Hawker Centre System" />
-  <title>Vendor Dashboard - Hawker Centre System</title>
+  <meta name="description" content="Staff Dashboard - Hawker Centre System" />
+  <title>Staff Dashboard - Hawker Centre System</title>
 
   <!-- External CSS -->
   <link rel="stylesheet" href="../css/global.css" />
@@ -14,7 +14,7 @@
   <div class="app-container">
     <!-- Header -->
     <div class="header">
-      <h1>👨‍🍳 Vendor Dashboard</h1>
+      <h1>🛡️ Staff Dashboard</h1>
       <button onclick="logout()" class="btn-logout" aria-label="Logout">Logout</button>
     </div>
 
@@ -22,33 +22,46 @@
     <div class="content">
       <!-- User Info Card -->
       <div class="user-info">
-        <h2>Welcome, <span id="userName">Vendor</span>!</h2>
-        <p>Manage your stall operations and view analytics</p>
+        <h2>Welcome, <span id="userName">Staff</span>!</h2>
+        <p>NEA Officer & Admin Dashboard</p>
       </div>
 
       <!-- Welcome Section -->
       <div class="welcome-section">
         <p class="welcome-message">
-          Track your stall performance, manage menu items, and respond to customer feedback
-          from your personalized vendor dashboard.
+          Monitor hawker centre operations, conduct inspections, and manage
+          compliance from your administrative dashboard.
         </p>
       </div>
 
       <!-- Quick Actions -->
-        <!-- menu management page -->
-        <div class="action-card" onclick="window.location.href='menu-management.html'" role="button" tabindex="0">
-          <div class="action-card-icon" aria-hidden="true">📋</div>
-          <h3>Menu Management</h3>
-          <p>Update your menu items</p>
+      <div class="quick-actions">
+        <!-- Your profile page -->
+        <div class="action-card" onclick="window.location.href='profile.html'" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">👤</div>
+          <h3>My Profile</h3>
+          <p>Manage account settings</p>
         </div>
 
-        <!-- analytics dashboard -->
-         <div onclick="window.location.href='../../Harsika/dashboard.html'" class="action-card" role="button" tabindex="0">
-          <div class="action-card-icon" aria-hidden="true">📊</div>
-          <h3>Analytics Dashboard</h3>
-          <p>View performance metrics</p>
-         </div>
+        <!-- Keep Chloe navigation files -->
+        <a href="../../Chloe/Inspector.html" class="action-card" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">🔍</div>
+          <h3>Inspections</h3>
+          <p>View and schedule inspections</p>
+        </a>
 
+        <a href="../../Chloe/Conduct-Inspection.html" class="action-card" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">📊</div>
+          <h3>Conduct Inspections</h3>
+          <p>lorem ipsum</p>
+        </a>
+
+        <!-- Placeholder complaints card (add link later if needed) -->
+        <div class="action-card" role="button" tabindex="0">
+          <div class="action-card-icon" aria-hidden="true">⚠️</div>
+          <h3>Complaints</h3>
+          <p>Review customer complaints</p>
+        </div>
       </div>
     </div>
   </div>
@@ -65,10 +78,10 @@
 
   <script>
     /**
-     * Initialize vendor home page
-     * Loads vendor data and displays stall information
+     * Initialize admin home page
+     * Loads staff data and displays dashboard
      */
-    checkAuth('vendor')
+    checkAuth('admin')
       .then((userData) => {
         const userNameElement = document.getElementById('userName');
         if (userNameElement && userData.name) {
@@ -76,7 +89,7 @@
         }
       })
       .catch((error) => {
-        console.error('Error loading vendor data:', error);
+        console.error('Error loading admin data:', error);
       });
 
     // Keyboard support (Enter/Space) for both div.action-card and a.action-card
