@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HawkerFinder - List</title>
+    <title>HawkerList</title>
     <link rel="stylesheet" href="HawkerFinder.css">
 </head>
 <body>
-    <div class="app-container">
+    <section class="app-container">
         <header>
             <div class="top-bar">
                 <button class="back-btn" onclick="location.href='HawkerFinder.html'">←</button>
@@ -17,28 +17,28 @@
                 </div>
                 <button class="loc-btn">⊕ My Location</button>
             </div>
-            <div class="search-box">
+            <nav class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="listSearch" placeholder="Search Hawker Centres...">
-            </div>
-            <div class="filter-bar">
+            </nav>
+            <nav class="filter-bar">
                 <select id="gradeFilterList" class="filter-dropdown">
                     <option value="all">Grade</option>
                     <option value="A">Grade A</option>
                     <option value="B">Grade B</option>
                 </select>
-                <div class="toggle-group">
+                <nav class="toggle-group">
                     <button class="toggle-item" onclick="location.href='HawkerFinder.html'">🗺️</button>
                     <button class="toggle-item active">⊞</button>
-                </div>
-            </div>
+                </nav>
+            </nav>
         </header>
 
         <div class="scroll-area">
             <p id="countText" style="font-size: 12px; margin-bottom: 10px; color: #666;"></p>
             <div id="cardContainer"></div>
         </div>
-    </div>
+    </section>
 
     <script src="data.js"></script>
     <script src="HawkerFinder.js"></script>

@@ -12,8 +12,8 @@
 │   ├── HawkerList.html
 │   ├── Inspector.css
 │   ├── Inspector.html
-│   ├── Inspector.js
-│   └── migrate.js
+│   └── Inspector.js
+├── credits.html
 ├── Harsika
 │   ├── customer_feedback.html
 │   ├── customer_feedback.js
@@ -41,9 +41,9 @@
 │   │   ├── firebase-config.js
 │   │   ├── menu-management.js
 │   │   ├── profile.js
-│   │   └── role-manager.js
+│   │   ├── role-manager.js
+│   │   └── stall-menu.js
 │   └── pages
-│       ├── admin-home.html
 │       ├── admin-management.html
 │       ├── customer-home.html
 │       ├── login.html
@@ -51,16 +51,17 @@
 │       ├── nea-home.html
 │       ├── profile.html
 │       ├── register.html
+│       ├── stall-menu.html
 │       └── vendor-home.html
 ├── README.md
 ├── structure.txt
 ├── WeiYeWork
 │   ├── CustomerSample.json
-│   ├── ReviewComments.html
 │   ├── Reviews.css
 │   ├── Reviews.html
 │   ├── Reviews.js
 │   ├── ReviewsComments.css
+│   ├── ReviewsComments.html
 │   └── ReviewsComments.js
 └── YuWenwork
     ├── CheckOutPage
@@ -81,12 +82,10 @@
     ├── Delivery
     │   ├── confirmdelivery.css
     │   ├── DeliveryPage.html
-    │   ├── deliverypage.js
-    │   └── Images
-    │       └── map-10mins.jpeg
+    │   └── deliverypage.js
     └── PaymentPage
         ├── applepay.css
         ├── ApplePay.html
         └── applepay.js
 
-15 directories, 75 files
+14 directories, 75 files

@@ -54,19 +54,33 @@ The application focuses on **responsive design**, **usability**, and **front-end
 
 ## 👥 User Roles
 
-- **Patrons**: Browse stalls, place orders, submit feedback and reviews  
-- **Vendors**: Manage menus, stalls, rental agreements, and view performance data  
-- **NEA Officers**: Conduct inspections, record hygiene scores, and monitor compliance  
+- **Customers**  
+  Browse stalls and menus, place orders as registered users or guests,
+  and submit feedback, ratings, and likes.
+
+- **Vendors**  
+  Manage stall information, menus, rental agreements, and view stall
+  performance dashboards.
+
+- **NEA Officers**  
+  Conduct inspections, record hygiene scores and remarks, and view
+  historical inspection records.
+
+- **Administrators**  
+  Manage system-level data and oversee user accounts, including
+  vendors, patrons, and NEA officers, through a centralized admin interface.
 
 ---
 
 ## 🛠 Technologies Used
 
-- **HTML5** – semantic structure and accessibility  
-- **CSS3** – responsive layout and styling  
-- **JavaScript (ES6)** – interactivity and dynamic behaviour  
-- **Git & GitHub** – version control and collaboration  
-- **GitHub Pages** – deployment platform  
+- **HTML5** – semantic markup and accessibility
+- **CSS3** – responsive layout and styling
+- **JavaScript (ES6)** – front-end interactivity and dynamic behaviour
+- **Leaflet.js** – interactive map rendering and location visualisation
+- **Firebase** – authentication and cloud-based data storage
+- **Git & GitHub** – version control and collaboration
+- **GitHub Pages** – deployment platform
 
 ---
 
@@ -75,7 +89,6 @@ The application focuses on **responsive design**, **usability**, and **front-end
 The application is deployed using **GitHub Pages**.
 
 🔗 **Live Demo:**  
-> *(Link to be added)*  
 > https://<your-github-username>.github.io/<repository-name>/
 
 ---
@@ -84,14 +97,94 @@ The application is deployed using **GitHub Pages**.
 
 ```plaintext
 /
+├── README.md
+├── structure.txt
+├── credits.html
 ├── Chloe
-│  
+│   ├── Conduct-Inspection.css
+│   ├── Conduct-Inspection.html
+│   ├── Conduct-Inspection.js
+│   ├── Data.js
+│   ├── firebase-config.js
+│   ├── HawkerDetails.html
+│   ├── HawkerFinder.css
+│   ├── HawkerFinder.html
+│   ├── HawkerFinder.js
+│   ├── HawkerList.html
+│   ├── Inspector.css
+│   ├── Inspector.html
+│   └── Inspector.js
 ├── Harsika
-│  
+│   ├── customer_feedback.html
+│   ├── customer_feedback.js
+│   ├── dashboard.css
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── popular_products.html
+│   ├── sales_analytics.html
+│   └── sales_analytics.js
 ├── Lai Yan
-│   
-├── Wei Ye
-│   
-├── Yu Wen
-│
-└── README.md
+│   ├── css
+│   │   ├── admin-management.css
+│   │   ├── global.css
+│   │   ├── home.css
+│   │   ├── index.css
+│   │   ├── login.css
+│   │   ├── menu-management.css
+│   │   └── profile.css
+│   ├── images
+│   ├── index.html
+│   ├── js
+│   │   ├── admin-management.js
+│   │   ├── auth.js
+│   │   ├── avatar-helper.js
+│   │   ├── firebase-config.js
+│   │   ├── menu-management.js
+│   │   ├── profile.js
+│   │   ├── role-manager.js
+│   │   └── stall-menu.js
+│   └── pages
+│       ├── admin-management.html
+│       ├── customer-home.html
+│       ├── login.html
+│       ├── menu-management.html
+│       ├── nea-home.html
+│       ├── profile.html
+│       ├── register.html
+│       ├── stall-menu.html
+│       └── vendor-home.html
+├── WeiYeWork
+│   ├── CustomerSample.json
+│   ├── Reviews.css
+│   ├── Reviews.html
+│   ├── Reviews.js
+│   ├── ReviewsComments.css
+│   ├── ReviewsComments.html
+│   └── ReviewsComments.js
+└── YuWenwork
+    ├── CheckOutPage
+    │   ├── Checkout.css
+    │   ├── Checkout.html
+    │   └── checkout.js
+    ├── CustomerHomepage
+    │   ├── Assignment.html
+    │   ├── assignment.js
+    │   ├── KingOfNoodle.html
+    │   ├── Mala.css
+    │   ├── Spicy&Numb.html
+    │   ├── Spicy&Numb.js
+    │   ├── stalls.css
+    │   ├── stalls.html
+    │   ├── style.css
+    │   └── WesternDelights.html
+    ├── Delivery
+    │   ├── confirmdelivery.css
+    │   ├── DeliveryPage.html
+    │   └── deliverypage.js
+    └── PaymentPage
+        ├── applepay.css
+        ├── ApplePay.html
+        └── applepay.js
+
+14 directories, 75 files
+

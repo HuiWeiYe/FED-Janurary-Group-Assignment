@@ -8,7 +8,7 @@ const stalls = [
         region: "East",
         lat: 1.3084, 
         lng: 103.8858,
-        img: "western.jpg",
+        img: "https://images.lifestyleasia.com/wp-content/uploads/sites/6/2022/07/08120232/Old_Airport_Road_FC_front_sign_and_garden-1024x768.jpg",
         lastInspection: "Nov 20, 2024",
         history: [
             { date: "Nov 20, 2024", grade: "A", notes: "No Violations found" },
@@ -24,7 +24,7 @@ const stalls = [
         region: "East",
         lat: 1.3200, 
         lng: 103.9300,
-        img: "bedok.jpg",
+        img: "https://sethlui.com/wp-content/uploads/2023/12/16-@-Bedok--1920x812.jpg",
         lastInspection: "Oct 12, 2024",
         history: [
             { date: "Oct 12, 2024", grade: "A", notes: "Clean premises" }
